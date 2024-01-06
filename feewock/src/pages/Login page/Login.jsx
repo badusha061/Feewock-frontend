@@ -1,70 +1,108 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-
+import axios from 'axios'
+import { useState } from 'react'
+import React  from 'react'
+import { useDispatch } from 'react-redux'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { setToken } from '../../actions/TokenAction'
 
 function Login() {
+  const dispatch = useDispatch()
+
+  const navigate = useNavigate()
+
+  const [user , setUser] = useState({
+    username:'',
+    password:''
+  })
+  const [error , setError] = useState({
+    username:'',
+    password:''
+  })
+
+  const changeInput = (e) => {
+    setUser({...user,[e.target.id]: e.target.value})
+  }
+
+  const changeHandle = (e) => {
+    e.preventDefault();
+    const BASE_URL = 'http://localhost:8000/api/token';
+    const instance = axios.create({
+      baseURL:BASE_URL,
+    })  
+    instance.post('',user)
+    .then((respose) => {
+      console.log(respose.data);
+      if(respose.data.is_regular_user === true && respose.data.is_active === true){
+        localStorage.setItem('token',respose.data)
+        localStorage.setItem('userDetails',JSON.stringify(respose.data));
+        dispatch(setToken(respose.data.access))
+        navigate('/')
+      }else{
+        console.log('user account is blocked');
+      }
+      
+      
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
+  }
   return (
     <>
-         <div className="relative py-3 sm:max-w-xl sm:mx-auto ">
-    <div className="relative px-4 py-10 bg-white mx-8 md:mx-0    shadow-lg  rounded-3xl sm:p-10">
-      <div className="max-w-md mx-auto">
-        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
-      
-          <div>
-            <label
-            className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="username"
-              >Username</label
-            >
-            <input
-              className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-              type="text"
-              id="username"
-      
-            />
+    <div className="relative py-3 sm:max-w-xl sm:mx-auto ">
+      <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-lg rounded-3xl sm:p-10">
+        <div className="max-w-md mx-auto">
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label
+                className="font-semibold text-sm text-gray-600 pb-1 block"
+                htmlFor="username"
+              >
+                Username
+              </label>
+              <input
+                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                type="text"
+                id="username"
+                value={user.username}
+                onChange={changeInput}
+              />
+            </div>
+            <div>
+              <label
+                className="font-semibold text-sm text-gray-600 pb-1 block"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                type="password"
+                id="password"
+                value={user.password}
+                onChange={changeInput}
+              />
+            </div>
           </div>
-
-       
-          
-          <div>
-            <label
-              className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="password"
-              >Password</label
+          <div className="mt-5">
+            <button
+              className="py-2 px-4 bg-custom-blue hover:bg-black focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+              type="submit"
+              onClick={(e) => changeHandle(e)}
             >
-            <input
-              className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-              type="password"
-              id="password"
-          
-            />
+              Sign In
+            </button> 
           </div>
-   
-        </div>
-        
-        <div className="mt-5">
-          <button
-            className="py-2 px-4 bg-custom-blue hover:bg-black focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-            type="submit"
-          
-          >
-            Sign In
-          </button>
-        </div>
-       
         </div>
         <br />
-
-          <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center justify-between mt-4">
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
-        <a className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
-            href="#"
-            >OR</a>
+          <a className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline" href="#">OR</a>
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
         </div>
         <br />
         <br />
-
         <div className="flex justify-center items-center">
           <div>
             <button
@@ -78,7 +116,7 @@ function Login() {
                 x="0px"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
+                  <path
                   d="M12,5c1.6167603,0,3.1012573,0.5535278,4.2863159,1.4740601l3.637146-3.4699707 C17.8087769,1.1399536,15.0406494,0,12,0C7.392395,0,3.3966675,2.5999146,1.3858032,6.4098511l4.0444336,3.1929321 C6.4099731,6.9193726,8.977478,5,12,5z"
                   fill="#F44336"
                 ></path>
@@ -149,7 +187,7 @@ function Login() {
                 x="0px"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
+                 <path
                   d="M25.565,9.785c-0.123,0.077-3.051,1.702-3.051,5.305c0.138,4.109,3.695,5.55,3.756,5.55 c-0.061,0.077-0.537,1.963-1.947,3.94C23.204,26.283,21.962,28,20.076,28c-1.794,0-2.438-1.135-4.508-1.135 c-2.223,0-2.852,1.135-4.554,1.135c-1.886,0-3.22-1.809-4.4-3.496c-1.533-2.208-2.836-5.673-2.882-9 c-0.031-1.763,0.307-3.496,1.165-4.968c1.211-2.055,3.373-3.45,5.734-3.496c1.809-0.061,3.419,1.242,4.523,1.242 c1.058,0,3.036-1.242,5.274-1.242C21.394,7.041,23.97,7.332,25.565,9.785z M15.001,6.688c-0.322-1.61,0.567-3.22,1.395-4.247 c1.058-1.242,2.729-2.085,4.17-2.085c0.092,1.61-0.491,3.189-1.533,4.339C18.098,5.937,16.488,6.872,15.001,6.688z"
                 ></path>
               </svg>
@@ -161,17 +199,20 @@ function Login() {
         <br />
         <div className="flex items-center justify-between mt-4">
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
-          <NavLink to="/register">          <a
-            className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
-            href="#"
-            >Not    have an account? Registeration</a
-          >
+          <NavLink to="/register">
+            <a
+              className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
+              href="#"
+            >
+              Not have an account? Registration
+            </a>
           </NavLink>
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
         </div>
       </div>
     </div>
-    </>
+   </>
+   
   )
 }
 

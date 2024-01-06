@@ -39,8 +39,18 @@ function Register() {
 
   const registration = (e) => {
      e.preventDefault()
-    dispatch(setRegistrationData(user))
-        
+
+    const BASE_URL = 'http://localhost:8000/api/register/';
+    const instance = axios.create({
+      baseURL:BASE_URL,
+    })
+    instance.post('',user)
+    .then(response => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
  
 
@@ -50,7 +60,7 @@ function Register() {
       <div className="max-w-md mx-auto">
         <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="font-semibold text-sm text-gray-600 pb-1 block"for="first_name">First Name</label>
+            <label className="font-semibold text-sm text-gray-600 pb-1 block"htmlFor="first_name">First Name</label>
             <input
               className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
               type="text"
@@ -62,7 +72,7 @@ function Register() {
           <div>
             <label
             className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="last_name"
+              htmlFor="last_name"
               >Last Name</label
             >
             <input
@@ -76,7 +86,7 @@ function Register() {
           <div>
             <label
             className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="username"
+              htmlFor="username"
               >Username</label
             >
             <input
@@ -90,7 +100,7 @@ function Register() {
           <div>
             <label
               className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="email"
+              htmlFor="email"
               >Eamil</label
               
             >
@@ -105,7 +115,7 @@ function Register() {
           <div>
             <label
               className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="number"
+              htmlFor="number"
               >Phone  number </label
             >
             <input
@@ -119,7 +129,7 @@ function Register() {
           <div>
             <label
               className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="location"
+              htmlFor="location"
               >Location</label
             >
             <input
@@ -133,7 +143,7 @@ function Register() {
           <div>
             <label
               className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="password"
+              htmlFor="password"
               >Password</label
             >
             <input
@@ -147,7 +157,7 @@ function Register() {
           <div>
             <label
               className="font-semibold text-sm text-gray-600 pb-1 block"
-              for="conform_password"
+              htmlFor="conform_password"
               >Conform Password</label
             >
             <input
@@ -280,4 +290,4 @@ function Register() {
   )
 }
 
-export default Register
+export default Register 
