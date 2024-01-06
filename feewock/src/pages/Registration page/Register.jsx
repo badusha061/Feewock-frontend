@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { setRegistrationData } from '../../actions/RegisterAction';
 import { useDispatch, useSelector } from 'react-redux';
-
+import './Register.css'
 
 
 function Register() {
@@ -15,7 +15,7 @@ function Register() {
     last_name:'',
     username:'',
     email:'',
-    number:'+91',
+    number:'',
     location:'',
     password:'',
     conform_password:'',
@@ -40,16 +40,13 @@ function Register() {
   const registration = (e) => {
      e.preventDefault()
     dispatch(setRegistrationData(user))
-    navigate('/register/otp')
-    
+        
   }
  
 
   return (
-    <div className="relative py-3 sm:max-w-xl sm:mx-auto ">
-    <div
-      className="relative px-4 py-10 bg-white mx-8 md:mx-0    shadow-lg  rounded-3xl sm:p-10"
-    >
+    <div className="relative py-3 sm:max-w-xl sm:mx-auto no-scrollbar  ">
+    <div className="relative px-4 py-10 bg-white mx-8 md:mx-0     shadow-lg  rounded-3xl sm:p-10">
       <div className="max-w-md mx-auto">
         <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
