@@ -11,14 +11,16 @@ import Otp from './pages/Registration page/Otp.jsx'
 import { Provider } from 'react-redux'
 import {store , persistor} from './store/configureStore.js'
 import { PersistGate } from 'redux-persist/integration/react'
+import AdminDashboard from './components/Admin/Dashboard/AdminDashboard.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<Layouts />} >
+    <Route  >
       <Route path='' element={<Homepage />} />
       <Route path='register/' element={<Register />} />
       <Route path='register/otp' element={<Otp />} />
       <Route path='login' element={<Login />} />
+      <Route path='dashboard' element={<AdminDashboard />} />
     </Route>
   )
     

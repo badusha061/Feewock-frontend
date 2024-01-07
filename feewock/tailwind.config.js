@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        'custom-blue':'#3E84A8'
+        'custom-blue':'#3E84A8',
+        'custom-voilate':'#551B8C',
       },
       spacing:{
         '40':'40px'
