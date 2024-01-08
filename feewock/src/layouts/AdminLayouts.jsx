@@ -4,11 +4,13 @@ import AdminSideBar from '../components/Admin/SideBar/AdminSideBar'
 
 function AdminLayouts({children}) {
   return (
-    <>
-    <AdminNavbar />
-            {children}
-    <AdminSideBar />
-    </>
+    <div className="flex h-screen">
+     <AdminSideBar />
+     <div className="flex flex-col w-full ">
+       <AdminNavbar />
+       <main>{children}</main>
+     </div>
+   </div>
   )
 }
 

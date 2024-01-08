@@ -27,7 +27,7 @@ function Navbar() {
         <img src={icon} alt="navbaricon"  className='w-[140px] h-[28]'/>
         <div className="justify-start items-center gap-10 flex">
           
-        <NavLink to="" className={({ isActive }) => isActive ? "active" : ""}>
+        <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer">Home</div>
           </NavLink>
 
@@ -35,7 +35,9 @@ function Navbar() {
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Service</div>
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Help</div>
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Contact</div>
+        <NavLink to='/employee/employeeregister' >
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Expert</div>
+        </NavLink>
 
 
         {token ? (

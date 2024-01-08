@@ -1,17 +1,11 @@
 import React,{useState} from 'react'
-import logo from './logo.png'
+import control from './control.png'
+import user from './User.png'
+import dashboard from './dashboard.png'
+import { NavLink } from 'react-router-dom'
+
 function AdminSideBar() {
     const [open, setOpen] = useState(true);
-    const Menus = [
-      { title: "Dashboard", src: "Chart_fill" },
-      { title: "Inbox", src: "Chat" },
-      { title: "Accounts", src: "User", gap: true },
-      { title: "Schedule ", src: "Calendar" },
-      { title: "Search", src: "Search" },
-      { title: "Analytics", src: "Chart" },
-      { title: "Files ", src: "Folder", gap: true },
-      { title: "Setting", src: "Setting" },
-    ];
   return (
     <div className="flex">
     <div
@@ -20,7 +14,7 @@ function AdminSideBar() {
       } bg-custom-voilate h-screen p-5  pt-8 relative duration-300`}
     >
       <img
-        src="./src/assets/control.png"
+        src= {control}
         className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
          border-2 rounded-full  ${!open && "rotate-180"}`}
         onClick={() => setOpen(!open)}
@@ -41,20 +35,41 @@ function AdminSideBar() {
         </h1>
       </div>
       <ul className="pt-6">
-        {Menus.map((Menu, index) => (
-          <li
-            key={index}
-            className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 
-            ${Menu.gap ? "mt-9" : "mt-2"} ${
-              index === 0 && "bg-light-white"
-            } `}
-          >
-            <img src={`./src/assets/${Menu.src}.png`} />
-            <span className={`${!open && "hidden"} origin-left duration-200`}>
-              {Menu.title}
+        <NavLink to="/admin/dashboard" >
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src={dashboard} alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+                Dashboard
             </span>
           </li>
-        ))}
+        </NavLink>
+
+        <NavLink to='/admin/usermanagement' >
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src={user} alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg`}>
+                User Management
+            </span>
+          </li>
+        </NavLink>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src={user} alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+                Employees Management
+            </span>
+          </li>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src='' alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+                Main Services
+            </span>
+          </li>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src='' alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+                Sub Service
+            </span>
+          </li>
       </ul>
     </div>
   </div>
