@@ -12,7 +12,7 @@ function Login() {
   const navigate = useNavigate()
 
   const [user , setUser] = useState({
-    username:'',
+    email:'',
     password:''
   })
   const [error , setError] = useState({
@@ -63,15 +63,15 @@ function Login() {
             <div>
               <label
                 className="font-semibold text-sm text-gray-600 pb-1 block"
-                htmlFor="username"
+                htmlFor="email"
                 >
-                Username
+                Email
               </label>
               <input
                 className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                type="text"
-                id="username"
-                value={user.username}
+                type="email"
+                id="email"
+                value={user.email}
                 onChange={changeInput}
               />
             </div>

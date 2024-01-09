@@ -3,7 +3,6 @@ import {SET_REGISTRATION_DATA, CLEAR_REGISTRATION_DATA} from '../actions/Registe
 const initialState = {
     first_name:'',
     last_name:'',
-    username:'',
     email:'',
     number:'',
     location:'',

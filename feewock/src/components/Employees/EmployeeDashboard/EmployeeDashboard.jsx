@@ -1,8 +1,12 @@
 import React from 'react'
+import EmployeeLoyouts from '../../../layouts/EmployeeLoyouts'
+
 
 function EmployeeDashboard() {
   return (
-    <div>EmployeeDashboard</div>
+    <EmployeeLoyouts>
+      <div>EmployeeDashboard</div>
+    </EmployeeLoyouts>
   )
 }
 

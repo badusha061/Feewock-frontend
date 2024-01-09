@@ -5,6 +5,7 @@ import EmployeesFooter from '../components/Employees/EmployeesFooter/EmployeesFo
 function EmployeeLoyouts({children}) {
   return (
     <>
+   
         <EmployeesNavbar />
             {children}
         <EmployeesFooter />

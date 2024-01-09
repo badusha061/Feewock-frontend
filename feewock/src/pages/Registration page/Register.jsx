@@ -14,12 +14,11 @@ function Register() {
   const [user , setUser] = useState({
     first_name:'',
     last_name:'',
-    username:'',
     email:'',
-    number:'',
+    phone_number:'',
     location:'',
-    password:'',
-    conform_password:'',
+    password1:'',
+    password2:'',
   })
 
   const [error , seError] = useState({
@@ -43,11 +42,13 @@ function Register() {
 
     const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const instance = axios.create({
-      baseURL:`${BASE_URL}/api/register/`,
+      baseURL:`${BASE_URL}/user/`,
     })
+    console.log(user);
     instance.post('',user)
     .then(response => {
-      console.log(response);
+      dispatch(setRegistrationData(response.data))
+      navigate('/register/otp')
     })
     .catch((error) => {
       console.log(error);
@@ -83,16 +84,7 @@ function Register() {
             onChange={handlechagnge}
           />
         </div>
-        <div>
-          <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="username">Username</label>
-          <input
-            className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            type="text"
-            id="username"
-            value={user.username}
-            onChange={handlechagnge}
-          />
-        </div>
+      
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="email">Email</label>
           <input
@@ -108,8 +100,8 @@ function Register() {
           <input
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="number"
-            id="number"
-            value={user.number}
+            id="phone_number"
+            value={user.phone_number}
             onChange={handlechagnge}
           />
         </div>
@@ -128,8 +120,8 @@ function Register() {
           <input
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="password"
-            id="password"
-            value={user.password}
+            id="password1"
+            value={user.password1}
             onChange={handlechagnge}
           />
         </div>
@@ -138,8 +130,8 @@ function Register() {
           <input
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="password"
-            id="conform_password"
-            value={user.conform_password}
+            id="password2"
+            value={user.password2}
             onChange={handlechagnge}
           />
         </div>
