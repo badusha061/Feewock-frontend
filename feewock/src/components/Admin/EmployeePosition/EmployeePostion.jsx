@@ -1,14 +1,12 @@
 import React from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 
-function AdminDashboard() {
+function EmployeePostion() {
   return (
-    <>
     <AdminLayouts>
-      <h1> hello  world </h1>
+        
     </AdminLayouts>
-    </>
   )
 }
 
-export default AdminDashboard
+export default EmployeePostion

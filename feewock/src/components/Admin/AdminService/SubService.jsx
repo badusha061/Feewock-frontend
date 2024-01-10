@@ -1,14 +1,12 @@
 import React from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 
-function AdminDashboard() {
+function SubService() {
   return (
-    <>
     <AdminLayouts>
-      <h1> hello  world </h1>
+         <div>hello</div>
     </AdminLayouts>
-    </>
   )
 }
 
-export default AdminDashboard
+export default SubService

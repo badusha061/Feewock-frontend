@@ -15,7 +15,7 @@ function AdminNavbar() {
 
   return (
     <>
-         <div className='shadow-md w-full fixed top-0 left-0 md:left-72'>
+         {/* <div className='shadow-md w-full fixed top-0 left-0 md:left-72  '>
            <div className='md:flex items-center justify-between bg-white py-4 md:px-10 px-7'>
             <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
                 <BookOpenIcon className='w-7 h-7 text-blue-600'/>
@@ -32,7 +32,7 @@ function AdminNavbar() {
                 <button className='btn bg-blue-600 text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>Get Started</button>
             </ul>
            </div>
-        </div>
+        </div> */}
        
     </>
   )

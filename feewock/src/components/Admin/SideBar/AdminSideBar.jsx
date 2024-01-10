@@ -11,7 +11,7 @@ function AdminSideBar() {
     <div
       className={` ${
         open ? "w-72" : "w-20 "
-      } bg-custom-voilate h-screen p-5  pt-8 relative duration-300`}
+      } bg-custom-voilate h-screen p-5  pt-8 relative duration-300 `}
     >
       <img
         src= {control}
@@ -43,7 +43,7 @@ function AdminSideBar() {
             </span>
           </li>
         </NavLink>
-
+          <br />
         <NavLink to='/admin/usermanagement' >
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={user} alt='logo' />
@@ -52,24 +52,43 @@ function AdminSideBar() {
             </span>
           </li>
         </NavLink>
+          <br />
+        <NavLink to='/admin/employeemanagement'>
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={user} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Employees Management
             </span>
           </li>
+          </NavLink>
+          <br />
+          <NavLink to="/admin/mainservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src='' alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Main Services
             </span>
           </li>
+          </NavLink>
+          <br />
+          <NavLink to="/admin/subservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src='' alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Sub Service
             </span>
           </li>
+          </NavLink>
+          <br />
+          <NavLink to="/admin/subservice">
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src='' alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+                Employees Positions
+            </span>
+          </li>
+          </NavLink>
+          
       </ul>
     </div>
   </div>

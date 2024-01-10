@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component'
 import axios from 'axios'
 
 function UserManagement() {
+  
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const handleBlock = async ({id}) => {
     const instance = axios.create({
@@ -49,20 +50,21 @@ function UserManagement() {
     }
   ]
 const coloumn = [
+
     {
       name:'ID',
       selector : row => row.id,
       sortable : true
     },
     {
-      name:"FullName",
-      selector : row => row.first_name + row.last_name ,
+      name:"First Name",
+      selector : row => row.first_name ,
       sortable:true
 
     },
     {
-      name:"Username",
-      selector : row => row.username
+      name:"Last Name",
+      selector : row => row.last_name
 
     },
     {
@@ -72,7 +74,7 @@ const coloumn = [
     },
     {
       name:"PhoneNumber",
-      selector : row => row.number
+      selector : row => row.phone_number
 
     },
     {
@@ -101,6 +103,7 @@ const coloumn = [
     })
     instance.get('')
     .then((response) => {
+      console.log(response.data);
       setRecords(response.data)
     })
     .catch((error) => {
