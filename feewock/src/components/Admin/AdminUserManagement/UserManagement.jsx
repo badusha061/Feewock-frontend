@@ -2,9 +2,16 @@ import React, { useEffect, useState } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import { Fragment, useRef } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import ConfirmationModal from '../../Conformation/ConfirmationModal'
 
 function UserManagement() {
-  
+  const [open, setOpen] = useState(true)
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const cancelButtonRef = useRef(null)
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const handleBlock = async ({id}) => {
     const instance = axios.create({
@@ -112,6 +119,12 @@ const coloumn = [
   },[])
   return (
     <>
+
+
+
+
+
+
     <AdminLayouts>
       <DataTable
       columns ={coloumn}
@@ -142,6 +155,8 @@ const coloumn = [
       >
         
       </DataTable>
+     
+
     </AdminLayouts>
     </>
   )

@@ -1,13 +1,12 @@
 import {Routes ,  Route } from "react-router-dom";
 import AdminDashboard from "../components/Admin/Dashboard/AdminDashboard";
 import UserManagement from "../components/Admin/AdminUserManagement/UserManagement";
-import AdminLayouts from "../layouts/AdminLayouts";
 import EmployeeManagement from '../components/Admin/EmployeeManagement/EmployeeManagement'
 import MainService from "../components/Admin/AdminService/MainService";
 import SubService from "../components/Admin/AdminService/SubService";
 import EmployeePostion from "../components/Admin/EmployeePosition/EmployeePostion";
-import AdminNavbar from "../components/Admin/Navbar/AdminNavbar";
-
+import EditMainService from "../components/Admin/AdminService/EditMainService";
+import EmployeeEditPosition from "../components/Admin/EmployeePosition/EmployeeEditPosition";
 
 export default function AdminRoutes() {
     return (
@@ -16,9 +15,13 @@ export default function AdminRoutes() {
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/usermanagement" element={<UserManagement />} />
             <Route path="/employeemanagement" element={<EmployeeManagement />} />
-            <Route path="/mainservice" element={<MainService />} />
+            <Route path="mainservice" element={<MainService />} >
+                <Route path="editmainservice/:id" element={<EditMainService />} />
+            </Route>
             <Route path="/subservice" element={<SubService />} />
+            
             <Route path="/position" element={<EmployeePostion />} />
+            <Route path="/position/:id/edit" element={<EmployeeEditPosition />} />  
             
         </Routes>
     )

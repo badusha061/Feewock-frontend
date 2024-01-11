@@ -80,7 +80,7 @@ function AdminSideBar() {
           </li>
           </NavLink>
           <br />
-          <NavLink to="/admin/subservice">
+          <NavLink to="/admin/position">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src='' alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
