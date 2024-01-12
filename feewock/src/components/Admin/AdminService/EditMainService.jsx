@@ -1,38 +1,91 @@
-import React from 'react'
+import React, { useState } from 'react'
 import  Modal from 'react-modal'
 import './EditMainService.css';
 import AdminLayouts from '../../../layouts/AdminLayouts';
+import axios from 'axios';
 
-function EditMainService() {
+function EditMainService({open , onClose , selectdata}) {
+    const [data , setData] = useState({
+        name:''
+    })
+    if(!open) return null
+
+        const handleChange = (e) => {
+            setData((prevAdd) =>({
+                ...prevAdd,
+                name:e.target.value
+            }))
+        }
+
+        const handleSubmit = () => {
+            let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
+            try{
+                const instance  =  axios.create({
+                    baseURL:`${BASE_URL}/service/updatemainservice/${selectdata}/ `
+                   })
+                   instance.put('',data)
+                   .then((response) => {
+                    console.log(response);
+                    onClose()
+                   })
+                   .catch((error) => {
+                    console.log(error);
+                   })
+            }catch(error){
+                console.log('the error is the ',error);
+            }
+        }
   return (
-    <AdminLayouts>
-
-    <div className="modalBackground">
-      <div className="modalContainer">
-        <div className="titleCloseBtn">
-          <button>
-            X
-          </button>
-        </div>
-        <div className="title">
-          <h1>Are You Sure You Want to Continue?</h1>
-        </div>
-        <div className="input-container">
-        <input required="" placeholder="Service Name"  type="text" />
-        <button className="invite-btn" type="button">
-            Edit
-        </button>
+         <>
+          <div
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">
+                    EDIT MAIN SERVICE
+                  </h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                <div className="relative p-6 flex-auto">
+                
+                <div className="input-container">
+        <input required="" placeholder="Postion Name"  onChange={handleChange} type="text" />
+       
         
         </div>
-        <div className="footer">
-          <button id="cancelBtn">
-            Cancel
-          </button>
-          <button>Continue</button>
-        </div>
-      </div>
-    </div>
-</AdminLayouts>
+
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={onClose}
+                  >
+                    Close
+                  </button>
+                  <button
+                  onClick={handleSubmit}
+                    className="bg-custom-voilate text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+   
   )
 }
 

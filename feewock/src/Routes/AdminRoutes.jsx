@@ -15,11 +15,9 @@ export default function AdminRoutes() {
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/usermanagement" element={<UserManagement />} />
             <Route path="/employeemanagement" element={<EmployeeManagement />} />
-            <Route path="mainservice" element={<MainService />} >
-                <Route path="editmainservice/:id" element={<EditMainService />} />
-            </Route>
+            <Route path="mainservice" element={<MainService />} />
+            <Route path="/mainservice/:id/edit" element={<EditMainService />} />
             <Route path="/subservice" element={<SubService />} />
-            
             <Route path="/position" element={<EmployeePostion />} />
             <Route path="/position/:id/edit" element={<EmployeeEditPosition />} />  
             

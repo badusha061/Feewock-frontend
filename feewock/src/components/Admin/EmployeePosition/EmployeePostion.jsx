@@ -17,7 +17,6 @@ function EmployeePostion() {
     })
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const [search , setSearch] = useState('')
-    const navigate = useNavigate()
 
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
@@ -8,6 +8,7 @@ function SubService() {
   const [data , setData] = useState([])
   const [search , setSearch] = useState('')
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -27,7 +28,7 @@ function SubService() {
         }
     }
     fetchdata();
-},[BASE_URL])
+},[BASE_URL,reducer])
 
 
 const handleDelete = ({id}) => {
@@ -37,7 +38,7 @@ const handleDelete = ({id}) => {
          })
          instance.delete('')
          .then((response) => {
-          console.log(response);
+          forceUpdate()
          })
          .catch((error) => {
           console.log(error);

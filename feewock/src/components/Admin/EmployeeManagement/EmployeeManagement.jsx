@@ -1,8 +1,11 @@
 import React from 'react'
+import AdminLayouts from '../../../layouts/AdminLayouts'
 
 function EmployeeManagement() {
   return (
-    <div>EmployeeManagement</div>
+    <AdminLayouts>
+        <h1>Employee Management</h1>
+    </AdminLayouts>
   )
 }
 

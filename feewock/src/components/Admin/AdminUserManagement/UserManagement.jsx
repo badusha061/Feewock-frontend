@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
@@ -12,6 +12,8 @@ function UserManagement() {
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const cancelButtonRef = useRef(null)
+  const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
+  
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const handleBlock = async ({id}) => {
     const instance = axios.create({
@@ -20,7 +22,7 @@ function UserManagement() {
     instance.put('')
     .then((response) => {
       console.log(response);
-      window.location.reload();
+      forceUpdate()
     })
     .catch((error) => {
       console.log(error);
@@ -33,7 +35,7 @@ function UserManagement() {
     instance.put('')
     .then((response) => {
       console.log(response);
-      window.location.reload()
+      forceUpdate()
     })
     .catch((error) => {
       console.log(error);
@@ -116,7 +118,7 @@ const coloumn = [
     .catch((error) => {
       console.log(error);
     })
-  },[])
+  },[reducer , BASE_URL])
   return (
     <>
 

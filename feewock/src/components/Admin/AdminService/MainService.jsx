@@ -4,8 +4,12 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import './MainService.css'
 import {  useNavigate } from 'react-router-dom';
+import EditMainService from './EditMainService';
 
 function MainService() {
+    const [open , setOpen] = useState(false)
+    const [selectdata , setSelectdata] = useState([])
+
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const navigate = useNavigate()
     const [add , setAdd] = useState({
@@ -15,7 +19,7 @@ function MainService() {
     console.log(search);
     const [data , setData] = useState([]);
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-    useEffect(() => {
+    useEffect(() => {   
         const fetchData = async () => {
             try{
                 const instance  =  axios.create({
@@ -52,7 +56,6 @@ function MainService() {
                .then((response) => {
                 console.log(response);
                 forceUpdate()
-                
                })
                .catch((error) => {
                 console.log(error);
@@ -61,9 +64,10 @@ function MainService() {
             console.log('the error is the ',error);
         }
     }
-    const handleEdit = ({id}) => {
-        navigate(`editmainservice/${id}`)
-    }
+    const handleEdit = (row) => {
+        setOpen(true)
+        setSelectdata(row.id)
+        }
     const conditionalRowStyles  = [
         {
           when: row => row.is_active,
@@ -132,6 +136,11 @@ function MainService() {
         }
     }
 
+    const handleClose = () => {
+        setOpen(false)
+        forceUpdate()
+    }
+
   return (
     <AdminLayouts>
 
@@ -188,9 +197,8 @@ function MainService() {
           }}
 
           >
-
           </DataTable>
-
+            <EditMainService open={open} selectdata={selectdata} onClose={handleClose} />
     </AdminLayouts>
   )
 }
