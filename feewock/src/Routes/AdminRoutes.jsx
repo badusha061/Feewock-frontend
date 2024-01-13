@@ -7,6 +7,7 @@ import SubService from "../components/Admin/AdminService/SubService";
 import EmployeePostion from "../components/Admin/EmployeePosition/EmployeePostion";
 import EditMainService from "../components/Admin/AdminService/EditMainService";
 import EmployeeEditPosition from "../components/Admin/EmployeePosition/EmployeeEditPosition";
+import AddSubService from "../components/Admin/AdminService/AddSubService";
 
 export default function AdminRoutes() {
     return (

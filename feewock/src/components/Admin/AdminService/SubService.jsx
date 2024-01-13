@@ -3,10 +3,15 @@ import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { useState , useEffect , useMemo } from 'react'
+import AddSubService from './AddSubService';
+
 
 function SubService() {
+  const [open , setOpen] = useState(false)
   const [data , setData] = useState([])
   const [search , setSearch] = useState('')
+  const [selectid , setSelectid] = useState('')
+
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
 
@@ -90,7 +95,7 @@ const handleDelete = ({id}) => {
     {
       name:"Service Image",
       selector : (row) => row.Image,
-      cell: (row) => <img src={row.Image} alt="Service Image" style={{ width: '50px', height: '50px' }} />,
+      cell: (row) => <img src={row.Image.urls} alt='service image' style={{ width: '50px', height: '50px' }} />,
 
     },
     {
@@ -111,10 +116,41 @@ const handleDelete = ({id}) => {
    },[search])
   
    const renderData = searchdata.length > 0 ? searchdata : filteredData;
+
+   const handleAdd = () => {
+      setOpen(true)
+   }
+
+   const handClose = () => {
+    setOpen(false)
+   }
   
   return (
     <AdminLayouts>
+      <div className=' flex justify-between '>
 
+      <button
+      onClick={handleAdd}
+        title="Add New"
+        className="group cursor-pointer outline-none hover:rotate-90 duration-300">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="50px"
+            height="50px"
+            viewBox="0 0 24 24"
+            className="stroke-blue-400 fill-none group-hover:fill-custom-voilate group-active:stroke-blue-200 group-active:fill-black group-active:duration-0 duration-300"
+
+          >
+            <path
+              d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+              stroke-width="1.5"
+            ></path>
+            <path d="M8 12H16" stroke-width="1.5"></path>
+            <path d="M12 16V8" stroke-width="1.5"></path>
+          </svg>
+    </button>
+
+  
         <div className="flex items-center"> 
                 <div className="rounded-lg bg-gray-200 p-5">
                     <div className="flex">
@@ -128,7 +164,8 @@ const handleDelete = ({id}) => {
                     </div>
                 </div>
             </div>
-
+      </div>
+       
   <DataTable
           columns={columns}
           data={renderData}
@@ -159,6 +196,7 @@ const handleDelete = ({id}) => {
           >
 
           </DataTable>
+      <AddSubService open={open} />
 
     </AdminLayouts>
   )

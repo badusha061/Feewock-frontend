@@ -123,11 +123,10 @@ function EmployeeRegister() {
         <div>
         <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="postion">Positions</label>
           <select id="countries" className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            {data.map((data , index ) =>(
+            {data.map((data , index ) =>{
               <option key={index} value={data.id} selected>{data.name}</option>
 
-            ))}
-         
+            })}
           </select>
         </div>
 
