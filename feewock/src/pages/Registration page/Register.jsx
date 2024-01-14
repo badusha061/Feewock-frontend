@@ -16,6 +16,7 @@ function Register() {
     last_name:'',
     email:'',
     phone_number:'',
+    role:3,
     location:'',
     password1:'',
     password2:'',

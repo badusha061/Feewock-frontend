@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { setToken } from '../../actions/TokenAction'
 import Layouts from '../../layouts/Layouts'
 
+
 function Login() {
   const dispatch = useDispatch()
 
@@ -33,16 +34,18 @@ function Login() {
     })  
     instance.post('',user)
     .then((respose) => {
-      console.log(respose.data);
-      if(respose.data.is_regular_user === true && respose.data.is_active === true){
+      console.log(respose.data.role);
+      if(respose.data.role === 3 && respose.data.is_active === true){
         localStorage.setItem('token',respose.data)
         localStorage.setItem('userDetails',JSON.stringify(respose.data));
         dispatch(setToken(respose.data.access))
         navigate('/')
       }else if ( respose.data.is_admin === true) {
         navigate('/dashboard')
+      } else if (respose.data.role === 2 && respose.data.is_active === true) {
+        navigate('/employee/employeedashboard')
       } else {
-        console.log('user account is blocked');
+        console.log('user account blocked');
       }
       
       
