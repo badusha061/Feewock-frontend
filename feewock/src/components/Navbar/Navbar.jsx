@@ -12,7 +12,7 @@ function Navbar() {
   useEffect(() => {
     const tokenvalue = localStorage.getItem('token')
     setToken(tokenvalue)
-  },[t])
+  },[token])
 
   const handleLogout = () => {
     localStorage.removeItem('token');

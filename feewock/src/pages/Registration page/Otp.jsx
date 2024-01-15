@@ -1,12 +1,16 @@
 import React, { useEffect, useState , useRef} from 'react'
 import './Otp.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { CLEAR_REGISTRATION_DATA } from '../../actions/RegisterAction';
+import Swal from 'sweetalert2';
+
+
 
 function Otp() {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [otp , setOtp] = useState(false)
   const details = useSelector(state => state.registration);
   const [verify , setVerify] = useState({
     otp1:'',
@@ -16,26 +20,59 @@ function Otp() {
 
   })
   const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-  useEffect(() => {
-    if(!otp){
-      const instance = axios.create({
-        baseURL:`${BASE_URL}/user/${details.id}/generate_otp/`
-      }) 
-      instance.patch('')
-      .then((response) => {
-        console.log(response);
-        setOtp(true)
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    }
- 
-  },[details.id , otp])
 
-  const handleOtp = () => {
-    setOtp(false)
+  const handleGenerate = (e) => {
+    e.preventDefault()
+    const instance = axios.create({
+      baseURL:`${BASE_URL}/user/${employeedetails.id}/generate_otp/`
+    })
+    instance.patch('')
+    .then((response)=>{
+      if(response.data === "max otp try reached , try after an hour"){
+        console.log('time limited exceed');
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+          
+        });
+        
+        Toast.fire({
+          icon: 'error',
+          title: 'max otp try reached , try after an hour',
+        });
+      return false 
+      }else{
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Successfully Generate new OTP"
+        });
+      } 
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
+
+
+ 
 
   const handleChange = (e) => {
     setVerify({...verify,[e.target.id] : e.target.value})
@@ -51,15 +88,33 @@ function Otp() {
     })
     instance.patch('',formattedData)
     .then((respose) => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Successfully Verified Your Account"
+      });
+
+      dispatch(CLEAR_REGISTRATION_DATA())
       console.log(respose.data);
       navigate('/login')
-
     })
     .catch((error) => {
       console.log(error);
     })
 
     }
+
+
 
         return (
     <>
@@ -95,7 +150,7 @@ function Otp() {
           <p className="resendNote">Didn't receive the code? 
           <button
            className="resendBtn"
-           onClick={handleOtp}
+          onClick={handleGenerate} 
            >Resend Code</button></p>
       </form>
       </div> 

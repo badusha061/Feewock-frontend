@@ -2,10 +2,12 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import { setRegistrationData } from '../../actions/RegisterAction';
+import {  setRegistrationData } from '../../actions/RegisterAction';
 import { useDispatch, useSelector } from 'react-redux';
 import './Register.css'
 import Layouts from '../../layouts/Layouts';
+import Swal from 'sweetalert2';
+
 
 
 function Register() {
@@ -22,16 +24,9 @@ function Register() {
     password2:'',
   })
 
-  const [error , seError] = useState({
-    first_name:'',
-    last_name:'',
-    username:'',
-    email:'',
-    number:'',
-    location:'',
-    password:'',
-    conform_password:'',
-  })
+
+
+  const [errors , setErrors] = useState({})
 
   const handlechagnge = (e) => {
     setUser({...user,[e.target.id] : e.target.value});
@@ -41,28 +36,116 @@ function Register() {
   const registration = (e) => {
      e.preventDefault()
 
-    const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-    const instance = axios.create({
-      baseURL:`${BASE_URL}/user/`,
-    })
-    console.log(user);
-    instance.post('',user)
-    .then(response => {
-      dispatch(setRegistrationData(response.data))
-      navigate('/register/otp')
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+    const validateError = {}
+
+    if(!user.first_name.trim()){
+        validateError.first_name = "First Name is Not Empty"
+    }
+    if(!user.last_name.trim()){
+      validateError.last_name = "Last Name is Not Empty"
+    }
+    if(!user.email.trim()){
+      validateError.email = "Email is Not Empty"
+    } else if(!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(user.email)){
+      validateError.email = "Email Should be Correct"
+    }
+
+    if(!user.phone_number.trim()){
+      validateError.phone_number = "Phone not Empty"
+    }else if (user.phone_number.length != 10){
+      validateError.phone_number = "Phone Number Should Contain 10 Digits"
+    }
+
+    if(!user.location.trim()){
+      validateError.location = "Locaion Cannot be Empty"
+    }
+
+    if(!user.password1.trim()){
+      validateError.password1 = "Password Cannot be Empty"
+    }else if (!user.password2.trim()){
+      validateError.password2 =  "Conform Password Cannot be Empty"
+    }else if (user.password1 != user.password2){
+      validateError.password1 = "Password Do not Match"
+    }else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(user.password1)){
+      validateError.password1 = "Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"
+    }
+    setErrors(validateError)
+
+    if(Object.keys(validateError).length === 0){
+      const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+      const instance = axios.create({
+        baseURL:`${BASE_URL}/user`,
+      })
+      console.log(user);
+      instance.post('',user)
+      .then(response => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Successfully Created Account"
+        });
+        dispatch(setRegistrationData(response.data))
+        navigate('/register/otp')
+      })
+      .catch((error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+          
+        });
+        
+        Toast.fire({
+          icon: 'error',
+          title: 'Email Or Phone number is already taken Please Change',
+        });
+      })
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        
+      });
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'All Condition Should be Satisfied',
+      });
+    }
+   
   }
  
 
   return (
 
     <Layouts>
-
 <div className="relative py-3 sm:max-w-xl sm:mx-auto no-scrollbar">
   <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-lg rounded-3xl sm:p-10">
+  <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl dark:text-black">User Registration</h1>
+
     <div className="max-w-md mx-auto">
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
@@ -74,7 +157,10 @@ function Register() {
             value={user.first_name}
             onChange={handlechagnge}
           />
+          {errors.first_name && <span className=' text-red-700 font-bold ' > {errors.first_name} </span>}
         </div>
+
+
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="last_name">Last Name</label>
           <input
@@ -84,6 +170,7 @@ function Register() {
             value={user.last_name}
             onChange={handlechagnge}
           />
+          {errors.last_name && <span className=' text-red-700 font-bold ' > {errors.last_name} </span>}
         </div>
       
         <div>
@@ -95,6 +182,8 @@ function Register() {
             value={user.email}
             onChange={handlechagnge}
           />
+          {errors.email && <span className=' text-red-700 font-bold ' > {errors.email} </span>}
+
         </div>
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="number">Phone number</label>
@@ -105,6 +194,8 @@ function Register() {
             value={user.phone_number}
             onChange={handlechagnge}
           />
+          {errors.phone_number && <span className=' text-red-700 font-bold ' > {errors.phone_number} </span>}
+
         </div>
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="location">Location</label>
@@ -115,6 +206,8 @@ function Register() {
             value={user.location}
             onChange={handlechagnge}
           />
+          {errors.location && <span className=' text-red-700 font-bold ' > {errors.location} </span>}
+
         </div>
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="password">Password</label>
@@ -125,6 +218,8 @@ function Register() {
             value={user.password1}
             onChange={handlechagnge}
           />
+          {errors.password1 && <span className=' text-red-700 font-bold ' > {errors.password1} </span>}
+
         </div>
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="conform_password">Confirm Password</label>
@@ -135,6 +230,8 @@ function Register() {
             value={user.password2}
             onChange={handlechagnge}
           />
+          {errors.password2 && <span className=' text-red-700 font-bold ' > {errors.password2} </span>}
+
         </div>
       </div>
       <div className="mt-5">
@@ -154,6 +251,18 @@ function Register() {
             href="#"
           >
             have an account? Log in
+          </a>
+        </NavLink>
+        <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
+      </div>
+      <div className="flex items-center justify-between mt-4">
+        <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
+        <NavLink to="/employee/employeeregister">
+          <a
+            className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
+            href="#"
+          >
+            Are you searching for job? 
           </a>
         </NavLink>
         <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>

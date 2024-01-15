@@ -5,9 +5,11 @@ import { useDispatch } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { setToken } from '../../actions/TokenAction'
 import Layouts from '../../layouts/Layouts'
+import Swal from 'sweetalert2';
 
 
 function Login() {
+  const [errors , setErrors] = useState({})
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
@@ -16,43 +18,187 @@ function Login() {
     email:'',
     password:''
   })
-  const [error , setError] = useState({
-    username:'',
-    password:''
-  })
+
 
   const changeInput = (e) => {
     setUser({...user,[e.target.id]: e.target.value})
   }
 
   const changeHandle = (e) => {
-    e.preventDefault();
-    const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-    console.log(BASE_URL);
-    const instance = axios.create({
-      baseURL:`${BASE_URL}/api/token`,
-    })  
-    instance.post('',user)
-    .then((respose) => {
-      console.log(respose.data.role);
-      if(respose.data.role === 3 && respose.data.is_active === true){
-        localStorage.setItem('token',respose.data)
-        localStorage.setItem('userDetails',JSON.stringify(respose.data));
-        dispatch(setToken(respose.data.access))
-        navigate('/')
-      }else if ( respose.data.is_admin === true) {
-        navigate('/dashboard')
-      } else if (respose.data.role === 2 && respose.data.is_active === true) {
-        navigate('/employee/employeedashboard')
-      } else {
-        console.log('user account blocked');
-      }
+
+    const validateError = {}
+     
+    if(!user.email.trim()){
+      validateError.email = "Email Cannot be Empty"
+    
+    }else if(!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(user.email)){
+      validateError.email = "Email Must Be Correct"
+    }
+
+    if (!user.password.trim()){
+      validateError.password = "Password Cannot be Empty"
+    }
+    // }else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(user.password)){
+    //   validateError.password = "Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"
+    // }
+    setErrors(validateError)
+    if(Object.keys(validateError).length === 0){
+      e.preventDefault();
+      const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+      console.log(BASE_URL);
+      const instance = axios.create({
+        baseURL:`${BASE_URL}/api/token`,
+      })  
+      instance.post('',user)
+      .then((respose) => {
+        console.log(respose.data.role);
+        if(respose.data.role === 3){
+          if (respose.data.is_active === true){
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Successfully Login User"
+            });
+            localStorage.setItem('token',respose.data)
+            localStorage.setItem('userDetails',JSON.stringify(respose.data));
+            dispatch(setToken(respose.data.access))
+            navigate('/')
+          }else{
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+              
+            });
+            
+            Toast.fire({
+              icon: 'error',
+              title: 'Your Account Has Been Blocked',
+            });
+          }
+        }else if ( respose.data.is_admin === true) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Successfully Login Admin"
+          });
+          localStorage.setItem('token',respose.data)
+          dispatch(setToken(respose.data.access))
+          navigate('/admin/dashboard')
+        } else if (respose.data.role === 2 ) {
+          if(respose.data.is_active === true){
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Successfully Login Employee"
+            });
+            localStorage.setItem('token',respose.data)
+            localStorage.setItem('userDetails',JSON.stringify(respose.data));
+            dispatch(setToken(respose.data.access))
+            navigate('/employee/employeedashboard')
+          }else {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+              
+            });
+            
+            Toast.fire({
+              icon: 'error',
+              title: 'Your Account Has Been Blocked',
+            });
+            console.log('Employee Account is Blocked');
+          }
+          
+        } else {
+             const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+              
+            });
+            
+            Toast.fire({
+              icon: 'error',
+              title: 'Invalid Credintail',
+            });
+        }
+        
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        
+      });
       
-      
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+      Toast.fire({
+        icon: 'error',
+        title: 'All Condition Should be Satisfied',
+      });
+    }
+
+ 
 
   }
   return (
@@ -61,6 +207,7 @@ function Login() {
 
     <div className="relative py-3 sm:max-w-xl sm:mx-auto ">
       <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-lg rounded-3xl sm:p-10">
+      <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl dark:text-black">Login Form</h1>
         <div className="max-w-md mx-auto">
           <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
@@ -77,6 +224,7 @@ function Login() {
                 value={user.email}
                 onChange={changeInput}
               />
+          {errors.email && <span className=' text-red-700 font-bold ' > {errors.email} </span>}
             </div>
             <div>
               <label
@@ -92,6 +240,7 @@ function Login() {
                 value={user.password}
                 onChange={changeInput}
                 />
+            {errors.password && <span className=' text-red-700 font-bold ' > {errors.password} </span>}
             </div>
           </div>
           <div className="mt-5">

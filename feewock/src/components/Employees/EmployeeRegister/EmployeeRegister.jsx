@@ -1,13 +1,21 @@
 import axios from 'axios'
 import React, { useEffect, useReducer, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { employee_setRegistrationData } from '../../../actions/EmployeeRegister';
+import Swal from 'sweetalert2';
+
 
 const animatedComponents = makeAnimated();
 
-
+  
 function EmployeeRegister() {
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+
   const [employee , setEmployee] = useState({
     username:'',
     email:'',
@@ -19,15 +27,15 @@ function EmployeeRegister() {
     dob:'',
     type_of_work:'',
     location:'',
-    position:[20],
+    position:[],
     address:'',
     adhar_number:'',
     password1:'',
     password2:'',
   })
 
-  const [arr , setArr] = useState([])
-
+  const [errors , setErrors] = useState({})
+  
   const [data , setData] = useState([]);
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -57,20 +65,149 @@ const options = data.map(item => ({
   label:item.name
 }));
 
+const handleOption = (selections) => {
+  const selectid = selections.map((options) => options.value)
+  setEmployee({
+    ...employee,
+    position: selectid,
+  });
+}
+
 
 const handlClick = (e) => {
   e.preventDefault()
-  const instance = axios.create({
-    baseURL:`${BASE_URL}/employee/`
-  })
-  console.log(employee);
-  instance.post('',employee)
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.log(error.config);
-  })
+
+  const validateError = {}
+  if(!employee.username.trim()){
+    validateError.username = "Username Not be Empty"
+  }
+  if(!employee.email.trim()){
+    validateError.email = "Email Not be Empty"
+  }else if (!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(employee.email)){
+    validateError.email = "Email should be Corract"
+  }
+  if(!employee.phone_number.trim()){
+    validateError.phone_number = "Phone Number Cannot be Empty"
+  }else if (employee.phone_number.length != 10){
+    validateError.phone_number = "Phone  Number Should Contain 10 Digits"
+  }else if (!/^[0-9]+$/.test(employee.phone_number)){
+    validateError.phone_number = "Phone Number must contain only numeric characters"
+  }
+  if(!employee.city.trim()){
+    validateError.city = "City Cannot be Empty"
+  }
+  if(!employee.state.trim()){
+    validateError.state = "State Cannot be Empty"
+  }
+  if(!employee.gender.trim()){
+    validateError.gender = "Gender Cannot be Empty"
+  }
+  const current = new Date()
+  const inputAge = new Date(employee.dob)
+  const age = current.getFullYear() - inputAge.getFullYear()
+  if(!employee.dob.trim){
+    validateError.dob = "Date Of Birth Cannot be Empty"
+  }else if (age < 18){
+    validateError.gender = "Age must be at least 18 years old."
+  }
+  if(!employee.type_of_work.trim()){
+    validateError.type_of_work = "Work Types Canot be Empty"
+  }
+  if (!employee.location.trim()){
+    validateError.location = "Location Cannot be Empty"
+  }
+  if(employee.position.length === 0){
+    validateError.position = "Please Take Any Position"
+  }
+  if(!employee.address.trim()){
+    validateError.address = "Address Cannot be Empty"
+  }
+  if(!employee.adhar_number.trim()){
+    validateError.adhar_number = "Adhar Number Cannot Empty"
+  }else if(employee.adhar_number.length != 12){
+    validateError.adhar_number = "Adhar Card Number is 12 digits"
+  }else if (!/^[0-9]+$/.test(employee.adhar_number)){
+    validateError.adhar_number = "Adhar Car Number must contain only numeric characters"
+  }else if (!/^[2-9][0-9]*$/.test(employee.adhar_number)){
+    validateError.adhar_number = "Adhar number cannot start with 0 or 1. "
+  }
+  if(!employee.password1.trim){
+    validateError.password1 = "Password Cannot be Empty"
+  }
+  if (!employee.password2.trim){
+    validateError.password2 = "Canform password Cannot be Empty"
+  }else if (employee.password1 != employee.password2){
+    validateError.password1 = "Password Cannot be Match"
+  }else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(employee.password1)){
+    validateError.password1 = "Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"
+  }
+
+  setErrors(validateError)
+
+  if(Object.keys(validateError).length === 0){
+    const instance = axios.create({
+      baseURL:`${BASE_URL}/employee/`
+    })
+    console.log(employee);
+    instance.post('',employee)
+    .then((response) => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Successfully Created Account"
+      });
+      dispatch(employee_setRegistrationData(response.data))
+      navigate('/employeeregister/otp')
+    })
+    .catch((error) => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        
+      });
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Phone number or Email is already taken please enter Another',
+      });
+    })
+  }else{
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+      
+    });
+    
+    Toast.fire({
+      icon: 'error',
+      title: 'All Condition Should be Satisfied',
+    });
+  }
+ 
 }
  
   return (
@@ -88,6 +225,8 @@ const handlClick = (e) => {
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="text"
             id="username" />
+          {errors.username && <span className=' text-red-700 font-bold ' > {errors.username} </span>}
+
         </div>
     
         <div>
@@ -100,6 +239,8 @@ const handlClick = (e) => {
             id="email"
             
           />
+          {errors.email && <span className=' text-red-700 font-bold ' > {errors.email} </span>}
+
         </div>  
 
         <div>
@@ -111,6 +252,8 @@ const handlClick = (e) => {
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="phone_number"
             id="phone_number" />
+          {errors.phone_number && <span className=' text-red-700 font-bold ' > {errors.phone_number} </span>}
+
         </div>
 
         <div>
@@ -122,6 +265,8 @@ const handlClick = (e) => {
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="state"
             id="state" />
+          {errors.state && <span className=' text-red-700 font-bold ' > {errors.state} </span>}
+
         </div>
 
         <div>
@@ -133,6 +278,8 @@ const handlClick = (e) => {
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="city"
             id="city" />
+          {errors.city && <span className=' text-red-700 font-bold ' > {errors.city} </span>}
+
         </div>
 
 
@@ -147,6 +294,8 @@ const handlClick = (e) => {
             <option value="N">Non-binary</option>
             <option value="P">Prefer not to say</option>
           </select>
+          {errors.gender && <span className=' text-red-700 font-bold ' > {errors.gender} </span>}
+
         </div>
         
           <div>
@@ -162,6 +311,8 @@ const handlClick = (e) => {
           value={employee.dob}
           onChange={(e) => setEmployee({...employee , dob:e.target.value})}
           datepicker type="date" className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-white dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"/>
+          {errors.dob && <span className=' text-red-700 font-bold ' > {errors.dob} </span>}
+
         </div>
           </div>
 
@@ -176,6 +327,8 @@ const handlClick = (e) => {
             <option value="CT">Contract</option>
             <option value="IT">Intership</option>
           </select>
+          {errors.type_of_work && <span className=' text-red-700 font-bold ' > {errors.type_of_work} </span>}
+
         </div>
 
         <div>
@@ -188,6 +341,8 @@ const handlClick = (e) => {
             id="location"
             
           />
+          {errors.type_of_work && <span className=' text-red-700 font-bold ' > {errors.type_of_work} </span>}
+
         </div>
     
 
@@ -197,8 +352,10 @@ const handlClick = (e) => {
             components={animatedComponents}
             isMulti
             options={options}
-          onChange={(e) => setArr(e)}
+            onChange={handleOption}
           />
+          {errors.position && <span className=' text-red-700 font-bold ' > {errors.position} </span>}
+
             </div>
   
 
@@ -212,6 +369,8 @@ const handlClick = (e) => {
           onChange={(e) => setEmployee({...employee , adhar_number:e.target.value})}
             
           />
+          {errors.adhar_number && <span className=' text-red-700 font-bold ' > {errors.adhar_number} </span>}
+
         </div>
 
         <div>
@@ -223,6 +382,8 @@ const handlClick = (e) => {
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             type="address"
             id="address" />
+          {errors.address && <span className=' text-red-700 font-bold ' > {errors.address} </span>}
+
         </div>
 
 
@@ -236,6 +397,8 @@ const handlClick = (e) => {
             id="password"
             
           />
+          {errors.password1 && <span className=' text-red-700 font-bold ' > {errors.password1} </span>}
+
         </div>
         <div>
           <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="conform_password">Confirm Password</label>
@@ -248,6 +411,8 @@ const handlClick = (e) => {
             id="conform_password"
             
           />
+          {errors.password2 && <span className=' text-red-700 font-bold ' > {errors.password2} </span>}
+
         </div>
       </div>
       <div className="mt-5">
