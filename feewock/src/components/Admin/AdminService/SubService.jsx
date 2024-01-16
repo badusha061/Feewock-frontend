@@ -4,10 +4,12 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { useState , useEffect , useMemo } from 'react'
 import AddSubService from './AddSubService';
+import EditSubService from './EditSubService';
 
 
 function SubService() {
   const [open , setOpen] = useState(false)
+  const [editopen , setEditOpen] = useState(false)
   const [data , setData] = useState([])
   const [search , setSearch] = useState('')
   const [selectid , setSelectid] = useState('')
@@ -19,11 +21,12 @@ function SubService() {
     const fetchdata = async () => {
         try{
             const instance  =  axios.create({
-                baseURL:`${BASE_URL}/service/subservice `
+                baseURL:`${BASE_URL}/service/subservice`
                })
                instance.get('')
                .then((response) => {
                 setData(response.data)
+                console.log(response.data);
                })
                .catch((error) => {
                 console.log(error);
@@ -34,7 +37,6 @@ function SubService() {
     }
     fetchdata();
 },[BASE_URL,reducer])
-
 
 const handleDelete = ({id}) => {
   try{
@@ -53,13 +55,10 @@ const handleDelete = ({id}) => {
   }
 }
 
-  const filteredData = useMemo(() => {
-    return data.filter(row => row.is_active === true)
-  },[data])
-
+ 
   const conditionalRowStyles  = [
     {
-      when: row => row.is_active,
+      when: row => row.is_active || !row.is_active === true,
       style: {
         backgroundColor: '#fffff',
         fontWeight:'bold',
@@ -67,10 +66,6 @@ const handleDelete = ({id}) => {
       },        
 
       
-    },
-    {
-      when: row => !row.is_active,
-      style: {backgroundColor: '#f2dede'} 
     }
   ]
 
@@ -95,7 +90,7 @@ const handleDelete = ({id}) => {
     {
       name:"Service Image",
       selector : (row) => row.Image,
-      cell: (row) => <img src={row.Image.urls} alt='service image' style={{ width: '50px', height: '50px' }} />,
+      cell: (row) => <img src={row.Image} alt='service image' style={{ width: '50px', height: '50px' }} />,
 
     },
     {
@@ -112,10 +107,10 @@ const handleDelete = ({id}) => {
 
   ]
   const searchdata = useMemo(() => {
-    return filteredData.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
+    return data.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
    },[search])
   
-   const renderData = searchdata.length > 0 ? searchdata : filteredData;
+   const renderData = searchdata.length > 0 ? searchdata : data;
 
    const handleAdd = () => {
       setOpen(true)
@@ -123,7 +118,21 @@ const handleDelete = ({id}) => {
 
    const handClose = () => {
     setOpen(false)
+    fetchdata();
+
    }
+
+   
+   const handleEdit = (row) => {
+    setEditOpen(true)
+    setSelectid(row.id)
+ }
+
+ const handCloseEdit = () => {
+  setOpen(false)
+  fetchdata();
+
+ }
   
   return (
     <AdminLayouts>
@@ -196,8 +205,8 @@ const handleDelete = ({id}) => {
           >
 
           </DataTable>
-      <AddSubService open={open} />
-
+      <AddSubService open={open} onClose={handClose} />
+        <EditSubService open={editopen} selectId={selectid} onClose={handCloseEdit} />
     </AdminLayouts>
   )
 }

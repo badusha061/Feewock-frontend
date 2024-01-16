@@ -1,17 +1,17 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState , useMemo } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { Fragment, useRef } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import ConfirmationModal from '../../Conformation/ConfirmationModal'
+import Swal from 'sweetalert2';
+
 
 function UserManagement() {
-  const [open, setOpen] = useState(true)
-  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const cancelButtonRef = useRef(null)
+  const [search , setSearch] = useState('')
+
+  
+  
+   
+
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -21,7 +21,21 @@ function UserManagement() {
     })
     instance.put('')
     .then((response) => {
-      console.log(response);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Successfully Blocked User."
+      });
       forceUpdate()
     })
     .catch((error) => {
@@ -34,7 +48,21 @@ function UserManagement() {
     })
     instance.put('')
     .then((response) => {
-      console.log(response);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Successfully Unblocked User."
+      });
       forceUpdate()
     })
     .catch((error) => {
@@ -44,7 +72,7 @@ function UserManagement() {
 
   const conditionalRowStyles  = [
     {
-      when: row => row.is_active,
+      when: row => row.is_active || !row.is_active,
       style: {
         backgroundColor: '#fffff',
         fontWeight:'bold',
@@ -53,10 +81,7 @@ function UserManagement() {
 
       
     },
-    {
-      when: row => !row.is_active,
-      style: {backgroundColor: '#f2dede'} 
-    }
+    
   ]
 const coloumn = [
 
@@ -119,18 +144,48 @@ const coloumn = [
       console.log(error);
     })
   },[reducer , BASE_URL])
+
+
+  const searchdata = useMemo(() => {
+    return records.filter(item => 
+      item.first_name.toLowerCase().includes(search.toLowerCase()) ||
+      item.last_name.toLowerCase().includes(search.toLowerCase()) ||
+      item.email.toLowerCase().includes(search.toLowerCase()) ||
+      item.location.toLowerCase().includes(search.toLowerCase()) ||
+      item.phone_number.toLowerCase().includes(search.toLowerCase()) 
+      );
+   },[search])
+   
+   const renderData = searchdata.length > 0 ? searchdata : records;
+
   return (
     <>
 
-
+  
 
 
 
 
     <AdminLayouts>
+
+    <div className="flex items-center"> 
+                <div className="rounded-lg bg-gray-200 p-5">
+                    <div className="flex">
+                        <div className="flex w-10 items-center justify-center rounded-tl-lg rounded-bl-lg border-r border-gray-200 bg-white p-5">
+                            <svg viewBox="0 0 20 20" aria-hidden="true" className="pointer-events-none absolute w-5 fill-gray-500 transition">
+                                <path d="M16.72 17.78a.75.75 0 1 0 1.06-1.06l-1.06 1.06ZM9 14.5A5.5 5.5 0 0 1 3.5 9H2a7 7 0 0 0 7 7v-1.5ZM3.5 9A5.5 5.5 0 0 1 9 3.5V2a7 7 0 0 0-7 7h1.5ZM9 3.5A5.5 5.5 0 0 1 14.5 9H16a7 7 0 0 0-7-7v1.5Zm3.89 10.45 3.83 3.83 1.06-1.06-3.83-3.83-1.06 1.06ZM14.5 9a5.48 5.48 0 0 1-1.61 3.89l1.06 1.06A6.98 6.98 0 0 0 16 9h-1.5Zm-1.61 3.89A5.48 5.48 0 0 1 9 14.5V16a6.98 6.98 0 0 0 4.95-2.05l-1.06-1.06Z"></path>
+                            </svg>
+                        </div>
+                        <input type="text"  placeholder="Search........" className="w-full max-w-[160px] bg-white pl-2 text-base font-semibold outline-0" onChange={(e) => setSearch(e.target.value)}  id="" />
+                        <input type="button" value="Search" className="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-custom-voilate  hover:cursor-pointer transition-colors" />
+                    </div>
+                </div>
+            </div>
+
+
       <DataTable
       columns ={coloumn}
-      data = {records}
+      data = {renderData}
       pagination
       selectableRows
       conditionalRowStyles={conditionalRowStyles}
@@ -142,16 +197,16 @@ const coloumn = [
             backgroundColor :'#551B8C',
             fontWeight : 'bold',
             color: '#ffffff', 
-            borderBottom: '1px solid #ddd',
-     
+              borderBottom: '1px solid #ddd',
+      
+            },
           },
-        },
-        cells : {
-          style: {
-            paddingLeft:'8px',
-            paddingRight: '8px',
-            borderBottom: '1px solid #ddd',
-          }
+          cells : {
+            style: {
+              paddingLeft:'8px',
+              paddingRight: '8px',
+              borderBottom: '1px solid #ddd',
+            }
         }
       }}
       >

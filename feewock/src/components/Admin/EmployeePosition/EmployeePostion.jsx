@@ -4,8 +4,10 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { useState , useEffect , useMemo } from 'react'
 import './EmployeePosition.css'
-import { useNavigate } from 'react-router-dom';
 import EmployeeEditPosition from './EmployeeEditPosition';
+import Swal from 'sweetalert2';
+
+
 
 function EmployeePostion() {
     const [open , setOpen] = useState(false)
@@ -46,7 +48,7 @@ function EmployeePostion() {
 
   const conditionalRowStyles  = [
     {
-      when: row => row.is_active,
+      when: row => row.is_active || !row.is_active,
       style: {
         backgroundColor: '#fffff',
         fontWeight:'bold',
@@ -54,10 +56,6 @@ function EmployeePostion() {
       },        
 
       
-    },
-    {
-      when: row => !row.is_active,
-      style: {backgroundColor: '#f2dede'} 
     }
   ]
 
@@ -97,6 +95,26 @@ function EmployeePostion() {
 
     const handleAdd = (e) =>{
         e.preventDefault()
+        if(!add.name.trim()){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+            
+          });
+          
+          Toast.fire({
+            icon: 'error',
+            title: 'Name is Cannot be Empty',
+          });
+          return false
+        }
         try{
             const instance  =  axios.create({
                 baseURL:`${BASE_URL}/service/postion`
@@ -105,11 +123,41 @@ function EmployeePostion() {
                 console.log(add);
             instance.post('',add)
             .then((response) => {
-                console.log(response.data);
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Successfully Added Position"
+              });
                 forceUpdate();
             })
             .catch((error) => {
-                console.log(error);
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+                
+              });
+              
+              Toast.fire({
+                icon: 'error',
+                title: 'Name is Already taken',
+              });
             })
         }catch(error){
             console.log('the error is the ',error);

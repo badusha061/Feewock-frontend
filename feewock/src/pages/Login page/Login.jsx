@@ -365,8 +365,10 @@ function Login() {
               Not have an account? Registration
             </a>
           </NavLink>
+          
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
         </div>
+        
       </div>
     </div>
   </Layouts>

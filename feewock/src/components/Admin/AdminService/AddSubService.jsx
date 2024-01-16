@@ -1,9 +1,13 @@
 import axios from 'axios';
 import React, { useEffect , useState , useReducer } from 'react'
+import Swal from 'sweetalert2';
 
-function AddSubService({open}) {
+
+
+function  AddSubService({open , onClose}) {
    
     if(!open) return null
+
     const [add , setAdd] = useState({
         name:'',
         mainservice:'',
@@ -16,20 +20,12 @@ function AddSubService({open}) {
   
     useEffect(() => {   
       const fetchData = async () => {
-          try{
-              const instance  =  axios.create({
-                  baseURL:`${BASE_URL}/service/createmainservice`
-                 })
-                 instance.get('')
-                 .then((response) => {
-                  setData(response.data)
-                 })
-                 .catch((error) => {
-                  console.log(error);
-                 })
-          }catch(error){
-              console.log('the error is the ',error);
-          }
+        try {
+          const response = await axios.get(`${BASE_URL}/service/createmainservice`);
+          setData(response.data)
+      } catch (error) {
+          console.error('Error while sending data to the backend:', error);
+      }
       }
       fetchData();
   },[BASE_URL,reducer])
@@ -38,73 +34,153 @@ function AddSubService({open}) {
 
     const handleChange = async (e) => {
         e.preventDefault();
-    
-        console.log('add image', add.image);
-        console.log('add name', add.name);
-        console.log('add mainservice', add.mainservice);
-    
-        const formData = new FormData();
-
-        console.log('Before appending any data:', formData);
-        
-        formData.append('image', add.image);
-        console.log('After appending image:', formData);
-        
-        formData.append('mainservice', add.mainservice);
-        console.log('After appending mainservice:', formData);
-        
-        formData.append('name', add.name);
-        console.log('After appending name:', formData);
-        
-        console.log('Final FormData:', formData);
-        
-
-    
-        try {
-        const response = await axios.post(`${BASE_URL}/service/subservice`, formData, {
-            headers: {
-            'Content-Type': 'multipart/form-data',
+        if(!add.name.trim()){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
             },
-        });
-    
-        console.log(response.data);
+            
+          });
+          
+          Toast.fire({
+            icon: 'error',
+            title: 'Service Name is Cannot be Empty',
+          });
+          return false
+        }
+
+        if(!add.mainservice.trim()){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+            
+          });
+          
+          Toast.fire({
+            icon: 'error',
+            title: 'Main service is Compulsary',
+          });
+          return false
+        }
+        if(add.image === null){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+            
+          });
+          
+          Toast.fire({
+            icon: 'error',
+            title: 'Image cannot be empty',
+          });
+          return false
+        }
+        const config = {headers:{'Content-Type':'multipart/form-data'}}
+        const formData = new FormData();
+        formData.append("name",add.name)
+        formData.append("Image",add.image)
+        formData.append("mainservice", String(parseInt(add.mainservice, 10)));
+        console.log(formData);
+        try {
+        const response = await axios.post(`${BASE_URL}/service/createsubservice`, formData,config);
+        console.log(response.status);
+        if(response.status === 201){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Successfully Added Service"
+          });
+          onClose()
+          return true
+        }
+     
         } catch (error) {
-        console.error('Error while sending data to the backend:', error);
+          if(error.message === "Request failed with status code 400"){
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+              
+            });
+            
+            Toast.fire({
+              icon: 'error',
+              title: 'Service Name is Already taken',
+            });
+            return false
+          }
+        console.log('the error',error);
         }
     };
   
  
   return (
-    <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         
-  <div
-    className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
-  >
-    <div className=' flex items-center justify-center '>
-             <h1  className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-black" > ADD SERVICE </h1>
-    </div>
-    <div className="max-w-md mx-auto">
-      <div className="flex items-center space-x-5 justify-center">
-      
-      </div>
-      <div className="mt-5">
-        <label
-          className="font-semibold text-sm text-gray-600 pb-1 block"
-          htmlFor="name"
-          >Service Name</label>
-        <input
-            value={add.name}
-            onChange={(e) => setAdd({...add, name:e.target.value})}
-          className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-          type="text"
-          id="name"
-        />
-      </div> 
-    <div className='mt-5'>
+          <>
+          <div
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">
+                    ADD SERVICE
+                  </h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                <div className="relative p-6 flex-auto">
+                <div className="input-container">
+                  <input 
+                  value={add.name}
+                  onChange={(e) => setAdd({...add, name:e.target.value})}
+                  placeholder="Service Name"   type="text" />
+                </div>
+                  <br />
+                <div className='input-container'>
 
-    <div
-            className="relative group rounded-lg w-64 bg-gray-50 overflow-hidden before:absolute before:w-12 before:h-12 before:content[''] before:right-0 before:bg-violet-500 before:rounded-full before:blur-lg before:[box-shadow:-60px_20px_10px_10px_#F9B0B9]"
-            >
+                <div className="relative group rounded-lg w-64 bg-gray-50 overflow-hidden before:absolute before:w-12 before:h-12 before:content[''] before:right-0 before:bg-violet-500 before:rounded-full before:blur-lg before:[box-shadow:-60px_20px_10px_10px_#F9B0B9]">
             <svg
                 y="0"
                 xmlns="http://www.w3.org/2000/svg"
@@ -126,38 +202,42 @@ function AddSubService({open}) {
             </svg>
             <select value={add.mainservice} onChange={(e) => setAdd({...add, mainservice:e.target.value})} className="appearance-none hover:placeholder-shown:bg-emerald-500 relative text-black bg-transparent ring-0 outline-none border border-neutral-500  placeholder-violet-700 text-sm font-bold rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5">
             {data.map((data, index) => (
-                <option  key={index} value={data.id}  >{data.name}</option>
-                ))}
+              <option  key={index} value={data.id}  >{data.name}</option>
+              ))}
 
             </select>
-
-
             </div>
-
-    </div>
-    <div className='mt-5'>
-        
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
+          </div>
+          <div>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
             <input
             onChange={(e) => setAdd({...add, image:e.target.files[0] })}
             accept="image/*" 
             className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" aria-describedby="file_input_help" id="image" type="file"/>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-    </div>
-  
-      <div className="mt-5">
-        <button
-        onClick={handleChange}
-          className="py-2 px-4 bg-custom-voilate hover:bg-custom-voilate focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-          type="submit"
-        >
-          Add Service
-        </button>
-      </div>
-   
-    </div>
-  </div>
-</div>
+          </div>
+          </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                  onClick={onClose}
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={handleChange}
+                    className="bg-custom-voilate text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
 
 
   )

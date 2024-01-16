@@ -5,6 +5,9 @@ import DataTable from 'react-data-table-component';
 import './MainService.css'
 import {  useNavigate } from 'react-router-dom';
 import EditMainService from './EditMainService';
+import Swal from 'sweetalert2';
+
+
 
 function MainService() {
     const [open , setOpen] = useState(false)
@@ -16,8 +19,8 @@ function MainService() {
         name:''
     })
     const [search , setSearch] = useState('')
-    console.log(search);
     const [data , setData] = useState([]);
+
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     useEffect(() => {   
         const fetchData = async () => {
@@ -38,9 +41,11 @@ function MainService() {
         }
         fetchData();
     },[BASE_URL,reducer])
+
     const filteredData = useMemo(() => {
         return data.filter(row => row.is_active === true)
     },[data])
+
    const searchdata = useMemo(() => {
     return filteredData.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
    },[search])
@@ -54,7 +59,21 @@ function MainService() {
                })
                instance.delete('')
                .then((response) => {
-                console.log(response);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Successfully Deleted Position"
+                  });
                 forceUpdate()
                })
                .catch((error) => {
@@ -117,6 +136,26 @@ function MainService() {
     }
     const handleAdd = (e) =>{
         e.preventDefault()
+        if(!add.name.trim()){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+                
+              });
+              
+              Toast.fire({
+                icon: 'error',
+                title: 'Main Service Name is Cannot be Empty',
+              });
+              return false
+            }
         try{
             const instance  =  axios.create({
                 baseURL:`${BASE_URL}/service/createmainservice`
@@ -125,11 +164,42 @@ function MainService() {
                 console.log(add);
                instance.post('',add)
                .then((response) => {
-                console.log(response.data);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Successfully Added Position"
+                  });
                 forceUpdate()
                })
                .catch((error) => {
-                console.log(error);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    },
+                    
+                  });
+                  
+                  Toast.fire({
+                    icon: 'error',
+                    title: 'Main Service Name is Already taken',
+                  });
+                  return false
                })
         }catch(error){
             console.log('the error is the ',error);

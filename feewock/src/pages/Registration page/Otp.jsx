@@ -106,7 +106,9 @@ function Otp() {
 
       dispatch(CLEAR_REGISTRATION_DATA())
       console.log(respose.data);
-      navigate('/login')
+
+
+    navigate('/login')
     })
     .catch((error) => {
       console.log(error);
@@ -114,8 +116,7 @@ function Otp() {
 
     }
 
-
-
+   
         return (
     <>
       <div className='flex items-center  justify-center'>

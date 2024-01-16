@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import AdminLayouts from '../../../layouts/AdminLayouts'
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Fragment, useRef } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import Swal from 'sweetalert2';
+
 
 function EmployeeEditPosition({open , onClose , selectdata}) {
     const [data , setData] = useState({
@@ -21,18 +18,67 @@ function EmployeeEditPosition({open , onClose , selectdata}) {
 
         const handleSubmit = () => {
             let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
+            if(!data.name.trim()){
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+                
+              });
+              
+              Toast.fire({
+                icon: 'error',
+                title: 'Name is Cannot be Empty',
+              });
+              return false
+            }
             try{
                 const instance  =  axios.create({
                     baseURL:`${BASE_URL}/service/updatepostion/${selectdata}/ `
                    })
                    instance.put('',data)
                    .then((response) => {
-                    console.log(response);
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: "top-end",
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                      }
+                    });
+                    Toast.fire({
+                      icon: "success",
+                      title: "Successfully Edited Position"
+                    });
                     onClose()
                    })
                    .catch((error) => {
-                    console.log(error);
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                      },
+                      
+                    });
+                    
+                    Toast.fire({
+                      icon: 'error',
+                      title: 'Name is Already taken',
+                    });
                    })
             }catch(error){
                 console.log('the error is the ',error);

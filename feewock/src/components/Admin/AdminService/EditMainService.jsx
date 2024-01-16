@@ -3,6 +3,9 @@ import  Modal from 'react-modal'
 import './EditMainService.css';
 import AdminLayouts from '../../../layouts/AdminLayouts';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
+
 
 function EditMainService({open , onClose , selectdata}) {
     const [data , setData] = useState({
@@ -19,18 +22,68 @@ function EditMainService({open , onClose , selectdata}) {
 
         const handleSubmit = () => {
             let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
+            if(!data.name.trim()){
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+                
+              });
+              
+              Toast.fire({
+                icon: 'error',
+                title: 'Main Service Name is Cannot be Empty',
+              });
+              return false
+            }
             try{
                 const instance  =  axios.create({
                     baseURL:`${BASE_URL}/service/updatemainservice/${selectdata}/ `
                    })
                    instance.put('',data)
                    .then((response) => {
-                    console.log(response);
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: "top-end",
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                      }
+                    });
+                    Toast.fire({
+                      icon: "success",
+                      title: "Successfully Edited Position"
+                    });
                     onClose()
                    })
                    .catch((error) => {
-                    console.log(error);
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                      },
+                      
+                    });
+                    
+                    Toast.fire({
+                      icon: 'error',
+                      title: 'Main Service Name is Already taken',
+                    });
+                    return false
                    })
             }catch(error){
                 console.log('the error is the ',error);

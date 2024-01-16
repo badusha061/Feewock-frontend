@@ -1,7 +1,11 @@
 import React,{useState} from 'react'
-import control from './control.png'
-import user from './User.png'
-import dashboard from './dashboard.png'
+import control from './Image/control.png'
+import user from './Image/User.png'
+import home from './Image/home.png'
+import employee from './Image/Employee.png'
+import mainservice from './Image/mainservice.png'
+import subservice from './Image/subservice.png'
+import position from './Image/position.png'
 import { NavLink } from 'react-router-dom'
 
 function AdminSideBar() {
@@ -37,7 +41,7 @@ function AdminSideBar() {
       <ul className="pt-6">
         <NavLink to="/admin/dashboard" >
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={dashboard} alt='logo' />
+            <img src={home} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Dashboard
             </span>
@@ -55,7 +59,7 @@ function AdminSideBar() {
           <br />
         <NavLink to='/admin/employeemanagement'>
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={user} alt='logo' />
+            <img src={employee} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Employees Management
             </span>
@@ -64,7 +68,7 @@ function AdminSideBar() {
           <br />
           <NavLink to="/admin/mainservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src='' alt='logo' />
+            <img src={mainservice} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Main Services
             </span>
@@ -73,7 +77,7 @@ function AdminSideBar() {
           <br />
           <NavLink to="/admin/subservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src='' alt='logo' />
+            <img src={subservice} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Sub Service
             </span>
@@ -82,7 +86,7 @@ function AdminSideBar() {
           <br />
           <NavLink to="/admin/position">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src='' alt='logo' />
+            <img src={position} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 Employees Positions
             </span>

@@ -23,7 +23,7 @@ function EmployeeRegister() {
     role:2,
     city:'',
     state:'',
-    gender:'',
+    gender:'M',
     dob:'',
     type_of_work:'',
     location:'',
@@ -143,7 +143,7 @@ const handlClick = (e) => {
   }
 
   setErrors(validateError)
-
+  console.log(employee.gender);
   if(Object.keys(validateError).length === 0){
     const instance = axios.create({
       baseURL:`${BASE_URL}/employee/`
@@ -289,7 +289,7 @@ const handlClick = (e) => {
           value={employee.gender}
           onChange={(e) => setEmployee({...employee, gender: e.target.value})}
           id="countries" className="bg-white border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option selected value="M">Male</option>
+            <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="N">Non-binary</option>
             <option value="P">Prefer not to say</option>

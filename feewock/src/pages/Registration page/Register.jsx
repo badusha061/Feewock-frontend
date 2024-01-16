@@ -74,7 +74,7 @@ function Register() {
     if(Object.keys(validateError).length === 0){
       const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
       const instance = axios.create({
-        baseURL:`${BASE_URL}/user`,
+        baseURL:`${BASE_URL}/user/`,
       })
       console.log(user);
       instance.post('',user)
