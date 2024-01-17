@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect , useState , useReducer } from 'react'
 import Swal from 'sweetalert2';
-
+import SubService from './SubService'
 
 
 function  AddSubService({open , onClose}) {
@@ -15,9 +15,10 @@ function  AddSubService({open , onClose}) {
     })
 
     const [data , setData] = useState([]);
-    const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-  
+
+    const [render , setRender] = useState(0)
+
     useEffect(() => {   
       const fetchData = async () => {
         try {
@@ -28,7 +29,7 @@ function  AddSubService({open , onClose}) {
       }
       }
       fetchData();
-  },[BASE_URL,reducer])
+  },[BASE_URL])
   
  
 
@@ -120,10 +121,12 @@ function  AddSubService({open , onClose}) {
             icon: "success",
             title: "Successfully Added Service"
           });
+
+          setRender(render+1)
           onClose()
-          return true
+          
         }
-     
+        
         } catch (error) {
           if(error.message === "Request failed with status code 400"){
             const Toast = Swal.mixin({
@@ -201,6 +204,7 @@ function  AddSubService({open , onClose}) {
                 ></path>
             </svg>
             <select value={add.mainservice} onChange={(e) => setAdd({...add, mainservice:e.target.value})} className="appearance-none hover:placeholder-shown:bg-emerald-500 relative text-black bg-transparent ring-0 outline-none border border-neutral-500  placeholder-violet-700 text-sm font-bold rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5">
+          <option value="" disabled>Select Main Service</option>
             {data.map((data, index) => (
               <option  key={index} value={data.id}  >{data.name}</option>
               ))}
@@ -237,6 +241,8 @@ function  AddSubService({open , onClose}) {
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          {render > 0 && <SubService render={render} />}
+
         </>
 
 

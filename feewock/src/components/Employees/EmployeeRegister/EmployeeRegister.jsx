@@ -167,7 +167,7 @@ const handlClick = (e) => {
         title: "Successfully Created Account"
       });
       dispatch(employee_setRegistrationData(response.data))
-      navigate('/employeeregister/otp')
+      navigate('/employee/employeeregister/otp')
     })
     .catch((error) => {
       const Toast = Swal.mixin({
@@ -209,6 +209,7 @@ const handlClick = (e) => {
   }
  
 }
+
  
   return (
     <>
@@ -438,6 +439,7 @@ const handlClick = (e) => {
       </div>
     </div>
   </div>
+
 </div>
 
     </>

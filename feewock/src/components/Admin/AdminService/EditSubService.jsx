@@ -101,28 +101,48 @@ function EditSubService({open , onClose , selectId}) {
       try {
         console.log('come');
       const response = await axios.put(`${BASE_URL}/service/updatesubervice/${selectId}/`, formData,config);
-  
+        if(response.status === 200){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Successfully Edited Service"
+          });
+        }
       console.log(response.data);
       onClose()
+      return true
       } catch (error) {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
+        if(error.message === "Request failed with status code 400"){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+            
+          });
           
-        });
-        
-        Toast.fire({
-          icon: 'error',
-          title: 'Name is Already taken Please Change',
-        });
-        return false
+          Toast.fire({
+            icon: 'error',
+            title: 'Name is Already taken Please Change',
+          });
+          return false
+        }
+      
       }
   };
 
@@ -176,7 +196,8 @@ function EditSubService({open , onClose , selectId}) {
           className="svg-stroke-primary"
           ></path>
       </svg>
-      <select value={edit.mainservice} onChange={(e) => setEdit({...edit, mainservice:e.target.value})} className="appearance-none hover:placeholder-shown:bg-emerald-500 relative text-black bg-transparent ring-0 outline-none border border-neutral-500  placeholder-violet-700 text-sm font-bold rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5">
+      <select  value={edit.mainservice} onChange={(e) => setEdit({...edit, mainservice:e.target.value})} className="appearance-none hover:placeholder-shown:bg-emerald-500 relative text-black bg-transparent ring-0 outline-none border border-neutral-500  placeholder-violet-700 text-sm font-bold rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5">
+      <option value="" disabled>Select Main Service</option>
       {data.map((data, index) => (
         <option  key={index} value={data.id}  >{data.name}</option>
         ))}

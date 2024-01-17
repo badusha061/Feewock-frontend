@@ -5,9 +5,10 @@ import axios from 'axios';
 import { useState , useEffect , useMemo } from 'react'
 import AddSubService from './AddSubService';
 import EditSubService from './EditSubService';
+import Swal from 'sweetalert2';
 
 
-function SubService() {
+function SubService({render}) {
   const [open , setOpen] = useState(false)
   const [editopen , setEditOpen] = useState(false)
   const [data , setData] = useState([])
@@ -36,7 +37,7 @@ function SubService() {
         }
     }
     fetchdata();
-},[BASE_URL,reducer])
+},[BASE_URL,reducer , render])
 
 const handleDelete = ({id}) => {
   try{
@@ -45,6 +46,21 @@ const handleDelete = ({id}) => {
          })
          instance.delete('')
          .then((response) => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Successfully Deleted Service"
+          });
           forceUpdate()
          })
          .catch((error) => {
@@ -130,7 +146,7 @@ const handleDelete = ({id}) => {
 
  const handCloseEdit = () => {
   setOpen(false)
-  fetchdata();
+  forceUpdate();
 
  }
   
@@ -169,7 +185,7 @@ const handleDelete = ({id}) => {
                             </svg>
                         </div>
                         <input type="text"  placeholder="Search........" className="w-full max-w-[160px] bg-white pl-2 text-base font-semibold outline-0" onChange={(e) => setSearch(e.target.value)}  id="" />
-                        <input type="button" value="Search" className="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-custom-voilate  hover:cursor-pointer transition-colors" />
+                        <input type="button" value="Search" className="bg-custom-voilate p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-custom-voilate  hover:cursor-pointer transition-colors" />
                     </div>
                 </div>
             </div>

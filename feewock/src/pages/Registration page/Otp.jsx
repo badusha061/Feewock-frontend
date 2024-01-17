@@ -24,7 +24,7 @@ function Otp() {
   const handleGenerate = (e) => {
     e.preventDefault()
     const instance = axios.create({
-      baseURL:`${BASE_URL}/user/${employeedetails.id}/generate_otp/`
+      baseURL:`${BASE_URL}/user/${details.id}/generate_otp/`
     })
     instance.patch('')
     .then((response)=>{
