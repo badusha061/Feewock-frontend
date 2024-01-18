@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css'
 import { useSelector } from 'react-redux';
 
+
 function Navbar() {
   const t = useSelector(state => state.token.token)
 
@@ -32,7 +33,9 @@ function Navbar() {
           </NavLink>
 
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer">About</div>
+        <NavLink to="/service">
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Service</div>
+        </NavLink>
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Help</div>
         <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Contact</div>
         <NavLink to='/employee/employeeregister' >

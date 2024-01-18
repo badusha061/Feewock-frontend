@@ -1,6 +1,6 @@
 import React from 'react'
 import EmployeeLoyouts from '../../../layouts/EmployeeLoyouts'
-
+import banner from './Images/banner.png'
 
 function EmployeeDashboard() {
   return (
@@ -38,8 +38,8 @@ function EmployeeDashboard() {
 
                 <div className="relative px-4 pt-24 pb-16 text-center sm:px-6 md:px-24 2xl:px-32 lg:py-24 lg:text-left">
                     <h1 className="text-4xl font-bold text-black sm:text-6xl xl:text-8xl">
-                        Get it done.<br />
-                        Fast, Easy.
+                        WELCOM TO <br />
+                        FEEWOCK.
                     </h1>
                     <p className="mt-8 text-xl text-black">We help you to make your remote work life easier. Build a distruction free working experience.</p>
 

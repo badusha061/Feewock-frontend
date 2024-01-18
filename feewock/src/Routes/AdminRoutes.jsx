@@ -9,6 +9,7 @@ import EditMainService from "../components/Admin/AdminService/EditMainService";
 import EmployeeEditPosition from "../components/Admin/EmployeePosition/EmployeeEditPosition";
 import AddSubService from "../components/Admin/AdminService/AddSubService";
 import EmployeeIndivual from "../components/Admin/EmployeeIndivual/EmployeeIndivual";
+import OfferService from "../components/Admin/OfferService/OfferService";
 
 export default function AdminRoutes() {
     return (
@@ -23,7 +24,7 @@ export default function AdminRoutes() {
             <Route path="/subservice" element={<SubService />} />
             <Route path="/position" element={<EmployeePostion />} />
             <Route path="/position/:id/edit" element={<EmployeeEditPosition />} />  
-            
+            <Route path="/offer" element={<OfferService />} />
         </Routes>
     )
 }

@@ -15,12 +15,12 @@ function EmployeesNavbar() {
   }
 
     let Links =[
-        {name:"HOME",link:"/"},
-        {name:"PROFILE",link:"/"},
-        {name:"EARNING",link:"/"},
-        {name:"COMMUNITY",link:"/"},
-        {name:"REWARDS",link:"/"},
-        {name:"SERVICE",link:"/"},
+        {name:"HOME",link:"/employee/employeedashboard"},
+        {name:"PROFILE",link:"/employee/employeeprofile"},
+        {name:"EARNING",link:""},
+        {name:"COMMUNITY",link:""},
+        {name:"REWARDS",link:""},
+        {name:"SERVICE",link:""},
       ];
 
       let [open, setOpen] = useState(false);

@@ -11,6 +11,7 @@ import {store , persistor} from './store/configureStore.js'
 import { PersistGate } from 'redux-persist/integration/react'
 import AdminRoutes from './Routes/AdminRoutes.jsx'
 import EmployeeRoutes from './Routes/EmployeeRouters.jsx'
+import Service from './components/Service/Service.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
       <Route path='register/' element={<Register />} />
       <Route path='register/otp' element={<Otp />} />
       <Route path='login' element={<Login />} />
+      <Route path='service' element={<Service />} />
       <Route path='/admin/*' element={<AdminRoutes />} />
       <Route path='/employee/*' element={<EmployeeRoutes />} />
     </Route>
