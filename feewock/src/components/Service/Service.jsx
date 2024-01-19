@@ -1,10 +1,10 @@
 import React, { useEffect , useReducer , useState} from 'react'
 import Layouts from '../../layouts/Layouts'
 import axios from 'axios'
-import './Service.css'
-
+import { useNavigate } from 'react-router-dom'
 
 function Service() {
+    const naviagate= useNavigate()
     const [records , setRecords] = useState([])
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   
@@ -22,6 +22,9 @@ function Service() {
             console.log(error);
           })
     },[BASE_URL , reducer])
+    const handleSubmit =(e,sub) => {
+      naviagate(`/service/${sub.id}`)
+    }
   return (
     <Layouts>
         
@@ -40,9 +43,11 @@ function Service() {
 
 <div className='ml-40 flex flex-col mb-8' key={index}>
 <h1 className='font-bold text-lg mb-4' > {data.name} </h1>
+
 <div className="flex flex-wrap">
   {data.subservice.map((sub , index) => 
     <div
+    onClick={(e) => handleSubmit(e,sub)}
     key={index}
     className={`w-48 h-64 rounded-3xl hover:cursor-pointer hover:shadow-2xl transition-shadow duration-300 bg-white shadow-lg flex flex-col items-center justify-center mt-4 ${index % 5 !== 0 ? 'ml-4' : ''}`}
   >

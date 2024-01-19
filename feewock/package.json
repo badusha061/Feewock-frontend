@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "network": "vita --host 0.0.0.0 --port 3000"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -16,6 +17,8 @@
     "@material-tailwind/react": "^2.1.8",
     "@mui/material": "^5.15.4",
     "@mui/styled-engine-sc": "^6.0.0-alpha.12",
+    "@react-google-maps/api": "^2.19.2",
+    "@ubilabs/react-geosuggest": "^2.16.1",
     "axios": "^1.6.4",
     "dotenv": "^16.3.1",
     "expo": "^49.0.21",
@@ -29,7 +32,7 @@
     "react-modal": "^3.16.1",
     "react-places-autocomplete": "^7.3.0",
     "react-redux": "^9.0.4",
-    "react-router-dom": "^6.21.1",
+    "react-router-dom": "^6.21.2",
     "react-select": "^5.8.0",
     "react-table": "^7.8.0",
     "react-tag-input": "^6.8.1",

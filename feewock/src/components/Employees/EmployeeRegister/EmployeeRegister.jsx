@@ -27,7 +27,7 @@ function EmployeeRegister() {
     dob:'',
     type_of_work:'',
     location:'',
-    position:[],
+    service:[],
     address:'',
     adhar_number:'',
     password1:'',
@@ -44,11 +44,12 @@ function EmployeeRegister() {
     const fetchData = async () => {
         try{
             const instance  =  axios.create({
-                baseURL:`${BASE_URL}/service/postion`
+                baseURL:`${BASE_URL}/service/subservice`
                })
                instance.get('')
                .then((response) => {
                 setData(response.data)
+                console.log(response.data);
                })
                .catch((error) => {
                 console.log(error);
@@ -69,7 +70,7 @@ const handleOption = (selections) => {
   const selectid = selections.map((options) => options.value)
   setEmployee({
     ...employee,
-    position: selectid,
+    service: selectid,
   });
 }
 
@@ -116,8 +117,8 @@ const handlClick = (e) => {
   if (!employee.location.trim()){
     validateError.location = "Location Cannot be Empty"
   }
-  if(employee.position.length === 0){
-    validateError.position = "Please Take Any Position"
+  if(employee.service.length === 0){
+    validateError.service = "Please Take Any Position"
   }
   if(!employee.address.trim()){
     validateError.address = "Address Cannot be Empty"
@@ -143,7 +144,7 @@ const handlClick = (e) => {
   }
 
   setErrors(validateError)
-  console.log(employee.gender);
+  console.log(employee);
   if(Object.keys(validateError).length === 0){
     const instance = axios.create({
       baseURL:`${BASE_URL}/employee/`
@@ -290,6 +291,7 @@ const handlClick = (e) => {
           value={employee.gender}
           onChange={(e) => setEmployee({...employee, gender: e.target.value})}
           id="countries" className="bg-white border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option value="" disabled>Select Your Gender</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="N">Non-binary</option>
@@ -323,7 +325,8 @@ const handlClick = (e) => {
           value={employee.type_of_work}
           onChange={(e) => setEmployee({...employee, type_of_work : e.target.value})}
           id="countries" className="bg-white border  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option selected>Full Time</option>
+          <option value="" disabled>Select Your Job Time</option>
+            <option value="FT">Full Time</option>
             <option value="PT">Part Time</option>
             <option value="CT">Contract</option>
             <option value="IT">Intership</option>

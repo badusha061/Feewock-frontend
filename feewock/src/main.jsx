@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import AdminRoutes from './Routes/AdminRoutes.jsx'
 import EmployeeRoutes from './Routes/EmployeeRouters.jsx'
 import Service from './components/Service/Service.jsx'
+import EmployeeList from './components/EmployeeList/EmployeeList.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,12 +22,15 @@ const router = createBrowserRouter(
       <Route path='register/otp' element={<Otp />} />
       <Route path='login' element={<Login />} />
       <Route path='service' element={<Service />} />
+      <Route path='service/:id' element={<EmployeeList />} />
       <Route path='/admin/*' element={<AdminRoutes />} />
       <Route path='/employee/*' element={<EmployeeRoutes />} />
     </Route>
   )
     
 )
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
