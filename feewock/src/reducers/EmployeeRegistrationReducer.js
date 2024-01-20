@@ -11,7 +11,7 @@ const initialState = {
     dob:'',
     type_of_work:'',
     location:'',
-    position:[],
+    service:[],
     address:'',
     adhar_number:'',
     password1:'',

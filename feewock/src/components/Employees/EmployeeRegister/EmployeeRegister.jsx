@@ -6,6 +6,8 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { employee_setRegistrationData } from '../../../actions/EmployeeRegister';
 import Swal from 'sweetalert2';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 
 
 const animatedComponents = makeAnimated();
@@ -26,12 +28,14 @@ function EmployeeRegister() {
     gender:'M',
     dob:'',
     type_of_work:'',
-    location:'',
+    location:null,
     service:[],
     address:'',
     adhar_number:'',
     password1:'',
     password2:'',
+    longitude:'',
+    latitude:''
   })
 
   const [errors , setErrors] = useState({})
@@ -49,7 +53,6 @@ function EmployeeRegister() {
                instance.get('')
                .then((response) => {
                 setData(response.data)
-                console.log(response.data);
                })
                .catch((error) => {
                 console.log(error);
@@ -75,9 +78,30 @@ const handleOption = (selections) => {
 }
 
 
+const handleSelect = async (value) => {
+  console.log(value.label);
+
+  try {
+    const results = await geocodeByAddress(value.label);
+    const { lat, lng } = await getLatLng(results[0]);
+
+    setEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      latitude: lat,
+      longitude: lng,
+      location: value.label, 
+    }));
+  } catch (error) {
+    console.error('Error fetching geolocation:', error);
+  }
+};
+
+
+
+
 const handlClick = (e) => {
   e.preventDefault()
-
+  console.log(employee);
   const validateError = {}
   if(!employee.username.trim()){
     validateError.username = "Username Not be Empty"
@@ -102,7 +126,10 @@ const handlClick = (e) => {
   }
   if(!employee.gender.trim()){
     validateError.gender = "Gender Cannot be Empty"
-  }
+  } 
+  // if(!employee.location.trim()){
+  //   validateError.location = "location cannot be Empty"
+  // }
   const current = new Date()
   const inputAge = new Date(employee.dob)
   const age = current.getFullYear() - inputAge.getFullYear()
@@ -114,9 +141,7 @@ const handlClick = (e) => {
   if(!employee.type_of_work.trim()){
     validateError.type_of_work = "Work Types Canot be Empty"
   }
-  if (!employee.location.trim()){
-    validateError.location = "Location Cannot be Empty"
-  }
+
   if(employee.service.length === 0){
     validateError.service = "Please Take Any Position"
   }
@@ -336,17 +361,14 @@ const handlClick = (e) => {
         </div>
 
         <div>
-          <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="location">Location</label>
-          <input
-          value={employee.location}
-          onChange={(e) => setEmployee({...employee , location:e.target.value})}
-            className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            type="location"
-            id="location"
-            
-          />
-          {errors.type_of_work && <span className=' text-red-700 font-bold ' > {errors.type_of_work} </span>}
+        <GooglePlacesAutocomplete
+          apiKey='AIzaSyAsc69G6yC0OKUVzNm5o90_EvDHHNL7wxE'
+          selectProps={{
+            onChange: handleSelect,
+            placeholder:"Enter Your Location",
 
+          }}
+        />  
         </div>
     
 

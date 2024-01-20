@@ -1,10 +1,11 @@
 import React, { useEffect , useReducer , useState} from 'react'
 import Layouts from '../../layouts/Layouts'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import axios from 'axios'
 import test from './Images/test.jpeg'
 
 function EmployeeList() {
+    const location = useLocation()
     const params = useParams()
     const service_id = params.id 
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
@@ -12,16 +13,21 @@ function EmployeeList() {
     const [employees , setEmployees] = useState([])
     const [servicedetails , setServicedetails] = useState([])
 
+    
+
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
     useEffect(() => {
+      const data = location.state.data
         const instance = axios.create({
-            baseURL:`${BASE_URL}/list/employees/${service_id}/`
+            baseURL:`${BASE_URL}/list/employees/${service_id}/`,
+            params:data
           })
+          console.log(data);
           instance.get('')
           .then((response) => {
-            setEmployees(response.data)
             console.log(response.data);
+            setEmployees(response.data)
           })
           .catch((error) => {
             console.log(error);
@@ -51,27 +57,29 @@ function EmployeeList() {
         {employees.map((data , index) => (
 
             <div className='flex'>
-            <div class="flex flex-col shadow-2xl bg-white rounded-3xl">
-                <div class="px-6 py-8 sm:p-10 sm:pb-6">
-                    <div class="grid items-center justify-center w-full grid-cols-1 text-left">
+            <div className="flex flex-col shadow-2xl bg-white rounded-3xl">
+                <div className="px-6 py-8 sm:p-10 sm:pb-6">
+                    <div className="grid items-center justify-center w-full grid-cols-1 text-left">
                     <div>
                         <h2
-                        class="text-md text-center font-medium tracking-tighter text-black lg:text-3xl"
+                        className="text-md text-center font-medium tracking-tighter text-black lg:text-3xl"
                         >
                             {data.username}
                         </h2>
-                        <p class="mt-2 text-sm text-black"> {data.location} </p>
+                        <div className=' w-24 '>
+                        <p className="mt-2 text-sm text-black"> {data.location} </p>
+                        </div>
                     </div>
-                    <div class="mt-6">
+                    <div className="mt-6">
                     <img className="w-32 h-32 rounded-lg " src={test} alt="" />
                     </div>
                     </div>
                 </div>
 
-                <div class="flex px-6 pb-8 sm:px-8">
+                <div className="flex px-6 pb-8 sm:px-8">
                     <a
                     aria-describedby="tier-company"
-                    class="flex items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-custom-blue border-2 border-black rounded-full nline-flex hover:bg-white hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
+                    className="flex items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-custom-blue border-2 border-black rounded-full nline-flex hover:bg-white hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
                     href="#"
                     >
                     VIEWS

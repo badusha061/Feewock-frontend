@@ -1,9 +1,14 @@
 import React, { useEffect , useReducer , useState} from 'react'
 import Layouts from '../../layouts/Layouts'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate  } from 'react-router-dom'
 
 function Service() {
+    const [data , setData] = useState({
+      latitude:'',
+      longitude:''
+    })
+
     const naviagate= useNavigate()
     const [records , setRecords] = useState([])
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
@@ -15,16 +20,34 @@ function Service() {
           })
           instance.get('')
           .then((response) => {
-            console.log(response.data);
             setRecords(response.data)
           })
           .catch((error) => {
             console.log(error);
           })
     },[BASE_URL , reducer])
+
     const handleSubmit =(e,sub) => {
-      naviagate(`/service/${sub.id}`)
+      naviagate(`/service/${sub.id}`,{state:{data}});
     }
+
+    useEffect(() => {
+      (async () => {
+        const locationPermission = await window.confirm('Do you allow us to use your location?');
+        if(locationPermission){
+          navigator.geolocation.getCurrentPosition((position) => {
+            setData((data) => ({
+              ...data,
+              latitude: position.coords.latitude,
+              longitude: position.coords.latitude,
+            }));
+          })
+        }
+      })();
+     }, []);
+     
+  
+   
   return (
     <Layouts>
         
@@ -38,6 +61,7 @@ function Service() {
        </svg> */}
    </button>
 </div>
+
 
 {records.map((data , index ) => 
 
