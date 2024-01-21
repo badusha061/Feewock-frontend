@@ -1,0 +1,8 @@
+.modal-container {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Use a z-index value higher than the data table */
+  }
+  

@@ -2,8 +2,11 @@ import React, { useEffect , useReducer , useState} from 'react'
 import Layouts from '../../layouts/Layouts'
 import axios from 'axios'
 import { useNavigate  } from 'react-router-dom'
+import LocationModal from './LocationModal'
+
 
 function Service() {
+    const [modalOpen, setModalOpen] = useState(false);
     const [data , setData] = useState({
       latitude:'',
       longitude:''
@@ -28,25 +31,33 @@ function Service() {
     },[BASE_URL , reducer])
 
     const handleSubmit =(e,sub) => {
-      naviagate(`/service/${sub.id}`,{state:{data}});
+      if(data.latitude && data.longitude){
+        naviagate(`/service/${sub.id}`,{state:{data}});
+      }else{
+        setModalOpen(true)
+      }
     }
 
     useEffect(() => {
-      (async () => {
-        const locationPermission = await window.confirm('Do you allow us to use your location?');
-        if(locationPermission){
-          navigator.geolocation.getCurrentPosition((position) => {
-            setData((data) => ({
-              ...data,
-              latitude: position.coords.latitude,
-              longitude: position.coords.latitude,
-            }));
-          })
-        }
-      })();
+      setModalOpen(true)
+
      }, []);
      
-  
+     const handleCancel = () => {
+      setModalOpen(false)
+     }
+
+     const handleConform = () => {
+      navigator.geolocation.getCurrentPosition((position) => {
+              setData((data) => ({
+                ...data,
+                latitude: position.coords.latitude,
+                longitude: position.coords.latitude,
+              }));
+          })
+      setModalOpen(false)
+     }  
+     console.log(data.latitude , data.longitude);
    
   return (
     <Layouts>
@@ -62,13 +73,18 @@ function Service() {
    </button>
 </div>
 
+{modalOpen && <LocationModal close={handleCancel} handleConform={handleConform} setOpenModal={setModalOpen} />}  
+
+
 
 {records.map((data , index ) => 
 
 <div className='ml-40 flex flex-col mb-8' key={index}>
+
 <h1 className='font-bold text-lg mb-4' > {data.name} </h1>
 
-<div className="flex flex-wrap">
+
+<div className="flex justify-between">
   {data.subservice.map((sub , index) => 
     <div
     onClick={(e) => handleSubmit(e,sub)}

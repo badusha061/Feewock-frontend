@@ -14,6 +14,7 @@ import EmployeeRoutes from './Routes/EmployeeRouters.jsx'
 import Service from './components/Service/Service.jsx'
 import EmployeeList from './components/EmployeeList/EmployeeList.jsx'
 import Location from './components/Test/Location.jsx'
+import Banner from './components/Banner/Banner.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

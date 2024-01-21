@@ -24,7 +24,7 @@ function Navbar() {
   return (
     <>
 
-       <div className="w-screen  justify-between items-center inline-flex shadow-lg ">
+       <div className="w-screen   justify-between items-center inline-flex shadow-lg ">
         <img src={icon} alt="navbaricon"  className='w-[140px] h-[28]'/>
         <div className="justify-start items-center gap-10 flex">
           

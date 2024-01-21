@@ -127,9 +127,9 @@ const handlClick = (e) => {
   if(!employee.gender.trim()){
     validateError.gender = "Gender Cannot be Empty"
   } 
-  // if(!employee.location.trim()){
-  //   validateError.location = "location cannot be Empty"
-  // }
+  if(employee.location === null){
+    validateError.location = "location cannot be Empty"
+  }
   const current = new Date()
   const inputAge = new Date(employee.dob)
   const age = current.getFullYear() - inputAge.getFullYear()
@@ -361,6 +361,7 @@ const handlClick = (e) => {
         </div>
 
         <div>
+        <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="location">Select Your Location</label>
         <GooglePlacesAutocomplete
           apiKey='AIzaSyAsc69G6yC0OKUVzNm5o90_EvDHHNL7wxE'
           selectProps={{
@@ -373,6 +374,7 @@ const handlClick = (e) => {
     
 
             <div>
+          <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="position">Select Postions</label>
             <Select
             closeMenuOnSelect={false}
             components={animatedComponents}

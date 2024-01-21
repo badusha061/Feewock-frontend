@@ -3,13 +3,17 @@ import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
+import EmployeeIndivual from '../EmployeeIndivual/EmployeeIndivual';
+import './Employees.css'
 
 
 function EmployeeManagement() {
   const [records , setRecords] = useState([])
   const [search , setSearch] = useState('')
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
-  
+  const [modal , setModal] = useState(false)
+  const [employeeId , setEmployeeId] = useState('')
+
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const conditionalRowStyles  = [
@@ -31,7 +35,6 @@ function EmployeeManagement() {
     })
     instance.get('')
     .then((response) => {
-      console.log(response.data);
       setRecords(response.data)
     })
     .catch((error) => {
@@ -63,7 +66,7 @@ function EmployeeManagement() {
       name:"views",
       cell : (row) => {
         return(
-          <button className= "bg-transparent hover:bg-custom-voilate text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" >VIEWS</button> 
+          <button className= "bg-transparent hover:bg-custom-voilate text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={ () => handleModal(row) } >VIEWS</button> 
         );
       },
   
@@ -154,6 +157,14 @@ function EmployeeManagement() {
     })
   }
 
+  const handleModal = (row) => {
+    setModal(true)
+    setEmployeeId(row.id)
+  }
+
+  const handleCloseModal = () => {
+    setModal(false)
+  }
   return (
     <AdminLayouts>
          <div className="flex items-center"> 
@@ -199,6 +210,13 @@ function EmployeeManagement() {
       >
         
       </DataTable>
+
+      {modal && (
+         <div className="modal-container">
+            <EmployeeIndivual employeeId={employeeId} close={handleCloseModal} />
+         </div>
+      )}
+     
     </AdminLayouts>
   )
 }

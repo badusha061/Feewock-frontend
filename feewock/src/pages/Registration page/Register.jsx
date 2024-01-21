@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Register.css'
 import Layouts from '../../layouts/Layouts';
 import Swal from 'sweetalert2';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 
 
@@ -19,7 +20,7 @@ function Register() {
     email:'',
     phone_number:'',
     role:3,
-    location:'',
+    location:null,
     password1:'',
     password2:'',
   })
@@ -32,6 +33,17 @@ function Register() {
     setUser({...user,[e.target.id] : e.target.value});
   };
 
+  const handleSelect = async (value) => {  
+    try {
+
+      setUser((prevEmployee) => ({
+        ...prevEmployee,
+        location: value.label, 
+      }));
+    } catch (error) {
+      console.error('Error fetching geolocation:', error);
+    }
+  };
 
   const registration = (e) => {
      e.preventDefault()
@@ -56,7 +68,7 @@ function Register() {
       validateError.phone_number = "Phone Number Should Contain 10 Digits"
     }
 
-    if(!user.location.trim()){
+    if(user.location === null){
       validateError.location = "Locaion Cannot be Empty"
     }
 
@@ -69,6 +81,9 @@ function Register() {
     }else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(user.password1)){
       validateError.password1 = "Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"
     }
+
+    console.log(user);
+
     setErrors(validateError)
 
     if(Object.keys(validateError).length === 0){
@@ -198,14 +213,15 @@ function Register() {
 
         </div>
         <div>
-          <label className="font-semibold text-sm text-gray-600 pb-1 block" htmlFor="location">Location</label>
-          <input
-            className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            type="location"
-            id="location"
-            value={user.location}
-            onChange={handlechagnge}
-          />
+          <label className="font-semibold text-sm text-gray-600 pb-1 block"   htmlFor="location"> Location </label>
+          <GooglePlacesAutocomplete
+          apiKey='AIzaSyAsc69G6yC0OKUVzNm5o90_EvDHHNL7wxE'
+          selectProps={{
+            onChange: handleSelect,
+            placeholder:"Enter Your Location",
+
+          }}
+          />  
           {errors.location && <span className=' text-red-700 font-bold ' > {errors.location} </span>}
 
         </div>

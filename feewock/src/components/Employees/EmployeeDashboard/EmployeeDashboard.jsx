@@ -1,6 +1,9 @@
 import React from 'react'
 import EmployeeLoyouts from '../../../layouts/EmployeeLoyouts'
 import banner from './Images/banner.png'
+import banner1 from './Images/banner1.jpg'
+import banner2 from './Images/banner2.jpg'
+
 
 function EmployeeDashboard() {
   return (
@@ -11,7 +14,7 @@ function EmployeeDashboard() {
             <div className="flex items-center justify-between h-16 lg:h-20">
                 <div className="flex-shrink-0">
                     <a href="#" title="" className="flex">
-                        <img className="w-auto h-8" src="" alt="" />
+                        <img className="w-auto h-8" src='' alt="" />
                     </a>
                 </div>
 
@@ -29,7 +32,7 @@ function EmployeeDashboard() {
         </div>
     </header>
 
-    <section className="bg-yellow-50 overflow-hidden">
+    <section className="bg-custom-blue rounded-xl  overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-stretch lg:min-h-[800px]">
             <div className="relative flex items-center justify-center w-full lg:order-2 lg:w-7/12">
                 <div className="absolute bottom-0 right-0 hidden lg:block">
@@ -37,14 +40,14 @@ function EmployeeDashboard() {
                 </div>
 
                 <div className="relative px-4 pt-24 pb-16 text-center sm:px-6 md:px-24 2xl:px-32 lg:py-24 lg:text-left">
-                    <h1 className="text-4xl font-bold text-black sm:text-6xl xl:text-8xl">
+                    <h1 className="text-4xl font-bold text-white sm:text-6xl xl:text-8xl">
                         WELCOM TO <br />
                         FEEWOCK.
                     </h1>
-                    <p className="mt-8 text-xl text-black">We help you to make your remote work life easier. Build a distruction free working experience.</p>
+                    <p className="mt-8 text-xl text-white">We help you to make your remote work life easier. Build a distruction free working experience.</p>
 
                 
-                    <p className="mt-5 text-base text-black">Instant access . No credit card required</p>
+                    <p className="mt-5 text-base text-white">Instant access . No credit card required</p>
                 </div>
 
                 <div className="absolute right-0 z-10 -bottom-16 lg:top-24 lg:-left-20">
@@ -54,22 +57,12 @@ function EmployeeDashboard() {
 
             <div className="relative w-full overflow-hidden lg:order-1 h-96 lg:h-auto lg:w-5/12">
                 <div className="absolute inset-0">
-                    <img className="object-cover w-full h-full scale-150" src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/3/man-working-on-laptop.jpg" alt="" />
+                    <img className="object-cover w-full h-full scale-150" src={banner2} alt="" />
                 </div>
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
-                <div className="absolute bottom-0 left-0">
-                    <div className="p-4 sm:p-6 lg:p-8">
-                        <div className="flex items-center">
-                            <svg className="w-10 h-10 text-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-                            </svg>
-                            <h2 className="font-bold text-white text-7xl ml-2.5">395</h2>
-                        </div>
-                        <p className="max-w-xs mt-1.5 text-xl text-white">Professionals have organized their desk via PostCra</p>
-                    </div>
-                </div>
+            
             </div>
         </div>
     </section>
