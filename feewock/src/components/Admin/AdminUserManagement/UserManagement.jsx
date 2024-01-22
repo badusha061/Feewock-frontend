@@ -1,17 +1,17 @@
 import React, { useEffect, useReducer, useState , useMemo } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
-import axios from 'axios'
 import Swal from 'sweetalert2';
+import axios from '../../../AxiosConfig/Axios.js'
+// import axios from 'axios';
 
 
-function UserManagement() {
+function UserManagement() { 
   const [search , setSearch] = useState('')
 
   
   
-   
-
+   const access_token = localStorage.getItem('access_token')
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -131,17 +131,22 @@ const coloumn = [
 
   const [records , setRecords ] = useState([])
   useEffect(() => {
-    
+    console.log('the access token is the of admin ',access_token);
     const instance = axios.create({
-      baseURL:`${BASE_URL}/dashboard/userlist`
+      baseURL:`${BASE_URL}/dashboard/userlist`,
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json',  
+      },
     })
+
     instance.get('')
     .then((response) => {
       console.log(response.data);
       setRecords(response.data)
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.response);
     })
   },[reducer , BASE_URL])
 

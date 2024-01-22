@@ -69,7 +69,10 @@ function Login() {
               icon: "success",
               title: "Successfully Login User"
             });
-            localStorage.setItem('token',respose.data)
+            localStorage.clear();
+            axios.defaults.headers.common['Authorization'] = `Bearer${respose.data.access}`;
+            localStorage.setItem('access_token',respose.data.access)
+            localStorage.setItem('refresh_token',respose.data.refresh)
             localStorage.setItem('userDetails',JSON.stringify(respose.data));
             dispatch(setToken(respose.data.access))
             navigate('/')
@@ -108,7 +111,11 @@ function Login() {
             icon: "success",
             title: "Successfully Login Admin"
           });
-          localStorage.setItem('token',respose.data)
+          console.log(respose.data);
+          localStorage.clear();
+          axios.defaults.headers.common['Authorization'] = `Bearer ${respose.data.access}`;
+          localStorage.setItem('access_token',respose.data.access)
+          localStorage.setItem('refresh_token',respose.data.refresh)
           dispatch(setToken(respose.data.access))
           navigate('/admin/dashboard')
         } else if (respose.data.role === 2 ) {
@@ -128,7 +135,10 @@ function Login() {
               icon: "success",
               title: "Successfully Login Employee"
             });
-            localStorage.setItem('token',respose.data)
+            localStorage.clear();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${respose.data.access}`;
+            localStorage.setItem('access_token',respose.data.access)
+            localStorage.setItem('refresh_token',respose.data.refresh)
             localStorage.setItem('userDetails',JSON.stringify(respose.data));
             dispatch(setToken(respose.data.access))
             navigate('/employee/employeedashboard')

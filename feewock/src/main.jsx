@@ -15,6 +15,8 @@ import Service from './components/Service/Service.jsx'
 import EmployeeList from './components/EmployeeList/EmployeeList.jsx'
 import Location from './components/Test/Location.jsx'
 import Banner from './components/Banner/Banner.jsx'
+import axios from './AxiosConfig/Axios.js'
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(

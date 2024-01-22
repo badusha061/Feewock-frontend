@@ -3,7 +3,7 @@ import icon from './image/icon.png'
 import { NavLink } from 'react-router-dom';
 import './Navbar.css'
 import { useSelector } from 'react-redux';
-
+import axios from 'axios';
 
 function Navbar() {
   const t = useSelector(state => state.token.token)
@@ -11,12 +11,14 @@ function Navbar() {
   const [token , setToken] = useState('')
 
   useEffect(() => {
-    const tokenvalue = localStorage.getItem('token')
-    setToken(tokenvalue)
+    const access_token = localStorage.getItem('access_token')
+    const refresh_token = localStorage.getItem('refresh_token')
+    setToken(access_token)
   },[token])
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('userDetails')
     setToken('')
   }
