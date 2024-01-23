@@ -12,8 +12,9 @@ function UserManagement() {
   
   
    const access_token = localStorage.getItem('access_token')
+
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
-  
+  console.log(reducer);
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const handleBlock = async ({id}) => {
     const instance = axios.create({
@@ -134,10 +135,10 @@ const coloumn = [
     console.log('the access token is the of admin ',access_token);
     const instance = axios.create({
       baseURL:`${BASE_URL}/dashboard/userlist`,
-      headers: {
-        'Authorization': `Bearer ${access_token}`,
-        'Content-Type': 'application/json',  
-      },
+      // headers: {
+      //   'Authorization': `Bearer ${access_token}`,
+      //   'Content-Type': 'application/json',  
+      // },
     })
 
     instance.get('')

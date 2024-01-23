@@ -3,6 +3,7 @@ import EmployeeDashboard from "../components/Employees/EmployeeDashboard/Employe
 import EmployeeRegister from "../components/Employees/EmployeeRegister/EmployeeRegister";
 import EmployeeOtp from "../components/Employees/EmployeeRegister/EmployeeOtp";
 import EmployeeProfile from "../components/Employees/EmployeeProfile/EmployeeProfile";
+import EditProfile from "../components/Employees/EmployeeProfile/EditProfile";
 
 
 
@@ -13,7 +14,7 @@ export default function EmployeeRoutes () {
         <Route path="/employeeregister" element={<EmployeeRegister />} />
         <Route path="/employeeregister/otp" element={<EmployeeOtp />} />
         <Route path="/employeeprofile" element={<EmployeeProfile />} />
-    
+        <Route path="/test" element={<EditProfile />} /> 
     </Routes>
     )
   

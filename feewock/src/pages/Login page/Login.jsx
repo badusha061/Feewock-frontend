@@ -111,7 +111,6 @@ function Login() {
             icon: "success",
             title: "Successfully Login Admin"
           });
-          console.log(respose.data);
           localStorage.clear();
           axios.defaults.headers.common['Authorization'] = `Bearer ${respose.data.access}`;
           localStorage.setItem('access_token',respose.data.access)
