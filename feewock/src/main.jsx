@@ -16,6 +16,8 @@ import EmployeeList from './components/EmployeeList/EmployeeList.jsx'
 import Location from './components/Test/Location.jsx'
 import Banner from './components/Banner/Banner.jsx'
 import axios from './AxiosConfig/Axios.js'
+import Views from './components/EmployeeList/Views.jsx'
+import SocailMedia from './components/SocailMedia/SocailMedia.jsx'
 
 
 const router = createBrowserRouter(
@@ -27,9 +29,10 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login />} />
       <Route path='service' element={<Service />} />
       <Route path='service/:id' element={<EmployeeList />} />
+      <Route path='views/:id' element={<Views />} />
       <Route path='/admin/*' element={<AdminRoutes />} />
       <Route path='/employee/*' element={<EmployeeRoutes />} />
-      <Route path='location/' element={<Location />} />
+      <Route path='test' element={<SocailMedia />} />
     </Route>
   )
     

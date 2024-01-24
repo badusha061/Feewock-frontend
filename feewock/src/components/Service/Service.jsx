@@ -52,7 +52,7 @@ function Service() {
               setData((data) => ({
                 ...data,
                 latitude: position.coords.latitude,
-                longitude: position.coords.latitude,
+                longitude: position.coords.longitude,
               }));
           })
       setModalOpen(false)

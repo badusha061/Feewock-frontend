@@ -96,6 +96,7 @@ function EmployeeProfile() {
         setModal(false)
     }
     const handleModal = (e) => {
+        console.log('clicked');
         setModal(true)
     }
 

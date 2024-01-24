@@ -111,63 +111,63 @@ function EditProfile({close , EmployeeId}) {
     const handleClick = (e) => {
       e.preventDefault()
       const validateError = {}
-      if(!employee.username.trim()){
-        validateError.username = "Username Not be Empty"
-      }
-      if(!employee.email.trim()){
-        validateError.email = "Email Not be Empty"
-      }else if (!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(employee.email)){
-        validateError.email = "Email should be Corract"
-      }
-      if(!employee.phone_number.trim()){
-        validateError.phone_number = "Phone Number Cannot be Empty"
-      }else if (employee.phone_number.length != 10){
-        validateError.phone_number = "Phone  Number Should Contain 10 Digits"
-      }else if (!/^[0-9]+$/.test(employee.phone_number)){
-        validateError.phone_number = "Phone Number must contain only numeric characters"
-      }
-      if(!employee.city.trim()){
-        validateError.city = "City Cannot be Empty"
-      }
-      if(!employee.state.trim()){
-        validateError.state = "State Cannot be Empty"
-      }
-      if(!employee.gender.trim()){
-        validateError.gender = "Gender Cannot be Empty"
-      } 
-      if(employee.location === null){
-        validateError.location = "location cannot be Empty"
-      }
-      const current = new Date()
-      const inputAge = new Date(employee.dob)
-      const age = current.getFullYear() - inputAge.getFullYear()
-      if(!employee.dob.trim){
-        validateError.dob = "Date Of Birth Cannot be Empty"
-      }else if (age < 18){
-        validateError.gender = "Age must be at least 18 years old."
-      }
-      if(!employee.type_of_work.trim()){
-        validateError.type_of_work = "Work Types Canot be Empty"
-      }
+      // if(!employee.username.trim()){
+      //   validateError.username = "Username Not be Empty"
+      // }
+      // if(!employee.email.trim()){
+      //   validateError.email = "Email Not be Empty"
+      // }else if (!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(employee.email)){
+      //   validateError.email = "Email should be Corract"
+      // }
+      // if(!employee.phone_number.trim()){
+      //   validateError.phone_number = "Phone Number Cannot be Empty"
+      // }else if (employee.phone_number.length != 10){
+      //   validateError.phone_number = "Phone  Number Should Contain 10 Digits"
+      // }else if (!/^[0-9]+$/.test(employee.phone_number)){
+      //   validateError.phone_number = "Phone Number must contain only numeric characters"
+      // }
+      // if(!employee.city.trim()){
+      //   validateError.city = "City Cannot be Empty"
+      // }
+      // if(!employee.state.trim()){
+      //   validateError.state = "State Cannot be Empty"
+      // }
+      // if(!employee.gender.trim()){
+      //   validateError.gender = "Gender Cannot be Empty"
+      // } 
+      // if(employee.location === null){
+      //   validateError.location = "location cannot be Empty"
+      // }
+      // const current = new Date()
+      // const inputAge = new Date(employee.dob)
+      // const age = current.getFullYear() - inputAge.getFullYear()
+      // if(!employee.dob.trim){
+      //   validateError.dob = "Date Of Birth Cannot be Empty"
+      // }else if (age < 18){
+      //   validateError.gender = "Age must be at least 18 years old."
+      // }
+      // if(!employee.type_of_work.trim()){
+      //   validateError.type_of_work = "Work Types Canot be Empty"
+      // }
     
-      if(employee.service.length === 0){
-        validateError.service = "Please Take Any Position"
-      }
-      if(!employee.address.trim()){
-        validateError.address = "Address Cannot be Empty"
-      }
-      if(!employee.adhar_number.trim()){
-        validateError.adhar_number = "Adhar Number Cannot Empty"
-      }else if(employee.adhar_number.length != 12){
-        validateError.adhar_number = "Adhar Card Number is 12 digits"
-      }else if (!/^[0-9]+$/.test(employee.adhar_number)){
-        validateError.adhar_number = "Adhar Car Number must contain only numeric characters"
-      }else if (!/^[2-9][0-9]*$/.test(employee.adhar_number)){
-        validateError.adhar_number = "Adhar number cannot start with 0 or 1. "
-      }
+      // if(employee.service.length === 0){
+      //   validateError.service = "Please Take Any Position"
+      // }
+      // if(!employee.address.trim()){
+      //   validateError.address = "Address Cannot be Empty"
+      // }
+      // if(!employee.adhar_number.trim()){
+      //   validateError.adhar_number = "Adhar Number Cannot Empty"
+      // }else if(employee.adhar_number.length != 12){
+      //   validateError.adhar_number = "Adhar Card Number is 12 digits"
+      // }else if (!/^[0-9]+$/.test(employee.adhar_number)){
+      //   validateError.adhar_number = "Adhar Car Number must contain only numeric characters"
+      // }else if (!/^[2-9][0-9]*$/.test(employee.adhar_number)){
+      //   validateError.adhar_number = "Adhar number cannot start with 0 or 1. "
+      // }
       
-      setErrors(validateError)
-      console.log(edit);
+      // setErrors(validateError)
+      // console.log(edit);
 
       if(Object.keys(validateError).length === 0){
         const instance = axios.create({
@@ -352,6 +352,7 @@ function EditProfile({close , EmployeeId}) {
 
 
   )
+}
 }
 
 export default EditProfile

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './EmployeeOtp.css'
 import { useSelector ,useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -9,7 +9,6 @@ import Swal from 'sweetalert2';
 function EmployeeOtp() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
   const [otp  , setOpt] = useState({                                                                  
     otp1:'',
     otp2:'',
@@ -108,7 +107,24 @@ function EmployeeOtp() {
     })
   }
 
- 
+  const [countDown ,setCountDown] = useState(120)
+  const [isTimeOver , setIsTimeOver]  = useState(false)
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setCountDown(prevCountdown => {
+  //       if (prevCountdown > 0) {
+  //         return prevCountdown - 1;
+  //       } else {
+  //         clearInterval(intervalId);
+  //         setIsTimeOver(true);
+  //         return 0;
+  //       }
+  //     });
+  //   }, 1000); 
+
+  //   return () => clearInterval(intervalId); 
+  // }, []);
 
   return (
 <div className='flex items-center  justify-center'>
@@ -138,6 +154,17 @@ function EmployeeOtp() {
         /> 
         
       </div>
+      {/* {!isTimeOver ? (
+        <button className="verifyButton" >
+          Your OTP will be Expire in {countDown} seconds
+        </button>
+
+      ):(
+        <button className="verifyButton" >
+          Sorry Your OTP time is Over Please Try Again
+        </button>
+      )} */}
+        
         <button className="verifyButton" type="submit" onClick={handleSubmit} >Verify</button>
           <button className="exitBtn">×</button>
           <p className="resendNote">Didn't receive the code? 
