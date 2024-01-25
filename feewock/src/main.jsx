@@ -18,6 +18,7 @@ import Banner from './components/Banner/Banner.jsx'
 import axios from './AxiosConfig/Axios.js'
 import Views from './components/EmployeeList/Views.jsx'
 import SocailMedia from './components/SocailMedia/SocailMedia.jsx'
+import OneOneChat from './components/Chat/Employee-user/OneOneChat.jsx'
 
 
 const router = createBrowserRouter(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path='/admin/*' element={<AdminRoutes />} />
       <Route path='/employee/*' element={<EmployeeRoutes />} />
       <Route path='test' element={<SocailMedia />} />
+      <Route path='chat' element={<OneOneChat />} />
     </Route>
   )
     

@@ -1,13 +1,16 @@
 import React,{useState , useReducer, useEffect} from 'react'
 import Layouts from '../../layouts/Layouts'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import background from './Images/background.jpg'
 import axios from 'axios'
+import OneOneChat from '../Chat/Employee-user/OneOneChat'
+
 
 function Views() {
     const [data , setData] = useState([])
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const params = useParams()
+    const navigate = useNavigate()
     const employeeId = params.id 
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     useEffect(() => {
@@ -27,6 +30,10 @@ function Views() {
             console.log(error);
           })
     },[BASE_URL , reducer])
+
+    const handleSubmit = () => {
+      navigate('/chat')
+    }
 
   return (
 <Layouts >
@@ -48,7 +55,9 @@ function Views() {
                 </div>
                 <span className="font-bold"> {data.username} </span>
                 <div class="group relative flex inline-flex">
-            <button>
+            <button
+            onClick={handleSubmit}
+            >
                 <svg
                 stroke-linejoin="round"
                 stroke-linecap="round"

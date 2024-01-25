@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { setToken } from '../../actions/TokenAction'
 import Layouts from '../../layouts/Layouts'
 import Swal from 'sweetalert2';
+import GoogleLogin from 'react-google-login'
 
 
 function Login() {
@@ -361,7 +362,7 @@ function Login() {
               </svg>
               <span className="ml-2">Sign in with Google</span>
             </button>
-           
+
           </div>
         </div>
         <br />
