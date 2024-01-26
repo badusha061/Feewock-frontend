@@ -1,7 +1,113 @@
-import React from 'react'
+import React, { useEffect, useState , useReducer } from 'react'
 import Layouts from '../../../layouts/Layouts'
+import { json, useLocation, useNavigate } from 'react-router-dom'
+import useAxios from '../../../AxiosConfig/Axios'
+import Swal from 'sweetalert2';
+import { w3cwebsocket as W3CWebSocket  } from 'websocket';
+
 
 function OneOneChat() {
+    const navigate = useNavigate()
+    const [data , setData] = useState([])
+    const [messages , setMessages] = useState([])
+    const [newmessage , setNewMessage] = useState('')
+    const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
+    const location = useLocation()
+    const {employeeId} = location.state
+    const UserDetailsJson = localStorage.getItem('userDetails')
+    const access_token = localStorage.getItem('access_token')
+    const UserDetails = JSON.parse(UserDetailsJson) 
+    const user_Id = UserDetails === null ? null : UserDetails.id
+    let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+    const axiosInstance = useAxios()
+
+    useEffect(() => {
+        const instance = axiosInstance.create({
+            baseURL:`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`,
+              headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-Type': 'application/json',  
+            },
+          })
+          instance.get('')
+          .then((response)=> {
+            setData(response.data)
+          })
+          .catch((error) => {
+            if(error.response.status === 401){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    },
+                    
+                  });
+                  
+                  Toast.fire({
+                    icon: 'error',
+                    title: 'Please Login',
+                  });
+                navigate('/login')
+            }
+            console.log(error.response.status);
+          })
+    },[BASE_URL , reducer])
+
+
+    useEffect(() => {
+        const instance = axiosInstance.create({
+            baseURL:`${BASE_URL}/chat/message/${user_Id}/${employeeId}/`,
+              headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-Type': 'application/json',  
+            },
+          })
+          instance.get('')
+          .then((response)=> {
+            console.log(response.data);
+            setMessages(response.data)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    },[employeeId , user_Id])
+
+    const client = new W3CWebSocket('ws://localhost:8000/ws/chat/') 
+    useEffect(() => {
+        client.onopen = () => {
+            console.log('websocket client connected');
+        }
+        client.onmessage =() => {
+            const dataFormServer  = JSON.parse(messages.data)
+            if(dataFormServer){
+                setMessages(prevMessages => [...prevMessages, dataFormServer]);
+            }
+        }
+        client.onerror = (error) => {
+            console.error('WebSocket error:', error.error);
+        };
+        client.onclose = () => {
+            console.log('WebSocket client disconnected');
+        };
+        return  () => {
+            client.close()
+        }
+    },[])
+    const handleMessage = (e) => {
+        e.preventDefault();
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ text: newmessage }));
+            setNewMessage(""); 
+        } else {
+            console.error('WebSocket not open yet. Message not sent.');
+        }
+    }
+
   return (
     <Layouts>
 
@@ -34,21 +140,40 @@ function OneOneChat() {
                 className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
                 >
                 <div className="h-20 w-20 rounded-full border overflow-hidden">
-                    <img
-                    src="https://avatars3.githubusercontent.com/u/2763884?s=128"
-                    alt="Avatar"
-                    className="h-full w-full"
-                    />
+                    {data.images ? (
+                         <img
+                         src={data.images}
+                         alt="Avatar"
+                         className="h-full w-full"
+                         />
+                    ):(
+                        <img
+                        src="https://avatars3.githubusercontent.com/u/2763884?s=128"
+                        alt="Avatar"
+                        className="h-full w-full"
+                        />
+                    )}
                 </div>
-                <div className="text-sm font-semibold mt-2">Aminos Co.</div>
-                <div className="text-xs text-gray-500">Lead UI/UX Designer</div>
+                <div className="text-sm font-bold mt-2">{data.username} </div>
+                {data.service ? (
+                    data.service.map((s, index) => (
+                        <div className="text-xs text-gray-500"> {s.name} </div>
+                    ))
+                ):(
+                    <div className="text-xs text-gray-500"> No Service</div>
+                )}
                 <div className="flex flex-row items-center mt-3">
                     <div
                     className="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full"
                     >
                     <div className="h-3 w-3 bg-white rounded-full self-end mr-1"></div>
                     </div>
+                {data.is_active === true ? (
                     <div className="leading-none ml-1 text-xs">Active</div>
+
+                ):(
+                    <div className="leading-none ml-1 text-xs">No Active</div>
+                )}
                 </div>
                 </div>
           
@@ -57,198 +182,42 @@ function OneOneChat() {
                 <div
                 className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
                 >
-                <div className="flex flex-col h-full overflow-x-auto mb-4">
-                    <div className="flex flex-col h-full">
+               <div className="flex flex-col h-full overflow-x-auto mb-4">
+                {messages.map((message, index) => (
+                    <div className="flex flex-col h-full" key={index}>
                     <div className="grid grid-cols-12 gap-y-2">
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                        <div className="flex flex-row items-center">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>Hey How are you today?</div>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                        <div className="flex flex-row items-center">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit. Vel ipsa commodi illum saepe numquam maxime
-                                asperiores voluptate sit, minima perspiciatis.
-                            </div>
-                            </div>
-                        </div>
-                        </div>
+                        {message.sender.id === user_Id ? (
                         <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                        <div className="flex items-center justify-start flex-row-reverse">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
+                            <div className="flex items-center justify-start flex-row-reverse">
+                            <div className="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
+                                <img
+                                src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+                                alt="U"
+                                className="w-full h-full rounded-full"
+                                />
                             </div>
-                            <div
-                            className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>I'm ok what about you?</div>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                        <div className="flex items-center justify-start flex-row-reverse">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                            <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                                <div>{message.message}</div>
                             </div>
                             </div>
                         </div>
-                        </div>
+                        ) : (
                         <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                        <div className="flex flex-row items-center">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>Lorem ipsum dolor sit amet !</div>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                        <div className="flex items-center justify-start flex-row-reverse">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                            </div>
-                            <div
-                                className="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500"
-                            >
-                                Seen
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                        <div className="flex flex-row items-center">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                            >
-                            <div>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Perspiciatis, in.
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                        <div className="flex flex-row items-center">
-                            <div
-                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                            >
-                            A
-                            </div>
-                            <div
-                            className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                            >
                             <div className="flex flex-row items-center">
-                                <button
-                                className="flex items-center justify-center bg-indigo-600 hover:bg-indigo-800 rounded-full h-8 w-10"
-                                >
-                                <svg
-                                    className="w-6 h-6 text-white"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                                    ></path>
-                                    <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    ></path>
-                                </svg>
-                                </button>
-                                <div className="flex flex-row items-center space-x-px ml-4">
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-12 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-6 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-5 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-3 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-1 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-1 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                                </div>
+                            <div className="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
+                                <img src={data.images} alt="U" className="w-full h-full rounded-full" />
+                            </div>
+                            <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                <div>{message.message}</div>
                             </div>
                             </div>
                         </div>
-                        </div>
+                        )}
                     </div>
                     </div>
+                ))}
                 </div>
+
                 <div
                     className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
                 >
@@ -275,6 +244,8 @@ function OneOneChat() {
                     <div className="flex-grow ml-4">
                     <div className="relative w-full">
                         <input
+                        value={newmessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
                         type="text"
                         className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                         />
@@ -300,6 +271,7 @@ function OneOneChat() {
                     </div>
                     <div className="ml-4">
                     <button
+                    onClick={handleMessage}
                         className="flex items-center justify-center bg-custom-blue hover:bg-custom-blue rounded-xl text-white px-4 py-1 flex-shrink-0"
                     >
                         <span>Send</span>
@@ -307,7 +279,7 @@ function OneOneChat() {
                         <svg
                             className="w-4 h-4 transform rotate-45 -mt-px"  
                             fill="none"
-                            stroke="currentColor"
+                            stroke="currentColor"   
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
                         >

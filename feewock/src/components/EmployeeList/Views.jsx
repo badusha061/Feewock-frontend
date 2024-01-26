@@ -12,6 +12,7 @@ function Views() {
     const params = useParams()
     const navigate = useNavigate()
     const employeeId = params.id 
+    const access_token = localStorage.getItem('access_token')
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     useEffect(() => {
         const instance = axios.create({
@@ -32,7 +33,7 @@ function Views() {
     },[BASE_URL , reducer])
 
     const handleSubmit = () => {
-      navigate('/chat')
+      navigate('/chat',{state:{employeeId}})
     }
 
   return (

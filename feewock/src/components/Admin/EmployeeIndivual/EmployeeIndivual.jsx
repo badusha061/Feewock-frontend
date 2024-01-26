@@ -10,7 +10,7 @@ function EmployeeIndivual({ employeeId, close }) {
 
   useEffect(() => {
     const instance = axios.create({
-      baseURL: `${BASE_URL}/dashboard/employeeindivual/${employeeId}/`
+      baseURL: `${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`
     })
     instance.get('')
       .then((response) => {

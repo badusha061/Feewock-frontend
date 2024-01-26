@@ -2,14 +2,14 @@ import React, { useEffect, useReducer, useState , useMemo } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import Swal from 'sweetalert2';
-import axios from '../../../AxiosConfig/Axios.js'
+import useAxios from '../../../AxiosConfig/Axios.js'
 // import axios from 'axios';
 
 
 function UserManagement() { 
   const [search , setSearch] = useState('')
 
-  
+  const useAxiosInstance = useAxios();
   
    const access_token = localStorage.getItem('access_token')
 
@@ -17,7 +17,7 @@ function UserManagement() {
   console.log(reducer);
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const handleBlock = async ({id}) => {
-    const instance = axios.create({
+    const instance = await  useAxiosInstance.create({
       baseURL:`${BASE_URL}/dashboard/userlist/${id}/block`
     })
     instance.put('')
@@ -44,7 +44,7 @@ function UserManagement() {
     })
   }
   const handleUnBlock = async ({id}) => {
-    const instance = axios.create({
+    const instance = await  useAxiosInstance.create({
       baseURL:`${BASE_URL}/dashboard/userlist/${id}/unblock`
     })
     instance.put('')
@@ -132,18 +132,13 @@ const coloumn = [
 
   const [records , setRecords ] = useState([])
   useEffect(() => {
-    console.log('the access token is the of admin ',access_token);
-    const instance = axios.create({
+    const instance =  useAxiosInstance.create({
       baseURL:`${BASE_URL}/dashboard/userlist`,
-      // headers: {
-      //   'Authorization': `Bearer ${access_token}`,
-      //   'Content-Type': 'application/json',  
-      // },
     })
 
     instance.get('')
     .then((response) => {
-      console.log(response.data);
+   
       setRecords(response.data)
     })
     .catch((error) => {
