@@ -50,6 +50,7 @@ function EmployeeProfile() {
             console.log(error);
           })
     },[BASE_URL , reducer])
+    
     const handleButton = () => {
         document.getElementById('ImageInput').click();
     }

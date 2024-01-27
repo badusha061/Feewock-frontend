@@ -67,7 +67,7 @@ function EmployeeList() {
                         <h2 className="text-md font-medium tracking-tighter text-black lg:text-3xl mb-2">
                             {data.username}
                         </h2>
-                        <p className="text-sm text-black">{data.location}</p>
+                        <p className="text-sm  truncate overflow-hidden text-black">{data.location}</p>
                     </div>
                     <div className="mt-2">
                         {data.images ? (
@@ -76,10 +76,10 @@ function EmployeeList() {
                             <img className="w-32 h-32 rounded-lg" src={test} alt="" />
                         )}
                     </div>
-                    <div className="flex px-6 pb-8 sm:px-8 mt-auto">
+                    <div className="flex pt-3 px-6 pb-8 sm:px-8 mt-auto">
                     <button
                     onClick={() => handleViews(data.id)}
-                      className="overflow-hidden  w-32 p-2 h-12 bg-custom-blue text-white border-none rounded-md text-xl font-bold cursor-pointer relative z-10 group"
+                      className="overflow-hidden   w-32 p-2 h-12 bg-custom-blue text-white border-none rounded-md text-xl font-bold cursor-pointer relative z-10 group"
                           >
                             VIEWS
                             <span

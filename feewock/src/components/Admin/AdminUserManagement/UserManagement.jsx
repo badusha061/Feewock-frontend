@@ -3,7 +3,6 @@ import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import Swal from 'sweetalert2';
 import useAxios from '../../../AxiosConfig/Axios.js'
-// import axios from 'axios';
 
 
 function UserManagement() { 
@@ -14,7 +13,6 @@ function UserManagement() {
    const access_token = localStorage.getItem('access_token')
 
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
-  console.log(reducer);
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const handleBlock = async ({id}) => {
     const instance = await  useAxiosInstance.create({
@@ -130,22 +128,20 @@ const coloumn = [
     
   ]  
 
+  
   const [records , setRecords ] = useState([])
   useEffect(() => {
-    const instance =  useAxiosInstance.create({
-      baseURL:`${BASE_URL}/dashboard/userlist`,
-    })
-
-    instance.get('')
-    .then((response) => {
-   
-      setRecords(response.data)
-    })
-    .catch((error) => {
-      console.log(error.response);
-    })
+    getUser()
   },[reducer , BASE_URL])
 
+  let getUser = async () => {
+    
+      let response = await useAxiosInstance.get('/dashboard/userlist')
+      if(response.status === 200){
+        setRecords(response.data)
+      }
+   
+  }
 
   const searchdata = useMemo(() => {
     return records.filter(item => 

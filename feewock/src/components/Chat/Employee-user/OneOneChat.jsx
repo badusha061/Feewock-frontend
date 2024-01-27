@@ -10,6 +10,7 @@ function OneOneChat() {
     const navigate = useNavigate()
     const [data , setData] = useState([])
     const [messages , setMessages] = useState([])
+    const [users , setUser] = useState([])
     const [newmessage , setNewMessage] = useState('')
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const location = useLocation()
@@ -20,6 +21,16 @@ function OneOneChat() {
     const user_Id = UserDetails === null ? null : UserDetails.id
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const axiosInstance = useAxios()
+
+    useEffect(() => {
+      GetUser()
+    },[])
+    const GetUser = async () => {
+        const response = await axiosInstance.get(`${BASE_URL}/api/userindivual/${user_Id}/`)
+        if(response.status === 200){
+            setUser(response.data)
+        }
+    }
 
     useEffect(() => {
         const instance = axiosInstance.create({
@@ -59,6 +70,7 @@ function OneOneChat() {
     },[BASE_URL , reducer])
 
 
+
     useEffect(() => {
         const instance = axiosInstance.create({
             baseURL:`${BASE_URL}/chat/message/${user_Id}/${employeeId}/`,
@@ -76,16 +88,16 @@ function OneOneChat() {
             console.log(error);
           })
     },[employeeId , user_Id])
-
-    const client = new W3CWebSocket('ws://localhost:8000/ws/chat/') 
+    const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${user_Id}_${employeeId}/`) 
     useEffect(() => {
         client.onopen = () => {
             console.log('websocket client connected');
         }
-        client.onmessage =() => {
-            const dataFormServer  = JSON.parse(messages.data)
+        client.onmessage =(event) => {
+            const dataFormServer  = JSON.parse(event.data)
             if(dataFormServer){
                 setMessages(prevMessages => [...prevMessages, dataFormServer]);
+                forceUpdate();
             }
         }
         client.onerror = (error) => {
@@ -100,9 +112,9 @@ function OneOneChat() {
     },[])
     const handleMessage = (e) => {
         e.preventDefault();
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ text: newmessage }));
-            setNewMessage(""); 
+        if (client.readyState === W3CWebSocket.OPEN) {  
+            client.send(JSON.stringify({ text: newmessage, sender: user_Id }));
+            setNewMessage("");
         } else {
             console.error('WebSocket not open yet. Message not sent.');
         }
@@ -191,7 +203,7 @@ function OneOneChat() {
                             <div className="flex items-center justify-start flex-row-reverse">
                             <div className="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
                                 <img
-                                src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+                                src={users.images}
                                 alt="U"
                                 className="w-full h-full rounded-full"
                                 />
