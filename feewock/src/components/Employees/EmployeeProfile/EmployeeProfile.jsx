@@ -17,6 +17,7 @@ import location from './Images/location.png'
 import axios  from 'axios'
 import Swal from 'sweetalert2';
 import EditProfile from './EditProfile'
+import useAxios from '../../../AxiosConfig/Axios'
 
 
 
@@ -24,32 +25,43 @@ function EmployeeProfile() {
 
     const [data , setData] = useState([])
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
-
+    const axiosInstance = useAxios()
 
     const employeeDetailsJson = localStorage.getItem('userDetails')
     const Employee =JSON.parse(employeeDetailsJson)
     const EmployeeId = Employee.id
 
-    const access_token = localStorage.getItem('access_token')
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
     useEffect(() => {
-        const instance = axios.create({
-            baseURL:`${BASE_URL}/dashboard/employeeindivual/${EmployeeId}/`,
-            //   headers: {
-            //     'Authorization': `Bearer ${access_token}`,
-            //     'Content-Type': 'application/json',  
-            // },
-          })
-          instance.get('')
-          .then((response)=> {
-            console.log(response.data);
-            setData(response.data)
-          })
-          .catch((error) => {
-            console.log(error);
-          })
+        GetEmployeeData()
     },[BASE_URL , reducer])
+
+    const GetEmployeeData = async() => {
+        const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${EmployeeId}/`)
+        if (response.status === 200){
+            setData(response.data)
+        }else{
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+                
+              });
+              
+              Toast.fire({
+                icon: 'error',
+                title: 'Unauthorized please Login',
+              });
+              return false
+        }
+    }
     
     const handleButton = () => {
         document.getElementById('ImageInput').click();
@@ -59,13 +71,12 @@ function EmployeeProfile() {
     const handleImage = async (e) => {
         e.preventDefault()
         const file = e.target.files[0]
-        console.log('firls is the',file);
         if(file){
             const config = {headers:{'Content-Type':'multipart/form-data'}}
             const formData = new FormData();
             
             formData.append('images',file)
-            const response = await axios.put(`${BASE_URL}/employees/employeeupdate/${EmployeeId}/`, formData,config);
+            const response = await axiosInstance.put(`${BASE_URL}/employees/employeeupdate/${EmployeeId}/`, formData,config);
             if(response.status === 200){
                 const Toast = Swal.mixin({
                     toast: true,

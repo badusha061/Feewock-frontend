@@ -32,6 +32,10 @@ function OneOneChat() {
         }
     }
 
+    const employeeDetailsJson = localStorage.getItem('userDetails')
+    const Employee =JSON.parse(employeeDetailsJson)
+    const EmployeeId = Employee.id
+
     useEffect(() => {
         const instance = axiosInstance.create({
             baseURL:`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`,
@@ -72,34 +76,40 @@ function OneOneChat() {
 
 
     useEffect(() => {
-        const instance = axiosInstance.create({
-            baseURL:`${BASE_URL}/chat/message/${user_Id}/${employeeId}/`,
-              headers: {
-                'Authorization': `Bearer ${access_token}`,
-                'Content-Type': 'application/json',  
-            },
-          })
-          instance.get('')
-          .then((response)=> {
-            console.log(response.data);
-            setMessages(response.data)
-          })
-          .catch((error) => {
-            console.log(error);
-          })
+        GetMessage()
     },[employeeId , user_Id])
+
+    const GetMessage = async () => {
+        const response = await axiosInstance.get(`${BASE_URL}/chat/message/${user_Id}/${employeeId}/`)
+        if(response.status === 200){
+            setMessages(response.data)
+        }else{
+            console.log('something error');
+        }
+    }
+
+
     const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${user_Id}_${employeeId}/`) 
     useEffect(() => {
         client.onopen = () => {
             console.log('websocket client connected');
         }
-        client.onmessage =(event) => {
-            const dataFormServer  = JSON.parse(event.data)
-            if(dataFormServer){
-                setMessages(prevMessages => [...prevMessages, dataFormServer]);
-                forceUpdate();
+        client.onmessage = (event) => {
+            console.log('before come the message');
+            console.log('before come the message',event.data);
+            try{
+                const dataFromServer = JSON.parse(event.data);
+                console.log('after message',dataFromServer);
+                if (dataFromServer) {
+                    const newMessages = [...messages, dataFromServer];
+                    setMessages(newMessages);
+                    console.log('New messages:', newMessages);
+                }
+            }catch(error){
+                console.log('the error is the',error);
             }
-        }
+        };
+        
         client.onerror = (error) => {
             console.error('WebSocket error:', error.error);
         };
@@ -109,9 +119,12 @@ function OneOneChat() {
         return  () => {
             client.close()
         }
-    },[])
+    },[user_Id , employeeId])
+
     const handleMessage = (e) => {
         e.preventDefault();
+        console.log('new messaga is the',newmessage);
+        console.log('WebSocket connection state:', client.readyState);
         if (client.readyState === W3CWebSocket.OPEN) {  
             client.send(JSON.stringify({ text: newmessage, sender: user_Id }));
             setNewMessage("");
