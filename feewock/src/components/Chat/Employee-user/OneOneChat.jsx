@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useReducer } from 'react'
+import React, { useEffect, useState , useReducer , useRef } from 'react'
 import Layouts from '../../../layouts/Layouts'
 import { json, useLocation, useNavigate } from 'react-router-dom'
 import useAxios from '../../../AxiosConfig/Axios'
@@ -21,7 +21,7 @@ function OneOneChat() {
     const user_Id = UserDetails === null ? null : UserDetails.id
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const axiosInstance = useAxios()
-
+    const messageRef = useRef()
     useEffect(() => {
       GetUser()
     },[])
@@ -34,7 +34,10 @@ function OneOneChat() {
 
     const employeeDetailsJson = localStorage.getItem('userDetails')
     const Employee =JSON.parse(employeeDetailsJson)
-    const EmployeeId = Employee.id
+    let EmployeeId
+    if(Employee){
+        EmployeeId = Employee.id
+    }
 
     useEffect(() => {
         const instance = axiosInstance.create({
@@ -89,12 +92,29 @@ function OneOneChat() {
     }
 
 
+    const handleMessage = (e) => {
+        e.preventDefault();
+        console.log('new messaga is the',newmessage);
+        console.log('WebSocket connection state:', client.readyState);
+        if (client.readyState === W3CWebSocket.OPEN) {  
+            client.send(JSON.stringify({ text: messageRef.current.value , sender: user_Id }));
+            messageRef.current.value = "";
+        } else {
+            console.error('WebSocket not open yet. Message not sent.');
+        }
+    }
+
+
     const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${user_Id}_${employeeId}/`) 
     useEffect(() => {
         client.onopen = () => {
             console.log('websocket client connected');
         }
         client.onmessage = (event) => {
+            console.log('before come the message');
+            console.log('before come the message');
+            console.log('before come the message');
+            console.log('before come the message');
             console.log('before come the message');
             console.log('before come the message',event.data);
             try{
@@ -111,7 +131,7 @@ function OneOneChat() {
         };
         
         client.onerror = (error) => {
-            console.error('WebSocket error:', error.error);
+            console.error('WebSocket error:', error);
         };
         client.onclose = () => {
             console.log('WebSocket client disconnected');
@@ -119,19 +139,9 @@ function OneOneChat() {
         return  () => {
             client.close()
         }
-    },[user_Id , employeeId])
+    },[])
 
-    const handleMessage = (e) => {
-        e.preventDefault();
-        console.log('new messaga is the',newmessage);
-        console.log('WebSocket connection state:', client.readyState);
-        if (client.readyState === W3CWebSocket.OPEN) {  
-            client.send(JSON.stringify({ text: newmessage, sender: user_Id }));
-            setNewMessage("");
-        } else {
-            console.error('WebSocket not open yet. Message not sent.');
-        }
-    }
+
 
   return (
     <Layouts>
@@ -269,8 +279,7 @@ function OneOneChat() {
                     <div className="flex-grow ml-4">
                     <div className="relative w-full">
                         <input
-                        value={newmessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
+                        ref={messageRef}
                         type="text"
                         className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                         />

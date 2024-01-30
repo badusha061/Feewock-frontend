@@ -16,7 +16,7 @@ const useAxios = () => {
  
     axiosInstance.interceptors.request.use(async req => {
       
-      const access_token =  localStorage.getItem("access_token")  
+      let access_token =  localStorage.getItem("access_token")  
       const refresh_token =  localStorage.getItem("refresh_token")  
       if(!access_token){
         access_token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : null

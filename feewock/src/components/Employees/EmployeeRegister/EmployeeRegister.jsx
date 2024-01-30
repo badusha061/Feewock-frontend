@@ -8,7 +8,7 @@ import { employee_setRegistrationData } from '../../../actions/EmployeeRegister'
 import Swal from 'sweetalert2';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
-
+import Layouts from '../../../layouts/Layouts';
 
 const animatedComponents = makeAnimated();
 
@@ -239,6 +239,7 @@ const handlClick = (e) => {
  
   return (
     <>
+    <Layouts>
    <div className="relative py-3 sm:max-w-xl sm:mx-auto no-scrollbar">
   <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-lg rounded-3xl sm:p-10">
   <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl dark:text-black">Employee Registration</h1>
@@ -468,7 +469,7 @@ const handlClick = (e) => {
   </div>
 
 </div>
-
+</Layouts>
     </>
   )
 }

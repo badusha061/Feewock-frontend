@@ -4,6 +4,7 @@ import { json, useLocation, useNavigate } from 'react-router-dom'
 import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
 import { w3cwebsocket as W3CWebSocket  } from 'websocket';
+import { data } from 'autoprefixer';
 
 
 function EmployeeUserChat() {
@@ -21,7 +22,6 @@ function EmployeeUserChat() {
     const response = await axiosInstance.get(`${BASE_URL}/chat/emploeemessage/${EmployeeId}/`)
     if(response.status === 200){
         setUsers(response.data)
-        console.log(response.data);
     }else{
       const Toast = Swal.mixin({
         toast: true,
@@ -43,6 +43,13 @@ function EmployeeUserChat() {
       return false
     }
   }
+
+    const uniqueUsers = Array.from(
+      new Set(users.flatMap(item => [item.sender, item.receiver]))
+  );
+
+  console.log(uniqueUsers);
+
 
   return (
     <EmployeeLoyouts >
