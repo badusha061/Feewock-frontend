@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import banner from './Images/banner.jpg'
 import banner1 from './Images/banner1.jpg'
 import banner2 from './Images/banner2.png'
-
+import banner3 from './Images/banner3.jpg'
 
 
 function Homepage() {
@@ -36,7 +36,7 @@ function Homepage() {
         },],};
 
  
-    const images = [banner , banner1 , banner2]
+    const images = [banner3 ,   banner , banner1 , banner2]
 
 
   return (

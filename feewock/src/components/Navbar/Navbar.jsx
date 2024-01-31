@@ -31,65 +31,106 @@ function Navbar() {
   return (
     <>
 
-       <div className="w-screen   justify-between items-center inline-flex shadow-lg ">
-        <img src={icon} alt="navbaricon"  className='w-[140px] h-[28]'/>
-        <div className="justify-start items-center gap-10 flex">
-          
-        <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
-        <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer">Home</div>
-          </NavLink>
+      
+<body className="bg-cyan-400">
+  <nav className=" bg-white shadow md:flex md:items-center md:justify-between">
+    <div className="flex justify-between items-center ">
+      <span className="text-2xl font-[Poppins] cursor-pointer">
+          <img className="h-20 inline"
+            src={icon}/>
+       
+      </span>
 
-        <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer">About</div>
-        <NavLink to="/service">
-        <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Service</div>
-        </NavLink>
-        <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Help</div>
-        <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Contact</div>
-        <NavLink to='/employee/employeeregister' >
-        <div className="text-black text-[23] font-medium font-['Inter'] cursor-pointer ">Expert</div>
-        </NavLink>
+      <span className="text-3xl cursor-pointer mx-2 md:hidden block">
+        <ion-icon name="menu" onclick="Menu(this)"></ion-icon>
+      </span>
+    </div>
+
+    <ul className=" flex gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500">
+    <NavLink to="/" classNameName={({ isActive }) => isActive ? "active" : ""}>
+      <li className="mx-4 my-6 md:my-0">
+        <a href="#" className="text-xl   font-semibold  hover:text-custom-blue duration-500">HOME</a>
+      </li>
+    </NavLink>
+    
+    <NavLink to="/postlist">
+    <li className="mx-4 my-6 md:my-0">
+        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">EXPLORE</a>
+      </li>
+      </NavLink>
+    
+      <NavLink to="/service">
+      <li className="mx-4 my-6 md:my-0">
+        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">SERVICE</a>
+      </li>
+      </NavLink>
+
+      <li className="mx-4 my-6 md:my-0">
+        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">ABOUT</a>
+      </li>
+      <li className="mx-4 my-6 md:my-0">
+        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">CONTACT</a>
+      </li>
+
+      <NavLink to='/employee/employeeregister' >
+      <li className="mx-4 my-6 md:my-0">
+        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">EXPERT</a>
+      </li>
+      </NavLink>
 
 
-        {token ? (
+      {token ? (
           <>
-                  <NavLink to={`/userprofile/${userId}`}>
-                  <button >
-                  <FontAwesomeIcon icon={faUser} />  
-                  </button>
-                  </NavLink>
+            <li>
+              <NavLink to={`/userprofile/${userId}`}>
+                    <button >
+                    <FontAwesomeIcon icon={faUser} />  
+                    </button>
+                    </NavLink>
+            </li>
                   
-                <button class="Btn" onClick={handleLogout}>
-        
-                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
-                
-                <div class="text">Logout</div>
-              </button>
-              <div>
-                <button>
 
-                </button>
-              </div>
+            <li>
+              
+                <button className="Btn" onClick={handleLogout}>
+        
+                <div className="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div className="text">Logout</div>
+              </button>
+             
+          </li> 
+
           </>
         ): (
           <>
+          <li>
         <NavLink to="/login">
         <button className="w-[150px] bg-custom-blue h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#000000] before:to-[#000000] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
           Login
         </button>
         </NavLink>
+        </li>
 
-        <NavLink to="/register">
-        <button className="w-[150px]  bg-custom-blue h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#000000] before:to-[#000000] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
-          Registration
-        </button>
-        </NavLink>
+          <li>
+          <NavLink to="/register">
+            <button className="w-[150px]  bg-custom-blue h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#000000] before:to-[#000000] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
+              Registration
+            </button>
+            </NavLink>
+          </li>
+        
           </>
         )}
-       
 
-        </div>
-       </div>
-      
+
+    </ul>
+  </nav>
+
+
+
+</body>
+
     </>
   )
 }

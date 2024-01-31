@@ -11,80 +11,91 @@ function OneOneChat() {
     const [data , setData] = useState([])
     const [messages , setMessages] = useState([])
     const [users , setUser] = useState([])
-    const [newmessage , setNewMessage] = useState('')
-    const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const location = useLocation()
-    const {employeeId} = location.state
     const UserDetailsJson = localStorage.getItem('userDetails')
-    const access_token = localStorage.getItem('access_token')
     const UserDetails = JSON.parse(UserDetailsJson) 
     const user_Id = UserDetails === null ? null : UserDetails.id
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const axiosInstance = useAxios()
     const messageRef = useRef()
-    useEffect(() => {
-      GetUser()
-    },[])
-    const GetUser = async () => {
-        const response = await axiosInstance.get(`${BASE_URL}/api/userindivual/${user_Id}/`)
-        if(response.status === 200){
-            setUser(response.data)
-        }
+
+    const currentUsers = localStorage.getItem('userDetails')
+    const Employee =JSON.parse(currentUsers)
+    let employeeId 
+    let userId 
+    let sender 
+    let receiver
+    let  currentUser
+    if(Employee.role === 3){
+        employeeId = location.state?.employeeId
+        userId = Employee.id
+        sender = userId
+        receiver = employeeId
+        currentUser = userId
+    }else if (Employee.role === 2){
+        userId = location.state?.UserId;
+        employeeId = location.state?.EmployeeId;
+        sender = employeeId
+        receiver = userId
+        currentUser = employeeId
     }
 
-    const employeeDetailsJson = localStorage.getItem('userDetails')
-    const Employee =JSON.parse(employeeDetailsJson)
-    let EmployeeId
-    if(Employee){
-        EmployeeId = Employee.id
-    }
 
-    useEffect(() => {
-        const instance = axiosInstance.create({
-            baseURL:`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`,
-              headers: {
-                'Authorization': `Bearer ${access_token}`,
-                'Content-Type': 'application/json',  
-            },
-          })
-          instance.get('')
-          .then((response)=> {
-            setData(response.data)
-          })
-          .catch((error) => {
-            if(error.response.status === 401){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    },
+
+
+    
+
+
+
+    // useEffect(() => {
+    //     const instance = axiosInstance.create({
+    //         baseURL:`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`,
+    //           headers: {
+    //             'Authorization': `Bearer ${access_token}`,
+    //             'Content-Type': 'application/json',  
+    //         },
+    //       })
+    //       instance.get('')
+    //       .then((response)=> {
+    //         setData(response.data)
+    //       })
+    //       .catch((error) => {
+    //         if(error.response.status === 401){
+    //             const Toast = Swal.mixin({
+    //                 toast: true,
+    //                 position: 'top-end',
+    //                 showConfirmButton: false,
+    //                 timer: 3000,
+    //                 timerProgressBar: true,
+    //                 didOpen: (toast) => {
+    //                   toast.onmouseenter = Swal.stopTimer;
+    //                   toast.onmouseleave = Swal.resumeTimer;
+    //                 },
                     
-                  });
+    //               });
                   
-                  Toast.fire({
-                    icon: 'error',
-                    title: 'Please Login',
-                  });
-                navigate('/login')
-            }
-            console.log(error.response.status);
-          })
-    },[BASE_URL , reducer])
+    //               Toast.fire({
+    //                 icon: 'error',
+    //                 title: 'Please Login',
+    //               });
+    //             navigate('/login')
+    //         }
+    //         console.log(error.response.status);
+    //       })
+    // },[BASE_URL , reducer])
+
+
 
 
 
     useEffect(() => {
         GetMessage()
-    },[employeeId , user_Id])
+    },[employeeId , userId])
 
     const GetMessage = async () => {
-        const response = await axiosInstance.get(`${BASE_URL}/chat/message/${user_Id}/${employeeId}/`)
+        const response = await axiosInstance.get(`${BASE_URL}/chat/message/${sender}/${receiver}/`)
         if(response.status === 200){
+            console.log(response.data);
             setMessages(response.data)
         }else{
             console.log('something error');
@@ -92,12 +103,11 @@ function OneOneChat() {
     }
 
 
+
     const handleMessage = (e) => {
         e.preventDefault();
-        console.log('new messaga is the',newmessage);
-        console.log('WebSocket connection state:', client.readyState);
         if (client.readyState === W3CWebSocket.OPEN) {  
-            client.send(JSON.stringify({ text: messageRef.current.value , sender: user_Id }));
+            client.send(JSON.stringify({ text: messageRef.current.value , sender: sender }));
             messageRef.current.value = "";
         } else {
             console.error('WebSocket not open yet. Message not sent.');
@@ -105,30 +115,50 @@ function OneOneChat() {
     }
 
 
-    const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${user_Id}_${employeeId}/`) 
+    const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${sender}_${receiver}/`) 
     useEffect(() => {
-        client.onopen = () => {
-            console.log('websocket client connected');
-        }
+
         client.onmessage = (event) => {
-            console.log('before come the message');
-            console.log('before come the message');
-            console.log('before come the message');
-            console.log('before come the message');
-            console.log('before come the message');
             console.log('before come the message',event.data);
             try{
                 const dataFromServer = JSON.parse(event.data);
                 console.log('after message',dataFromServer);
                 if (dataFromServer) {
-                    const newMessages = [...messages, dataFromServer];
-                    setMessages(newMessages);
-                    console.log('New messages:', newMessages);
+                  if(dataFromServer.sender === userId){
+                    console.log('id',dataFromServer.id);
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        {
+                          id :dataFromServer.id,
+                          message: dataFromServer.text,
+                          sender: {id:userId},
+                          receiver:{id:employeeId}
+                        },
+                      ]);
+
+                  }else if(dataFromServer.sender ===  employeeId){
+                    console.log('employee ',dataFromServer.sender);
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        {
+                            id :dataFromServer.id,
+                            message: dataFromServer.text,
+                            sender: {id:employeeId},
+                            receiver:{id:userId}
+                          },
+                      ]);
+
+                  }
                 }
             }catch(error){
                 console.log('the error is the',error);
             }
         };
+
+        client.onopen = () => {
+            console.log('websocket client connected');
+        }
+        
         
         client.onerror = (error) => {
             console.error('WebSocket error:', error);
@@ -149,7 +179,7 @@ function OneOneChat() {
     <>
         <div className="flex h-screen antialiased text-gray-800">
             <div className="flex flex-row h-full w-full overflow-x-hidden">
-            <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
+            {/* <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
                 <div className="flex flex-row items-center justify-center h-12 w-full">
                 <div
                     className="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10"
@@ -212,7 +242,7 @@ function OneOneChat() {
                 </div>
                 </div>
           
-            </div>
+            </div> */}
             <div className="flex flex-col flex-auto h-full p-6">
                 <div
                 className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
@@ -221,7 +251,7 @@ function OneOneChat() {
                 {messages.map((message, index) => (
                     <div className="flex flex-col h-full" key={index}>
                     <div className="grid grid-cols-12 gap-y-2">
-                        {message.sender.id === user_Id ? (
+                        {message.sender.id === currentUser ? (
                         <div className="col-start-6 col-end-13 p-3 rounded-lg">
                             <div className="flex items-center justify-start flex-row-reverse">
                             <div className="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">

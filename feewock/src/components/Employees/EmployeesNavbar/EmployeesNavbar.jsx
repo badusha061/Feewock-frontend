@@ -17,7 +17,7 @@ function EmployeesNavbar() {
     let Links =[
         {name:"HOME",link:"/employee/employeedashboard"},
         {name:"PROFILE",link:"/employee/employeeprofile"},
-        {name:"CHAT",link:"/employee/chat"},
+        {name:"CHAT",link:"/employee/listuser"},
         {name:"POST",link:"/employee/post"},
         {name:"REWARDS",link:""},
         {name:"SERVICE",link:""},

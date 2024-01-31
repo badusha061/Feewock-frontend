@@ -20,6 +20,7 @@ import Views from './components/EmployeeList/Views.jsx'
 import SocailMedia from './components/SocailMedia/SocailMedia.jsx'
 import OneOneChat from './components/Chat/Employee-user/OneOneChat.jsx'
 import UserProfile from './components/UserProfile/UserProfile.jsx'
+import PostListUser from './components/Post/PostListUser.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       <Route path='test' element={<SocailMedia />} />
       <Route path='chat' element={<OneOneChat />} />
       <Route path='userprofile/:id' element={ <UserProfile /> } />
+      <Route path='postlist' element={<PostListUser />} />
     </Route>
   )
     
@@ -44,11 +46,11 @@ const router = createBrowserRouter(
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor} >
         <RouterProvider router={router} />
       </PersistGate>
     </Provider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

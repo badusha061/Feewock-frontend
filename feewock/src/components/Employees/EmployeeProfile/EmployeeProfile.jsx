@@ -38,6 +38,7 @@ function EmployeeProfile() {
         const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${EmployeeId}/`)
         if (response.status === 200){
             setData(response.data)
+            console.log(response.data.images);
         }else{
             const Toast = Swal.mixin({
                 toast: true,
