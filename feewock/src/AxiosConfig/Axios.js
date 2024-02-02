@@ -30,9 +30,11 @@ const useAxios = () => {
       const response = await axios.post(`${BASE_URL}/api/token/refersh/`, {
         refresh: refresh_token
       });
+      console.log(response.data.access);
+  
       
       localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
+      // localStorage.setItem("refresh_token", response.data.refresh);
       req.headers.Authorization = `Bearer ${response.data.access}`
       return req
 

@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
-import axios from 'axios';
 import { useScrollTrigger } from '@mui/material';
 import './Employee.css'
+import useAxios from '../../../AxiosConfig/Axios';
+
+
 
 function EmployeeIndivual({ employeeId, close }) {
   const [data, setData] = useState([])
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const useAxiosInstance = useAxios();
+
 
   useEffect(() => {
-    const instance = axios.create({
-      baseURL: `${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`
-    })
-    instance.get('')
-      .then((response) => {
-        console.log(response.data);
-        setData(response.data)
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    GetEmployee()
   }, [BASE_URL])
+
+  const GetEmployee = async () => {
+    const response = await useAxiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`)
+    if(response.status === 200){
+      setData(response.data)
+    }
+  }
 
   return (
     <>

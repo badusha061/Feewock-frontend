@@ -4,12 +4,9 @@ import UserManagement from "../components/Admin/AdminUserManagement/UserManageme
 import EmployeeManagement from '../components/Admin/EmployeeManagement/EmployeeManagement'
 import MainService from "../components/Admin/AdminService/MainService";
 import SubService from "../components/Admin/AdminService/SubService";
-import EmployeePostion from "../components/Admin/EmployeePosition/EmployeePostion";
 import EditMainService from "../components/Admin/AdminService/EditMainService";
-import EmployeeEditPosition from "../components/Admin/EmployeePosition/EmployeeEditPosition";
-import AddSubService from "../components/Admin/AdminService/AddSubService";
 import EmployeeIndivual from "../components/Admin/EmployeeIndivual/EmployeeIndivual";
-import OfferService from "../components/Admin/OfferService/OfferService";
+import UserBanner from "../components/Admin/UserBanner/UserBanner";
 
 export default function AdminRoutes() {
     return (
@@ -22,9 +19,7 @@ export default function AdminRoutes() {
             <Route path="mainservice" element={<MainService />} />
             <Route path="/mainservice/:id/edit" element={<EditMainService />} />
             <Route path="/subservice" element={<SubService />} />
-            <Route path="/position" element={<EmployeePostion />} />
-            <Route path="/position/:id/edit" element={<EmployeeEditPosition />} />  
-            <Route path="/offer" element={<OfferService />} />
+            <Route path="/banner" element={<UserBanner />} />
         </Routes>
     )
 }

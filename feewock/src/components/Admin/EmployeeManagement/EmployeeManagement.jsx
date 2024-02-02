@@ -1,11 +1,10 @@
 import React, { useEffect, useReducer, useState , useMemo } from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
-import axios from 'axios'
 import Swal from 'sweetalert2';
 import EmployeeIndivual from '../EmployeeIndivual/EmployeeIndivual';
 import './Employees.css'
-
+import useAxios from '../../../AxiosConfig/Axios';
 
 function EmployeeManagement() {
   const [records , setRecords] = useState([])
@@ -13,7 +12,8 @@ function EmployeeManagement() {
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   const [modal , setModal] = useState(false)
   const [employeeId , setEmployeeId] = useState('')
-
+  const useAxiosInstance = useAxios();
+  
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const conditionalRowStyles  = [
@@ -30,19 +30,15 @@ function EmployeeManagement() {
   ]
 
   useEffect(() => {
-    const instance = axios.create({
-      baseURL:`${BASE_URL}/dashboard/employeelist`
-    })
-    instance.get('')
-    .then((response) => {
-      setRecords(response.data)
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+    GetEmployee()
   },[BASE_URL,reducer])
 
-  
+  const GetEmployee = async () => {
+    const response = await useAxiosInstance.get(`${BASE_URL}/dashboard/employeelist`)
+    if(response.status === 200){
+      setRecords(response.data)
+    }
+  }
 
   const coloumn = [
   
@@ -102,11 +98,9 @@ function EmployeeManagement() {
    const renderData = searchdata.length > 0 ? searchdata : records;
 
    const handleBlock = async ({id}) => {
-    const instance = axios.create({
-      baseURL:`${BASE_URL}/dashboard/employeelist/${id}/block`
-    })
-    instance.put('')
-    .then((response) => {
+ 
+    const response = await useAxiosInstance.put(`${BASE_URL}/dashboard/employeelist/${id}/block`)
+    if(response.status === 200){
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -123,18 +117,13 @@ function EmployeeManagement() {
         title: "Successfully Blocked Employee"
       });
       forceUpdate()
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+    }
+
   }
 
   const handleUnBlock = async ({id}) => {
-    const instance = axios.create({
-      baseURL:`${BASE_URL}/dashboard/employeelist/${id}/unblock`
-    })
-    instance.put('')
-    .then((response) => {
+    const response = await useAxiosInstance.put(`${BASE_URL}/dashboard/employeelist/${id}/unblock`)
+    if(response.status === 200){
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -151,10 +140,7 @@ function EmployeeManagement() {
         title: "Successfully Unblocked Employee"
       });
       forceUpdate()
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+    }
   }
 
   const handleModal = (row) => {

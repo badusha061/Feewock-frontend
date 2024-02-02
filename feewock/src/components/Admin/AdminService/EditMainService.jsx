@@ -4,6 +4,7 @@ import './EditMainService.css';
 import AdminLayouts from '../../../layouts/AdminLayouts';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import useAxios from '../../../AxiosConfig/Axios';
 
 
 
@@ -11,6 +12,7 @@ function EditMainService({open , onClose , selectdata}) {
     const [data , setData] = useState({
         name:''
     })
+    const useAxiosInstance = useAxios();
     if(!open) return null
 
         const handleChange = (e) => {
@@ -21,7 +23,6 @@ function EditMainService({open , onClose , selectdata}) {
         }
 
         const handleSubmit = () => {
-            let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
             if(!data.name.trim()){
               const Toast = Swal.mixin({
                 toast: true,
@@ -43,50 +44,50 @@ function EditMainService({open , onClose , selectdata}) {
               return false
             }
             try{
-                const instance  =  axios.create({
-                    baseURL:`${BASE_URL}/service/updatemainservice/${selectdata}/ `
-                   })
-                   instance.put('',data)
-                   .then((response) => {
-                    const Toast = Swal.mixin({
-                      toast: true,
-                      position: "top-end",
-                      showConfirmButton: false,
-                      timer: 3000,
-                      timerProgressBar: true,
-                      didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                      }
-                    });
-                    Toast.fire({
-                      icon: "success",
-                      title: "Successfully Edited Position"
-                    });
-                    onClose()
-                   })
-                   .catch((error) => {
-                    const Toast = Swal.mixin({
-                      toast: true,
-                      position: 'top-end',
-                      showConfirmButton: false,
-                      timer: 3000,
-                      timerProgressBar: true,
-                      didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                      },
-                      
-                    });
+
+                   const response = useAxiosInstance.put(`/service/updatemainservice/${selectdata}/`,data)
+                    if(response.status === 201){
+                      const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                      Toast.fire({
+                        icon: "success",
+                        title: "Successfully Edited Position"
+                      });
+                      onClose()
+                    }
                     
-                    Toast.fire({
-                      icon: 'error',
-                      title: 'Main Service Name is Already taken',
-                    });
-                    return false
-                   })
+                    
             }catch(error){
-                console.log('the error is the ',error);
+              console.log(error.response.data.name[0]);
+              if(error.response.data.name[0] === 'main service with this name already exists.'){
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                  },
+                  
+                });
+                
+                Toast.fire({
+                  icon: 'error',
+                  title: 'Main Service Name is Already taken',
+                });
+                return false
+          }
             }
         }
   return (

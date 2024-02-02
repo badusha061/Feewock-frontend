@@ -1,17 +1,17 @@
 import React, { useEffect, useMemo, useState , useReducer} from 'react'
 import AdminLayouts from '../../../layouts/AdminLayouts'
-import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import './MainService.css'
 import {  useNavigate } from 'react-router-dom';
 import EditMainService from './EditMainService';
 import Swal from 'sweetalert2';
-
+import useAxios from '../../../AxiosConfig/Axios';
 
 
 function MainService() {
     const [open , setOpen] = useState(false)
     const [selectdata , setSelectdata] = useState([])
+    const useAxiosInstance = useAxios();
 
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const navigate = useNavigate()
@@ -22,25 +22,19 @@ function MainService() {
     const [data , setData] = useState([]);
 
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
     useEffect(() => {   
-        const fetchData = async () => {
-            try{
-                const instance  =  axios.create({
-                    baseURL:`${BASE_URL}/service/createmainservice`
-                   })
-                   instance.get('')
-                   .then((response) => {
-                    setData(response.data)
-                   })
-                   .catch((error) => {
-                    console.log(error);
-                   })
-            }catch(error){
-                console.log('the error is the ',error);
-            }
-        }
-        fetchData();
+        GetMainService()
     },[BASE_URL,reducer])
+
+    let GetMainService = async () => {
+    
+      let response = await useAxiosInstance.get(`${BASE_URL}/service/createmainservice`)
+      if(response.status === 200){
+        setData(response.data)
+      }
+   
+  }
 
     const filteredData = useMemo(() => {
         return data.filter(row => row.is_active === true)
@@ -54,7 +48,7 @@ function MainService() {
 
     const handleDelete = ({id}) => {
         try{
-            const instance  =  axios.create({
+            const instance  =  useAxiosInstance.create({
                 baseURL:`${BASE_URL}/service/updatemainservice/${id}/`
                })
                instance.delete('')
@@ -80,7 +74,7 @@ function MainService() {
                 console.log(error);
                })
         }catch(error){
-            console.log('the error is the ',error);
+          
         }
     }
     const handleEdit = (row) => {
@@ -134,7 +128,7 @@ function MainService() {
             name:e.target.value
         }))
     }
-    const handleAdd = (e) =>{
+    const handleAdd = async  (e) =>{
         e.preventDefault()
         if(!add.name.trim()){
             const Toast = Swal.mixin({
@@ -157,32 +151,31 @@ function MainService() {
               return false
             }
         try{
-            const instance  =  axios.create({
-                baseURL:`${BASE_URL}/service/createmainservice`
-               })
-               console.log(instance);
-                console.log(add);
-               instance.post('',add)
-               .then((response) => {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    }
-                  });
-                  Toast.fire({
-                    icon: "success",
-                    title: "Successfully Added Position"
-                  });
-                forceUpdate()
-               })
-               .catch((error) => {
-                const Toast = Swal.mixin({
+                const response = await useAxiosInstance.post(`/service/createmainservice`, add)
+                console.log(response);
+                if(response.status === 201){
+                  const Toast = Swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                          }
+                        });
+                        Toast.fire({
+                          icon: "success",
+                          title: "Successfully Added Position"
+                        });
+                      forceUpdate()
+                }
+   
+                
+        }catch(error){
+            if(error.response.data.name[0] === 'main service with this name already exists.'){
+                  const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -200,9 +193,7 @@ function MainService() {
                     title: 'Main Service Name is Already taken',
                   });
                   return false
-               })
-        }catch(error){
-            console.log('the error is the ',error);
+            }
         }
     }
 

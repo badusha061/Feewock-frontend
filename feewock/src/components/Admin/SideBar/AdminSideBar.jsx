@@ -6,7 +6,9 @@ import employee from './Image/Employee.png'
 import mainservice from './Image/mainservice.png'
 import subservice from './Image/subservice.png'
 import position from './Image/position.png'
-import offer from './Image/offer.png'
+import banner from './Image/banner.png'
+
+
 import { NavLink } from 'react-router-dom'
 
 function AdminSideBar() {
@@ -85,24 +87,16 @@ function AdminSideBar() {
           </li>
           </NavLink>
           <br />
-          <NavLink to="/admin/position">
+        
+          <NavLink to="/admin/banner">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={position} alt='logo' />
+            <img src={banner} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
-                Employees Positions
+                User Banner
             </span>
           </li>
           </NavLink>
-          <br />
-          <NavLink to="/admin/offer">
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={offer} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
-                Offer Service
-            </span>
-          </li>
-          </NavLink>
-          
+         
       </ul>
     </div>
   </div>

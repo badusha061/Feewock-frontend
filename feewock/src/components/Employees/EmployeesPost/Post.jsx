@@ -78,6 +78,7 @@ const GetEmployeeData = async() => {
     setPostId(id)
     setDelete(true)
   }
+  
   return (
    <EmployeeLoyouts>
         <div className=' px-6'>

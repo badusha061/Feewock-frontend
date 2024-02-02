@@ -6,6 +6,7 @@ import { useState , useEffect , useMemo } from 'react'
 import AddSubService from './AddSubService';
 import EditSubService from './EditSubService';
 import Swal from 'sweetalert2';
+import useAxios from '../../../AxiosConfig/Axios';
 
 
 function SubService({render}) {
@@ -14,34 +15,26 @@ function SubService({render}) {
   const [data , setData] = useState([])
   const [search , setSearch] = useState('')
   const [selectid , setSelectid] = useState('')
-
+  const useAxiosInstance = useAxios();
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
 
-  useEffect(() => {
-    const fetchdata = async () => {
-        try{
-            const instance  =  axios.create({
-                baseURL:`${BASE_URL}/service/subservice`
-               })
-               instance.get('')
-               .then((response) => {
-                setData(response.data)
-                console.log(response.data);
-               })
-               .catch((error) => {
-                console.log(error);
-               })
-        }catch(error){
-            console.log('the error is the ',error);
-        }
+    useEffect(() => {
+      GetService()
+  },[BASE_URL,reducer])
+
+  const GetService = async () => {
+    const response = await useAxiosInstance.get(`/service/subservice`)
+    console.log(response.data);
+    if(response.status === 200){
+      setData(response.data)
+
     }
-    fetchdata();
-},[BASE_URL,reducer , render])
+  }
 
 const handleDelete = ({id}) => {
   try{
-      const instance  =  axios.create({
+      const instance  =  useAxiosInstance.create({
           baseURL:`${BASE_URL}/service/updatesubervice/${id}/`
          })
          instance.delete('')

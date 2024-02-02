@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect , useState , useReducer } from 'react'
 import Swal from 'sweetalert2';
-
+import useAxios from '../../../AxiosConfig/Axios';
 
 function EditSubService({open , onClose , selectId}) {
+    const useAxiosInstance = useAxios();
       if(!open) return null
       const [edit , setEdit] = useState({
         name:'',
@@ -18,7 +19,7 @@ function EditSubService({open , onClose , selectId}) {
     useEffect(() => {   
       const fetchData = async () => {
         try {
-          const response = await axios.get(`${BASE_URL}/service/createmainservice`);
+          const response = await useAxiosInstance.get(`/service/createmainservice`);
           setData(response.data)
       } catch (error) {
           console.error('Error while sending data to the backend:', error);
@@ -99,8 +100,7 @@ function EditSubService({open , onClose , selectId}) {
       formData.append("mainservice", String(parseInt(edit.mainservice, 10)));
       console.log(formData);
       try {
-        console.log('come');
-      const response = await axios.put(`${BASE_URL}/service/updatesubervice/${selectId}/`, formData,config);
+      const response = await useAxiosInstance.put(`/service/updatesubervice/${selectId}/`, formData,config);
         if(response.status === 200){
           const Toast = Swal.mixin({
             toast: true,

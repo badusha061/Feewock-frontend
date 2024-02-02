@@ -1,137 +1,23 @@
-import React, { useState  , useEffect , useReducer } from 'react'
-import useAxios from '../../../AxiosConfig/Axios'
+import React, { useEffect, useReducer, useState , useMemo } from 'react'
+import useAxios from '../../../AxiosConfig/Axios';
 import Swal from 'sweetalert2';
 
 
-function AddPost({close,forceUpdate}) {
-  const [data , setData] = useState([])
-  const axiosInstance = useAxios()
 
+function AddBanner() {
+  const [post , setPost] = useState({
+    emplyee: EmployeeId,
+    captions:'',
+    image:null,
 
-  const employeeDetailsJson = localStorage.getItem('userDetails')
-  const Employee =JSON.parse(employeeDetailsJson)
-  const EmployeeId = Employee.id
+  })
+  const [image , setImage] = useState({
+    image:null
+  })
 
-
-      let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-      useEffect(() => {
-        GetEmployeeData()
-    },[BASE_URL ])
-
-    const GetEmployeeData = async() => {
-        const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${EmployeeId}/`)
-        if (response.status === 200){
-            setData(response.data)
-        }else{
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.onmouseenter = Swal.stopTimer;
-                  toast.onmouseleave = Swal.resumeTimer;
-                },
-                
-              });
-              
-              Toast.fire({
-                icon: 'error',
-                title: 'Unauthorized please Login',
-              });
-              return false
-        }}
-
-      const [post , setPost] = useState({
-        emplyee: EmployeeId,
-        captions:'',
-        image:null,
-
-      })
-      const [image , setImage] = useState({
-        image:null
-      })
-
-      const handleSubmit = async (e) => {
-        e.preventDefault()
-        const config = {headers:{'Content-Type':'multipart/form-data'}}
-        const formData = new FormData();
-        if(post.image === null){
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-            
-          });
-          
-          Toast.fire({
-            icon: 'error',
-            title: 'Image Cannot be Empty',
-          });
-          return false
-        }
-        if(!post.captions.trim()){
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-            
-          });
-          
-          Toast.fire({
-            icon: 'error',
-            title: 'captions Cannot be Empty',
-          });
-          return false
-        }
-  
-        console.log(post);
-        formData.append("employee",post.emplyee)
-        formData.append("captions",post.captions)
-        formData.append("image",post.image)
-        const response = await axiosInstance.post(`${BASE_URL}/post/list`,formData,config)
-        if(response.status === 201){
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            }
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Successfully Added Post"
-          });
-          close()
-          forceUpdate()
-
-        }else{
-          console.log('something error',response.data);
-        }
-      }
-
-  
 
   return (
-
-      <>
+    <>
         <div
           className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
         >
@@ -139,7 +25,7 @@ function AddPost({close,forceUpdate}) {
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
               <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                 <h3 className="text-3xl font-semibold">
-                  {data.username} Add Post
+                  Add Banner
                 </h3>
                 <button
                   className="p-1 ml-auto bg-black border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -252,4 +138,4 @@ function AddPost({close,forceUpdate}) {
   )
 }
 
-export default AddPost
+export default AddBanner

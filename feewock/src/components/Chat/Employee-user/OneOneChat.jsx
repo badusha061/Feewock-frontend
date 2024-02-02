@@ -3,7 +3,7 @@ import Layouts from '../../../layouts/Layouts'
 import { json, useLocation, useNavigate } from 'react-router-dom'
 import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
-import { w3cwebsocket as W3CWebSocket  } from 'websocket';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
 function OneOneChat() {
@@ -11,10 +11,8 @@ function OneOneChat() {
     const [data , setData] = useState([])
     const [messages , setMessages] = useState([])
     const [users , setUser] = useState([])
+    const [employee , setEmployee] = useState([])
     const location = useLocation()
-    const UserDetailsJson = localStorage.getItem('userDetails')
-    const UserDetails = JSON.parse(UserDetailsJson) 
-    const user_Id = UserDetails === null ? null : UserDetails.id
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const axiosInstance = useAxios()
     const messageRef = useRef()
@@ -26,20 +24,46 @@ function OneOneChat() {
     let sender 
     let receiver
     let  currentUser
-    if(Employee.role === 3){
-        employeeId = location.state?.employeeId
-        userId = Employee.id
-        sender = userId
-        receiver = employeeId
-        currentUser = userId
-    }else if (Employee.role === 2){
-        userId = location.state?.UserId;
-        employeeId = location.state?.EmployeeId;
-        sender = employeeId
-        receiver = userId
-        currentUser = employeeId
+    if(Employee){
+        if(Employee.role === 3){
+            employeeId = location.state?.employeeId
+            userId = Employee.id
+            sender = userId
+            receiver = employeeId
+            currentUser = userId
+        }else if (Employee.role === 2){
+            userId = location.state?.UserId;
+            employeeId = location.state?.EmployeeId;
+            sender = employeeId
+            receiver = userId
+            currentUser = employeeId
+        }
+    }else{
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        
+      });
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Please Login',
+      });
+    
     }
-
+ 
+    useEffect(() => {
+        if(!Employee){
+        navigate('/login')
+        }
+    },[])
 
 
 
@@ -88,19 +112,19 @@ function OneOneChat() {
 
 
 
-    useEffect(() => {
-        GetMessage()
-    },[employeeId , userId])
-
-    const GetMessage = async () => {
-        const response = await axiosInstance.get(`${BASE_URL}/chat/message/${sender}/${receiver}/`)
-        if(response.status === 200){
-            console.log(response.data);
-            setMessages(response.data)
-        }else{
-            console.log('something error');
+        const GetUser = async () => {
+            const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`)
+            if (response.status === 200){
+                setEmployee(response.data)
+            }
         }
-    }
+
+        const GetEmployee = async () => {
+            const response = await axiosInstance.get(`${BASE_URL}/api/userindivual/${userId}/`)
+            if(response.status === 200){
+                setUser(response.data)
+            }
+        }
 
 
 
@@ -116,7 +140,17 @@ function OneOneChat() {
 
 
     const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${sender}_${receiver}/`) 
-    useEffect(() => {
+
+    const GetMessage = async () => {
+
+        console.log('calling!!!!!!!!!!!!!!');
+        await axiosInstance.get(`${BASE_URL}/chat/message/${sender}/${receiver}/`)
+        .then((response) => {
+            setMessages(response.data)
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 
         client.onmessage = (event) => {
             console.log('before come the message',event.data);
@@ -125,7 +159,6 @@ function OneOneChat() {
                 console.log('after message',dataFromServer);
                 if (dataFromServer) {
                   if(dataFromServer.sender === userId){
-                    console.log('id',dataFromServer.id);
                     setMessages((prevMessages) => [
                         ...prevMessages,
                         {
@@ -137,7 +170,6 @@ function OneOneChat() {
                       ]);
 
                   }else if(dataFromServer.sender ===  employeeId){
-                    console.log('employee ',dataFromServer.sender);
                     setMessages((prevMessages) => [
                         ...prevMessages,
                         {
@@ -169,12 +201,17 @@ function OneOneChat() {
         return  () => {
             client.close()
         }
-    },[])
+    }
+
+    useEffect(() => {
+        GetMessage()
+    },[sender,receiver])
+
 
 
 
   return (
-    <Layouts>
+    // <Layouts>
 
     <>
         <div className="flex h-screen antialiased text-gray-800">
@@ -256,7 +293,7 @@ function OneOneChat() {
                             <div className="flex items-center justify-start flex-row-reverse">
                             <div className="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
                                 <img
-                                src={users.images}
+                                src=''
                                 alt="U"
                                 className="w-full h-full rounded-full"
                                 />
@@ -270,7 +307,7 @@ function OneOneChat() {
                         <div className="col-start-1 col-end-8 p-3 rounded-lg">
                             <div className="flex flex-row items-center">
                             <div className="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
-                                <img src={data.images} alt="U" className="w-full h-full rounded-full" />
+                                <img src='' alt="U" className="w-full h-full rounded-full" />
                             </div>
                             <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                                 <div>{message.message}</div>
@@ -363,7 +400,7 @@ function OneOneChat() {
             </div>
         </div>
   </>
-  </Layouts>
+//   </Layouts>
 
   )
 }

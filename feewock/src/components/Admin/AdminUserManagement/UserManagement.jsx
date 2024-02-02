@@ -10,7 +10,7 @@ function UserManagement() {
 
   const useAxiosInstance = useAxios();
   
-   const access_token = localStorage.getItem('access_token')
+
 
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
