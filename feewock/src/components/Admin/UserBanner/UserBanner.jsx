@@ -4,13 +4,15 @@ import useAxios from '../../../AxiosConfig/Axios';
 import Swal from 'sweetalert2';
 import DataTable from 'react-data-table-component'
 import AddBanner from './AddBanner';
-
+import EditBanner from './EditBanner';
 
 function UserBanner() {
   const[banner , setBanner] = useState([])
   const useAxiosInstance = useAxios();
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   const [addModel , setAddModal] = useState(false)
+  const [editModal , setEditModal] = useState(false)
+  const [id , setId] = useState('')
 
   const columns = [
     {
@@ -73,11 +75,19 @@ function UserBanner() {
 
   const handleAdd = () => {
     setAddModal(true)
+    
   }
 
 
   const handleClose = () => {
     setAddModal(false)
+    setEditModal(false)
+    forceUpdate()
+  }
+
+  const handleEdit = (row) => {
+    setEditModal(true)
+    setId(row.id)
   }
 
   const handleDelete = async (row) => {
@@ -145,7 +155,7 @@ onClick={handleAdd}
       </div>
 </div>
 
-        
+  
         <DataTable
           columns={columns}
           data={banner}
@@ -176,6 +186,13 @@ onClick={handleAdd}
           >
 
           </DataTable>
+          {addModel ? (
+            <AddBanner close={handleClose} />
+          ):null}
+
+          {editModal ? (
+            <EditBanner close={handleClose} bannerId={id} />
+          ):null}
     </AdminLayouts>
   )
 }

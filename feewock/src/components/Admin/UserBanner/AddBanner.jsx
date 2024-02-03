@@ -4,16 +4,84 @@ import Swal from 'sweetalert2';
 
 
 
-function AddBanner() {
-  const [post , setPost] = useState({
-    emplyee: EmployeeId,
-    captions:'',
-    image:null,
-
-  })
-  const [image , setImage] = useState({
+function AddBanner({close}) {
+  const useAxiosInstance = useAxios();
+  const[add , setAdd] = useState({
+    titile:'',
     image:null
   })
+
+  const[image , setImage] = useState({
+    image:null
+  })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(!add.titile.trim()){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        
+      });
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Titile cannot be empty',
+      });
+      return false
+    }
+    if(add.image === null){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        
+      });
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Image cannot be empty',
+      });
+      return false
+    }
+    
+    const formData = new FormData();
+    formData.append('image', add.image)
+    formData.append('titile', add.titile)
+    const config = {headers:{'Content-Type':'multipart/form-data'}}
+    const response = await useAxiosInstance.post(`/banner/list`,formData, config)
+    if(response.status === 201){
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Successfully Added Banner"
+        });
+        close()
+    }
+  }
 
 
   return (
@@ -44,21 +112,20 @@ function AddBanner() {
                   <div className="shrink-0">
                     {image.image ? (
                       <img  className="h-16 w-16 object-cover rounded-full" src={image.image} alt="Current profile photo" />
-                      ):(
-
-                      <img  className="h-16 w-16 object-cover rounded-full" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="Current profile photo" />
-                      )}
+                      ):null}
                   </div>
                   <label className="block">
                     <span className="sr-only  ">Choose profile photo</span>
-                    <input type="file"  onChange={(e) => {
+                    <input type="file"  
+                    onChange={(e) => {
                                 if (e.target.files && e.target.files.length > 0) {
                                     const file = e.target.files[0];
                                     const url = URL.createObjectURL(file);
-                                    setPost((prevPost) => ({ ...prevPost, image: file }));
+                                    setAdd((prevPost) => ({ ...prevPost, image: file }));
                                     setImage((prevPost) => ({ ...prevPost, image: url }));
                                 }
-                            }} className="block w-full text-sm text-slate-500
+                            }} 
+                      className="block w-full text-sm text-slate-500
                       file:mr-4 file:py-2 file:px-4
                       file:rounded-full file:border-0
                       file:text-sm file:font-semibold
@@ -69,12 +136,12 @@ function AddBanner() {
                 </div>
                 <div className="mb-6 relative">
                 <label htmlFor="input" className="block text-sm font-extrabold text-gray-700 mb-1"
-                  >Enter Description</label>
+                  >Enter Titile</label>
                 <div className="relative">
                   <input
-                  value={post.captions}
+                  value={add.titile}
                     onChange={(e) => {
-                      setPost((prevPost) => ({ ...prevPost, captions: e.target.value }));
+                      setAdd((prevPost) => ({ ...prevPost, titile: e.target.value }));
                     }}
                     type="text"
                     id="input"
@@ -118,7 +185,8 @@ function AddBanner() {
                 <button
                   className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  onClick={close} >
+                  onClick={close} 
+                  >
                   Close
                 </button>
                 <button

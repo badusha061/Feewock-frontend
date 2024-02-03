@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react';
 import icon from './image/icon.png'
 import { NavLink } from 'react-router-dom';
 import './Navbar.css'
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch} from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUser}   from "@fortawesome/free-solid-svg-icons"
+import { cleartoken } from '../../actions/TokenAction';
+import Swal from 'sweetalert2';
+
 
 
 function Navbar() {
+  const dispatch = useDispatch()
   const t = useSelector(state => state.token.token)
   const userDetails = JSON.parse(localStorage.getItem('userDetails'));
   const [token , setToken] = useState('')
 
   useEffect(() => {
     const access_token = localStorage.getItem('access_token')
-    const refresh_token = localStorage.getItem('refresh_token')
     setToken(access_token)
   },[token])
 
@@ -22,7 +25,24 @@ function Navbar() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('userDetails')
+    dispatch(cleartoken())
     setToken('')
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+    Toast.fire({
+      icon: "success",
+      title: "Successfully Logged Out"
+    });
+
   }
   let  userId 
   if(userDetails && userDetails.id){

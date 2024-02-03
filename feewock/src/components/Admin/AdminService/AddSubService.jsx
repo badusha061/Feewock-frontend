@@ -98,7 +98,7 @@ function  AddSubService({open , onClose}) {
           return false
         }
         const config = {headers:{'Content-Type':'multipart/form-data'}}
-        const formData = new FormData();
+        const formData = new FormData();  
         formData.append("name",add.name)
         formData.append("Image",add.image)
         formData.append("mainservice", String(parseInt(add.mainservice, 10)));

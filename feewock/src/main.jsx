@@ -13,12 +13,15 @@ import AdminRoutes from './Routes/AdminRoutes.jsx'
 import EmployeeRoutes from './Routes/EmployeeRouters.jsx'
 import Service from './components/Service/Service.jsx'
 import EmployeeList from './components/EmployeeList/EmployeeList.jsx'
-import axios from './AxiosConfig/Axios.js'
 import Views from './components/EmployeeList/Views.jsx'
-import SocailMedia from './components/SocailMedia/SocailMedia.jsx'
 import OneOneChat from './components/Chat/Employee-user/OneOneChat.jsx'
 import UserProfile from './components/UserProfile/UserProfile.jsx'
 import PostListUser from './components/Post/PostListUser.jsx'
+import ProtectedRoute from './utils/ProtectedRoute.jsx'
+import EmployeeRegister from './components/Employees/EmployeeRegister/EmployeeRegister.jsx'
+import EmployeeOtp from './components/Employees/EmployeeRegister/EmployeeOtp.jsx'
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,11 +33,13 @@ const router = createBrowserRouter(
       <Route path='service' element={<Service />} />
       <Route path='service/:id' element={<EmployeeList />} />
       <Route path='views/:id' element={<Views />} />
-      <Route path='/admin/*' element={<AdminRoutes />} />
-      <Route path='/employee/*' element={<EmployeeRoutes />} />
+      <Route path='/admin/*' element={<ProtectedRoute allowedRoles={[1]}><AdminRoutes /> </ProtectedRoute> } />
+      <Route path='/employee/*' element={<ProtectedRoute allowedRoles={[2]}><EmployeeRoutes /> </ProtectedRoute> }  />
       <Route path='chat' element={<OneOneChat />} />
-      <Route path='userprofile/:id' element={ <UserProfile /> } />
+      <Route path='userprofile/:id' element={<ProtectedRoute allowedRoles={[3]}><UserProfile /> </ProtectedRoute> } />
       <Route path='postlist' element={<PostListUser />} />
+      <Route path="/employee/employeeregister" element={<EmployeeRegister />} />
+        <Route path="/employee/employeeregister/otp" element={<EmployeeOtp />} />
     </Route>
   )
     

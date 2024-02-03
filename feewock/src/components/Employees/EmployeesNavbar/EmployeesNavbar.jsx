@@ -1,16 +1,38 @@
 import React, { useState } from 'react'
 import { BookOpenIcon, Bars3BottomRightIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { Navigate, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2';
+import { useSelector , useDispatch} from 'react-redux';
+import { cleartoken } from '../../../actions/TokenAction';
 
 function EmployeesNavbar() {
+    const dispatch = useDispatch()
+
     const naviagate = useNavigate()
 
   const [token , setToken] = useState('')
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userDetails')
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('userDetails');
     setToken('')
+    dispatch(cleartoken())
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Successfully Logged Out"
+      });
     naviagate('/login')
   }
 

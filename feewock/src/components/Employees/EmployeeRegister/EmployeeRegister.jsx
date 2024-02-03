@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { employee_setRegistrationData } from '../../../actions/EmployeeRegister';
 import Swal from 'sweetalert2';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
@@ -192,7 +191,6 @@ const handlClick = (e) => {
         icon: "success",
         title: "Successfully Created Account"
       });
-      dispatch(employee_setRegistrationData(response.data))
       navigate('/employee/employeeregister/otp')
     })
     .catch((error) => {

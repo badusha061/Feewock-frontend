@@ -3,7 +3,6 @@ import './EmployeeOtp.css'
 import { useSelector ,useDispatch } from 'react-redux'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-import { employee_clearRegistrationData } from '../../../actions/EmployeeRegister';
 import Swal from 'sweetalert2';
 
 function EmployeeOtp() {
@@ -49,7 +48,6 @@ function EmployeeOtp() {
         icon: "success",
         title: "Successfully Verified Your Account"
       });
-      dispatch(employee_clearRegistrationData());
         navigate('/login')
     })
     .catch((error) => {

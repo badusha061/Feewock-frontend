@@ -6,7 +6,6 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { setToken } from '../../actions/TokenAction'
 import Layouts from '../../layouts/Layouts'
 import Swal from 'sweetalert2';
-import GoogleLogin from 'react-google-login'
 
 
 function Login() {
@@ -116,6 +115,7 @@ function Login() {
           axios.defaults.headers.common['Authorization'] = `Bearer ${respose.data.access}`;
           localStorage.setItem('access_token',respose.data.access)
           localStorage.setItem('refresh_token',respose.data.refresh)
+          localStorage.setItem('userDetails',JSON.stringify(respose.data));
           dispatch(setToken(respose.data.access))
           navigate('/admin/dashboard')
         } else if (respose.data.role === 2 ) {

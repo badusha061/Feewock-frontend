@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layouts from '../../layouts/Layouts'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import banner from './Images/banner.jpg'
-import banner1 from './Images/banner1.jpg'
-import banner2 from './Images/banner2.png'
-import banner3 from './Images/banner3.jpg'
+import axios from 'axios';
+import { useSelector } from "react-redux";
 
 
 function Homepage() {
-  
+    let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
+
     const settings = {
         
       infinite: true,
@@ -36,8 +36,17 @@ function Homepage() {
         },],};
 
  
-    const images = [banner3 ,   banner , banner1 , banner2]
 
+    const [banner , setBanner] = useState([])
+    useEffect(() => {
+      GetBanner()
+    },[])    
+    const GetBanner = async () => {
+      const response = await axios.get(`${BASE_URL}/banner/listuser`)
+      if(response.status === 200){
+        setBanner(response.data)
+      }
+    }
 
   return (
     <>
@@ -60,11 +69,10 @@ function Homepage() {
             <div className="relative">
 
               <Slider {...settings} >
-                {images.map((image , index) => (
-                  <img className="relative w-full  shadow-2xl  rounded-xl xl:max-w-lg xl:mx-auto 2xl:origin-bottom 2xl:scale-110" key={index} src={image} alt="images" />
+                {banner.map((data , index) => (
+                  <img className=" w-[600] h-[470]    shadow-2xl  rounded-xl xl:max-w-lg xl:mx-auto 2xl:origin-bottom 2xl:scale-110" key={index} src={data.image} alt="images" />
                 ))}
               </Slider>
-
             </div>
         </div>
     </div>

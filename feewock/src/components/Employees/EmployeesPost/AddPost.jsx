@@ -12,7 +12,6 @@ function AddPost({close,forceUpdate}) {
   const Employee =JSON.parse(employeeDetailsJson)
   const EmployeeId = Employee.id
 
-
       let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
       useEffect(() => {
         GetEmployeeData()
@@ -102,7 +101,7 @@ function AddPost({close,forceUpdate}) {
         formData.append("employee",post.emplyee)
         formData.append("captions",post.captions)
         formData.append("image",post.image)
-        const response = await axiosInstance.post(`${BASE_URL}/post/list`,formData,config)
+        const response = await axiosInstance.post(`${BASE_URL}/post/list/${EmployeeId}/`,formData,config)
         if(response.status === 201){
           const Toast = Swal.mixin({
             toast: true,

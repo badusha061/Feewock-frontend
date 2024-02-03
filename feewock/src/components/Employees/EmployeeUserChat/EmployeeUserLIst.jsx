@@ -20,7 +20,7 @@ function EmployeeUserLIst() {
         GetUsers()
       },[BASE_URL])
       const GetUsers = async() => {
-        const response = await axiosInstance.get(`${BASE_URL}/chat/emploeemessage/${EmployeeId}/`)
+        const response = await axiosInstance.get(`${BASE_URL}/chat/employeemessage/${EmployeeId}/`)
         if(response.status === 200){
             setUsers(response.data)
         }else{

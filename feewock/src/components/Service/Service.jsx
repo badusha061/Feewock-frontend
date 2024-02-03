@@ -19,7 +19,7 @@ function Service() {
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     useEffect(() => {
         const instance = axios.create({
-            baseURL:`${BASE_URL}/service/list`
+            baseURL:`${BASE_URL}/service/userlist`
           })
           instance.get('')
           .then((response) => {
