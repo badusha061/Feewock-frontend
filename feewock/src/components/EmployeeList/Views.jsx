@@ -9,7 +9,7 @@ import OneOneChat from '../Chat/Employee-user/OneOneChat'
 function Views() {
     const [data , setData] = useState([])
     const [post , setPost] = useState([])
-
+    const [tab , setTab] = useState(false)
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const params = useParams()
     const navigate = useNavigate()
@@ -45,6 +45,13 @@ function Views() {
       navigate('/chat',{state:{employeeId}})
     }
 
+    const handleTrue = () => {
+        setTab(true)
+    }
+    const handleFalse = () => {
+        setTab(false)
+    }
+
   return (
 <Layouts >
 
@@ -53,6 +60,26 @@ function Views() {
          <div className="h-1200 w-1000 mx-auto ">
             <header className="h-64 w-full bg-cover" style={{backgroundImage: `url(${background})` }}></header>
             <main className="flex flex-col items-center justify-center h-150 w-150 rounded-full mx-auto relative top-[-90px] text-center border-10 border-white">
+           
+
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-gray-300 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                    </svg>
+                </div>
+
                 <div className='flex items-center justify-center'>
                 {data.images ? (
                     <img src={data.images} className="rounded-2xl shadow-lg h-full w-72"/>
@@ -60,9 +87,10 @@ function Views() {
                     <img src="https://i.pravatar.cc/300?img=7" className="rounded-2xl shadow-lg h-full w-72"/>
                 )}
                 </div>
-                <div className="mt-4 text-black text-xl tracking-[2px]">
-                ★★★★★
-                </div>
+                
+
+           
+
                 <span className="font-bold"> {data.username} </span>
                 <div class="group relative flex inline-flex">
             <button
@@ -102,10 +130,24 @@ function Views() {
         </div>
 
         <div className=''>
-          <div className=' flex justify-center' >
-            <h2 className="mb-4 text-3xl font-extrabold leading-none tracking-tight uppercase text-gray-900 md:text-4xl dark:text-black">{data.username}  ACTIVITY</h2>
-          </div>
-          <div className=' grid grid-cols-3  gap-4 '>
+        <div class="max-w-2xl mx-auto">
+    
+    <div className="border-b border-gray-200 dark:border-gray-700 mb-4">
+        <ul className="flex flex-wrap -mb-px "  data-tabs-toggle="#myTabContent" role="tablist">
+            <li className="mr-2 flex-1" role="presentation">
+                <button onClick={handleFalse} className="inline-block text-black hover:text-custom-blue hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-black dark:hover:text-custom-blue" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">POST</button>
+            </li>
+            <li className="mr-2 flex-1" role="presentation">
+                <button onClick={handleTrue} className="inline-block text-black hover:text-custom-blue hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-black dark:hover:text-custom-blue active" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">REVIEWS</button>
+            </li>
+           
+        </ul>
+    </div>
+        </div>
+
+
+        {tab === false ? (
+            <div className=' grid grid-cols-3  gap-4 '>
 
             {post.map((data , index ) => (
             <div className="container  mx-auto px-20">
@@ -256,6 +298,11 @@ function Views() {
          ))} 
       
           </div>
+        ):(
+         <>
+         </>
+        )}
+          
   
         </div>
 

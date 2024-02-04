@@ -20,7 +20,7 @@ import PostListUser from './components/Post/PostListUser.jsx'
 import ProtectedRoute from './utils/ProtectedRoute.jsx'
 import EmployeeRegister from './components/Employees/EmployeeRegister/EmployeeRegister.jsx'
 import EmployeeOtp from './components/Employees/EmployeeRegister/EmployeeOtp.jsx'
-
+import RedirectIfAuthenticated from './utils/RedirectIfAuthenticated.jsx'
 
 
 const router = createBrowserRouter(
