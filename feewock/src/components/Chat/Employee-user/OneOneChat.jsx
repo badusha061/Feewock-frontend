@@ -207,7 +207,7 @@ function OneOneChat() {
             className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
             >
            <div className="flex flex-col h-full overflow-x-auto mb-4">
-            {messages.map((message, index) => (
+            {messages && messages.map((message, index) => (
                 <div className="flex flex-col h-full" key={index}>
                 <div className="grid grid-cols-12 gap-y-2">
                     {message.sender.id === currentUser ? (
@@ -231,7 +231,33 @@ function OneOneChat() {
                         </div>
                         <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                         <div className="font-bold text-xs text-gray-500 mb-1"> {moment.utc(message.date).local().startOf('seconds').fromNow()} </div>
-                            <div key={index}>{message.message}</div>
+                            
+                            <div className=' flex '>
+
+                            <div >{message.message}</div>
+                            
+                            <span className="ml-1">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    className="h-4 w-4 text-blue-500 inline"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M5 13l4 4L19 7"
+                                    />
+                                </svg>
+                            </span>
+
+                            </div>
+                           
+
+ 
+
                         </div>
                         </div>
                     </div>
@@ -249,7 +275,7 @@ function OneOneChat() {
                         <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div className="font-bold text-xs text-gray-500 mb-1"> {moment.utc(message.date).local().startOf('seconds').fromNow()} </div>
                             
-                            <div key={index}>{message.message}</div>
+                            <div >{message.message}</div>
                         </div>
                         </div>
                     </div>
