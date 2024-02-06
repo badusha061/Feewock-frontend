@@ -21,25 +21,45 @@ import ProtectedRoute from './utils/ProtectedRoute.jsx'
 import EmployeeRegister from './components/Employees/EmployeeRegister/EmployeeRegister.jsx'
 import EmployeeOtp from './components/Employees/EmployeeRegister/EmployeeOtp.jsx'
 import RedirectIfAuthenticated from './utils/RedirectIfAuthenticated.jsx'
+import BookingPage from './pages/BookingPage/BookingPage.jsx'
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route  >
       <Route path='' element={<Homepage />} />
-      <Route path='register/' element={<Register />} />
-      <Route path='register/otp' element={<Otp />} />
-      <Route path='login' element={<Login />} />
+
+
+      {/* service listing and indivual service listing  and employee listing and post listing in the user side*/}
       <Route path='service' element={<Service />} />
       <Route path='service/:id' element={<EmployeeList />} />
       <Route path='views/:id' element={<Views />} />
+      <Route path='postlist' element={<PostListUser />} />
+
+
+      {/* employee and admin urls */}
       <Route path='/admin/*' element={<ProtectedRoute allowedRoles={[1]}><AdminRoutes /> </ProtectedRoute> } />
       <Route path='/employee/*' element={<ProtectedRoute allowedRoles={[2]}><EmployeeRoutes /> </ProtectedRoute> }  />
+      
+      {/* user profile and chat  */}
       <Route path='chat' element={<OneOneChat />} />
       <Route path='userprofile/:id' element={<ProtectedRoute allowedRoles={[3]}><UserProfile /> </ProtectedRoute> } />
-      <Route path='postlist' element={<PostListUser />} />
-      <Route path="/employee/employeeregister" element={<EmployeeRegister />} />
-        <Route path="/employee/employeeregister/otp" element={<EmployeeOtp />} />
+      
+
+      {/* user booking*/}
+      <Route path='booking/' element={<ProtectedRoute allowedRoles={[3]}><BookingPage /> </ProtectedRoute>} />
+
+
+      {/* user and employee and admin login */}
+      <Route path='login' element={<RedirectIfAuthenticated > <Login /> </RedirectIfAuthenticated>  } />
+
+      {/* user register  */}
+      <Route path='register/' element={<RedirectIfAuthenticated> <Register /> </RedirectIfAuthenticated> } />
+      <Route path='register/otp' element={<Otp />} />
+      
+      {/* employees register  */}
+      <Route path="/employee/employeeregister" element={<RedirectIfAuthenticated> <EmployeeRegister /> </RedirectIfAuthenticated> } />
+      <Route path="/employee/employeeregister/otp" element={<EmployeeOtp />} />
     </Route>
   )
     

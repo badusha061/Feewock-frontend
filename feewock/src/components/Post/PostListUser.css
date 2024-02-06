@@ -113,7 +113,7 @@
   }
   
   .heart-container .svg-outline,
-          .heart-container .svg-filled {
+    .heart-container .svg-filled {
     fill: var(--heart-color);
     position: absolute;
   }

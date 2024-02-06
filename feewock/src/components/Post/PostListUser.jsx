@@ -7,7 +7,9 @@ import './PostListUser.css'
 import { toast } from 'react-hot-toast';
 import moment from 'moment';
 import { Toaster } from 'react-hot-toast';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '../../utils/Spinner';
 
 
 function PostListUser() {
@@ -15,6 +17,7 @@ function PostListUser() {
     const navigate = useNavigate()
     const [post , setPost] = useState([])
     const [likedata , setLikedata] = useState([])
+    const [isLoading , setIsloading] = useState(true)
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     useEffect(() => {
@@ -32,8 +35,12 @@ function PostListUser() {
         const response = await axios.get(`${BASE_URL}/post/list`)
         if(response.status === 200){
             setPost(response.data)
+            setIsloading(false)
             console.log(response.data);
         }
+    }
+    if(isLoading){
+        return <Spinner />
     }
 
     const handleClick = async (e,id) => {
@@ -134,7 +141,7 @@ function PostListUser() {
                   
                 >
                     <div
-                    className="flex items-center justify-between"
+                    className="items-center justify-between"
                    
                     >
                     <div className="con-like">
@@ -146,9 +153,14 @@ function PostListUser() {
                         className="checkmark">
                             {likedata.some(post => post.post === data.id && post.user === currentuser) ? (
                               <>
-                                <button onClick={(e) => handleUnlike(e, data.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        LIked
+                                <button onClick={(e) => handleUnlike(e, data.id)} className="bg-white rounded">
+                                <FontAwesomeIcon 
+                                        icon={faHeart} 
+                                        className='text-red-600 ' 
+                                        style={{ fontSize: '26px' }} 
+                                    />
                                 </button>
+                                
                               </>
 
                             ):(
@@ -181,7 +193,7 @@ function PostListUser() {
                         </div>
                         
                         </div>
-                        <h1> {data.likes_count}</h1>
+                        <h1 className='  font-bold'> {data.likes_count} Likes </h1>
                        
 
                    
@@ -197,10 +209,7 @@ function PostListUser() {
                     className="space-y-3"
                   
                     >
-                    <p
-                        className="text-sm"
-                      
-                    >
+                    <p className="  font-bold text-sm">
                         <span className="text-base font-semibold">
                         {data.captions}
                         </span>

@@ -233,10 +233,53 @@ function OneOneChat() {
                         <div className="font-bold text-xs text-gray-500 mb-1"> {moment.utc(message.date).local().startOf('seconds').fromNow()} </div>
                             
                             <div className=' flex '>
+                            {message.is_read === true ? (
+                                 <div>
+                                 {typeof message.message === 'object' ? (
+                                     <>
+                                     <div>{message.message.message}</div>
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                     <polyline points="20 6 9 17 4 12"></polyline>
+                                     </svg>
+     
+     
+                                     </>
+                                 ) : (
+                                     <>
+                                     <div>{message.message}</div>
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                     <polyline points="20 6 9 17 4 12"></polyline>
+                                     </svg>
+     
+     
+     
+                                     </>
+                                 )}
+                                 </div>
+                            ):(
+                                <div>
+                                 {typeof message.message === 'object' ? (
+                                     <>
+                                     <div>{message.message.message}</div>
+                                    
+     
+     
+                                     </>
+                                 ) : (
+                                     <>
+                                     <div>{message.message}</div>
+                                    
+     
+     
+     
+                                     </>
+                                 )}
+                                 </div>
+                            )}
+                           
 
-                            <div >{message.message}</div>
                             
-                            <span className="ml-1">
+                            {/* <span className="ml-1">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -251,7 +294,7 @@ function OneOneChat() {
                                         d="M5 13l4 4L19 7"
                                     />
                                 </svg>
-                            </span>
+                            </span> */}
 
                             </div>
                            
@@ -274,8 +317,51 @@ function OneOneChat() {
                         </div>
                         <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div className="font-bold text-xs text-gray-500 mb-1"> {moment.utc(message.date).local().startOf('seconds').fromNow()} </div>
+
+                          {message.is_read === true ? (
+                             <div>
+                             {typeof message.message === 'object' ? (
+                                 <>
+                                 
+                                 <div>{message.message.message}</div>
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <polyline points="20 6 9 17 4 12"></polyline>
+                                 </svg>
+ 
+ 
+                                 </>
+                             ) : (
+                                 <>
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <polyline points="20 6 9 17 4 12"></polyline>
+                                 </svg>
+ 
+ 
+                                 <div>{message.message}</div>
+                                 </>
+                             )}
+                           
+ 
+                             </div>
+                          ):(
+                            <div>
+                             {typeof message.message === 'object' ? (
+                                 <>
+                                 
+                                 <div>{message.message.message}</div>
+                                 </>
+                             ) : (
+                                 <>
+                                 <div>{message.message}</div>
+                                 </>
+                             )}
+                           
+ 
+                             </div>
+                          )}  
+                       
                             
-                            <div >{message.message}</div>
+
                         </div>
                         </div>
                     </div>

@@ -41,7 +41,7 @@ function EmployeesNavbar() {
         {name:"PROFILE",link:"/employee/employeeprofile"},
         {name:"CHAT",link:"/employee/listuser"},
         {name:"POST",link:"/employee/post"},
-        {name:"REWARDS",link:""},
+        {name:"AVAILABLILITY",link:"/employee/availibile"},
         {name:"SERVICE",link:""},
       ];
 
