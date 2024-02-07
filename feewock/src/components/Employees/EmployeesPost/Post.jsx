@@ -5,6 +5,7 @@ import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
 import EditPost from './EditPost';
 import DeleteConformation from './DeleteConformation';
+import Spinner from '../../../utils/Spinner';
 
 function Post() {
   const [data , setData] = useState([])
@@ -12,6 +13,7 @@ function Post() {
   const [editModal , setEditModal] = useState(false)
   const [deleteModal , setDelete] = useState(false)
   const [post , setPost] = useState([])
+  const [isLoadingPost , setIsLaodingPost] = useState(true)
   const[postId , setPostId] = useState('')
   const employeeDetailsJson = localStorage.getItem('userDetails')
   const Employee =JSON.parse(employeeDetailsJson)
@@ -54,6 +56,7 @@ const GetEmployeeData = async() => {
     const response = await axiosInstance.get(`${BASE_URL}/post/list/${EmployeeId}/`)
     if(response.status === 200){
       setPost(response.data)
+      setIsLaodingPost(false)
     }else{
       console.log('something error');
     }
@@ -79,6 +82,9 @@ const GetEmployeeData = async() => {
     setDelete(true)
   }
   
+  if(isLoadingPost){
+    return <Spinner />
+  }
   return (
    <EmployeeLoyouts>
         <div className=' px-6'>

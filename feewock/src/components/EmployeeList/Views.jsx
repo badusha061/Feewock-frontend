@@ -119,8 +119,9 @@ function Views() {
             // data = {
             //     employeeId:employeeId,
             //     userId:userId
-            // }     
-            navigate('/booking',{state:employeeId})
+            // }  
+            console.log(userId);   
+            navigate('/booking',{state:{employeeId:employeeId,userId:userId}})
         }else{
             toast.error('please login')
             return false

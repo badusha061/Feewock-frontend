@@ -1,18 +1,99 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layouts from '../../layouts/Layouts'
-import {
-    Input,
-    Popover,
-    PopoverHandler,
-    PopoverContent,
-  } from "@material-tailwind/react";
-  import { format } from "date-fns";
-  import { DayPicker } from "react-day-picker";
-  import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
-   
+import Calendar from 'react-calendar';
+import useAxios from '../../AxiosConfig/Axios'
+import { useLocation } from 'react-router-dom';
+import 'react-calendar/dist/Calendar.css';
+import Spinner from '../../utils/Spinner';
+import './Booking.css'
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import dayjs from 'dayjs';
+
 
 function BookingPage() {
-    const [date, setDate] = useState()
+    const location = useLocation()
+    const employeeId = location.state.employeeId;
+    const userId = location.state.userId;
+    const[IsloadingEmployee , setIsLaodingEmployee] = useState(true)
+    const [isloadingUser , setIsLaodingUser] = useState(true)
+    const axiosInstance = useAxios()
+    const [user , setUser]= useState([])
+    const [data, setData] = useState()
+    const [send , setSend] = useState({
+        first_name:user.first_name,
+        phone_number:user.phone_number,
+        location:user.location,
+        amount:'',
+        date:'',
+        time:''
+    })
+    
+    useEffect(() => {
+        GetDate()
+        GetUser()
+    },[employeeId , userId])
+
+    const GetDate = async () => {
+        const response = await axiosInstance.get(`employees/indivual/${employeeId}/`)
+        if(response.status === 200){
+            setData(response.data)
+            setIsLaodingEmployee(false)
+        }
+    }
+
+    const GetUser = async () => {
+        const response = await axiosInstance.get(`api/userindivual/${userId}/`)
+        if(response.status === 200){
+            setUser(response.data)
+            setIsLaodingUser(false)
+            
+        }
+    }
+
+    const isAbsentOnDate = (date) => {
+        if (Array.isArray(data)) {
+            const dateStr = date.toISOString().split('T')[0];
+          return data.some((absence) => absence.date === dateStr && !absence.is_available);
+        }
+        return false; 
+      };
+      
+
+    const tileClassName = ({ date, view }) => {
+        if (view === 'month' && isAbsentOnDate(date)) {
+          return 'red-mark';  
+        }
+      };
+
+      if(isloadingUser || IsloadingEmployee){
+        return <Spinner />
+      }
+
+      const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(send);
+      }
+      
+      const handleChange = (date) => {
+        const dateStr = date.toISOString().split('T')[0];
+        const currentDate = new Date()
+        const givenDate = new Date(dateStr)
+        if(givenDate < currentDate){
+            toast.error('Cannot Be Past')
+            return false
+        }
+        const isDateInData = data.some((d) => d.date === dateStr && !d.is_available)
+        if(isDateInData){
+            toast.error('Employees Is Absent')
+            return false
+        }
+        setSend((prvs) => ({
+            ...prvs,
+            date: dateStr,
+        }))
+      }
+
   return (
     <Layouts>
     
@@ -25,61 +106,110 @@ function BookingPage() {
 
     <div className="mx-auto grid max-w-screen-lg px-6 pb-20">
      
+    
 
-        <div className="p-24">
-        <Popover placement="bottom">
-            <PopoverHandler>
-            <Input
-                label="Select a Date"
-                onChange={() => null}
-                value={date ? format(date, "PPP") : ""}
-            />
-            </PopoverHandler>
-            <PopoverContent>
-            <DayPicker
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                showOutsideDays
-                className="border-0"
-                classNames={{
-                caption: "flex justify-center py-2 mb-4 relative items-center",
-                caption_label: "text-sm font-medium text-gray-900",
-                nav: "flex items-center",
-                nav_button:
-                    "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
-                nav_button_previous: "absolute left-1.5",
-                nav_button_next: "absolute right-1.5",
-                table: "w-full border-collapse",
-                head_row: "flex font-medium text-gray-900",
-                head_cell: "m-0.5 w-9 font-normal text-sm",
-                row: "flex w-full mt-2",
-                cell: "text-gray-600 rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                day: "h-9 w-9 p-0 font-normal",
-                day_range_end: "day-range-end",
-                day_selected:
-                    "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
-                day_today: "rounded-md bg-gray-200 text-gray-900",
-                day_outside:
-                    "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
-                day_disabled: "text-gray-500 opacity-50",
-                day_hidden: "invisible",
-                }}
-                components={{
-                IconLeft: ({ ...props }) => (
-                    <ChevronLeftIcon {...props} className="h-4 w-4 stroke-2" />
-                ),
-                IconRight: ({ ...props }) => (
-                    <ChevronRightIcon {...props} className="h-4 w-4 stroke-2" />
-                ),
-                }}
-            />
-            </PopoverContent>
-        </Popover>
+    <div className=' flex  justify-between '>
+      
+        <div className=' flex-grow'>
+
+        <div className="flex items-center justify-center p-12">
+ 
+ <div className="mx-auto w-full max-w-[550px] bg-white">
+     <form>
+      
+         <div className="mb-5">
+             <label htmlFor="first_name" className="mb-3 block text-base font-medium text-[#07074D]">
+                 Name
+             </label>
+             <input value={user.first_name} onChange={(e) => setSend((prvs) => ({...prvs , first_name:e.target.value }) )} type="text" name="name" id="name" placeholder="Full Name"
+                 className="w-full  rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-custom-blue focus:shadow-md" />
+         </div>
+         <div className="mb-5">
+             <label htmlFor="phone_number" className="mb-3 block text-base font-medium text-[#07074D]">
+                 Phone Number
+             </label>
+             <input value={user.phone_number} onChange={(e) => setSend((prvs) => ({...prvs , phone_number:e.target.value }) )} type="text" name="phone" id="phone" placeholder="Enter your phone number"
+                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-custom-blue focus:shadow-md" />
+         </div>
+         <div className="mb-5">
+             <label htmlFor="location" className="mb-3 block text-base font-medium text-[#07074D]">
+                Locations
+             </label>
+             <input value={user.location} onChange={(e) => setSend((prvs) => ({...prvs , location:e.target.value }) )}  type="text" name="location" id="location" placeholder="Enter your location"
+                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-custom-blue focus:shadow-md" />
+         </div>
+         <div className="mb-5">
+             <label htmlFor="location" className="mb-3 block text-base font-medium text-[#07074D]">
+                Negotiable Amount
+             </label>
+             <input value={send.amount} onChange={(e) => setSend((prvs) => ({...prvs , amount:e.target.value }) ) } type="text" name="amount" id="amount" placeholder="Enter your Service Amount"
+                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-custom-blue focus:shadow-md" />
+         </div>
+         <div className="-mx-3 flex flex-wrap">
+             <div className="w-full px-3 sm:w-1/2">
+                 <div className="mb-5">
+                     <label htmlFor="date" className="mb-3 block text-base font-medium text-[#07074D]">
+                         Date
+                     </label>
+                     <input  value={send.date} name="date" id="date"
+                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-custom-blue focus:shadow-md" />
+                 </div>
+             </div>
+             <div className="w-full px-3 sm:w-1/2">
+                 <div className="mb-5">
+                     <label htmlFor="time" className="mb-3 block text-base font-medium text-[#07074D]">
+                         Time
+                     </label>
+                     <input value={send.time} onChange={(e) => setSend((prvs) => ({...prvs , time:e.target.value }) ) } type="time" name="time" id="time"
+                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-custom-blue focus:shadow-md" />
+                 </div>
+             </div>
+         </div>
+
+        
+
+         <div>
+             <button
+             onClick={handleSubmit}
+                 className="hover:shadow-form w-full rounded-md bg-custom-blue py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                 Book Appointment
+             </button>
+         </div>
+         
+        
+     </form>
+ </div>
+ </div>
+
+            
+        </div> 
+        <div>
+       
+        <div class="flex items-center me-4">
+            <input checked id="red-checkbox"  value="" class="w-8  h-8  bg-[#ffbcbab3] border-black rounded focus:ring-2  "/>
+            <label htmlFor="red-checkbox" class="ms-2 text-sm font-medium text-black dark:text-black">ABSENCE DAYS</label>
+
         </div>
 
+        <div className=' flex-shrink-0'>
+        <Calendar
+        value={send.date}
+        onChange={handleChange}
+            tileClassName={tileClassName}
+            />
+        </div>
+        </div>
+       
 
-        <button className="mt-8 w-56 rounded-full border-8  bg-custom-blue px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1">Book Now</button>
+    </div>
+
+    <Toaster
+        position="top-center"
+        reverseOrder={false}
+        />
+ 
+       
+
     </div>
     </div>
 

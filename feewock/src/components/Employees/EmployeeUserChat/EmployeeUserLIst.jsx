@@ -5,7 +5,7 @@ import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
 import { w3cwebsocket as W3CWebSocket  } from 'websocket';
 import { data } from 'autoprefixer';
-
+import Spinner from '../../../utils/Spinner';
 
 function EmployeeUserLIst() {
     const navigate = useNavigate()
@@ -13,6 +13,7 @@ function EmployeeUserLIst() {
     const Employee =JSON.parse(employeeDetailsJson)
     const EmployeeId = Employee.id
     const [users , setUsers] = useState([])
+    const [isLoadingChat , setIsLaodingChat] = useState(true)
     const axiosInstance = useAxios()
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     
@@ -23,6 +24,7 @@ function EmployeeUserLIst() {
         const response = await axiosInstance.get(`${BASE_URL}/chat/employeemessage/${EmployeeId}/`)
         if(response.status === 200){
             setUsers(response.data)
+            setIsLaodingChat(false)
         }else{
           const Toast = Swal.mixin({
             toast: true,
@@ -48,6 +50,10 @@ function EmployeeUserLIst() {
 
     const HandleCick = (e , id) => {
         navigate('/chat',{ state: { UserId: id, EmployeeId: EmployeeId } })
+    }
+
+    if(isLoadingChat){
+      return <Spinner />
     }
 
   return (
