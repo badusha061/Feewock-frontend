@@ -9,7 +9,7 @@ const ProtectedRoute  = ({allowedRoles , children}) => {
     const authtoken = userdetails.token
     const DetailsJson = localStorage.getItem('userDetails')
     const details =JSON.parse(DetailsJson)
-    if(details){
+    if(details){  
         const authrole = details.role
         if (!authtoken || !allowedRoles.includes(authrole)) {
             const Toast = Swal.mixin({

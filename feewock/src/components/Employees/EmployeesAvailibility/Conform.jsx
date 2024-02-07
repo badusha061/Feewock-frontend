@@ -1,59 +1,69 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
 
 
 function Conform({close,date , employeeId}) {
+  console.log(date , employeeId);
     const axiosInstance = useAxios()
+
+
+    
+
     const handleSubmit = async () => {
+
         try{
-            const response =  await axiosInstance.post(`/employees/employeeavailability`,{
-                employees :employeeId,
-                date : date,
-                is_available:false
-            })
-            if(response.status === 201){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    }
-                  });
-                  Toast.fire({
-                    icon: "success",
-                    title: "Successfully"
-                  });
-                  close()
-                }
-        }catch(error){
-            if(error.response.data.date[0] === 'employees availability with this date already exists.'){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    },
-                    
-                  });
+          const response =  await axiosInstance.post(`/employees/employeeavailability`,{
+              employees :employeeId,
+              date : date,
+              is_available:false
+          })
+          if(response.status === 201){
+              const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                  }
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: "Successfully"
+                });
+                close()
+              }
+      }catch(error){
+        console.log(error);
+          if(error.response.data.date[0] === 'employees availability with this date already exists.'){
+              const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                  },
                   
-                  Toast.fire({
-                    icon: 'error',
-                    title: 'This Date is Already Take it Please Take Another',
-                  });
-                  return false
-            }
-        }
+                });
+                
+                Toast.fire({
+                  icon: 'error',
+                  title: 'This Date is Already Take it Please Take Another',
+                });
+                return false
+          }
+      }
+     
       
     }
+
+    
   return (
     <div className="border rounded-lg shadow relative max-w-sm">
     <div className="flex justify-end p-2">

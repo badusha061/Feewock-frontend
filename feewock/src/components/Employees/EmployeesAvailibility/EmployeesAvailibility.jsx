@@ -125,7 +125,10 @@ function EmployeesAvailability() {
             key={selectedDate}
             orientation="landscape"
             value={selectedDate}  
-            onChange={handleDateChange}
+            onChange={(newDate) => {
+                handleDateChange(newDate)
+                handleButton()
+            }}
             onAccept={handleButton}
             renderDay={renderDay}
             renderInput={(props) => (
