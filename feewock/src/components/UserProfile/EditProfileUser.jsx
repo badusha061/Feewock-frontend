@@ -3,6 +3,9 @@ import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import useAxios from '../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+
 
 function EditProfileUser({close , UserId}) {
     const [data , setData] = useState({
@@ -14,23 +17,23 @@ function EditProfileUser({close , UserId}) {
         longitude:'',
         latitude:''
     })
-
+    const [errors , setErrors] = useState({})
     const axiosInstance = useAxios()
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
-    useEffect(() => {
-       GetUserData()
-    },[BASE_URL, reducer])
+    // useEffect(() => {
+    //    GetUserData()
+    // },[BASE_URL, reducer])
 
-    const GetUserData = async() => {
-        const  response =  await axiosInstance.get(`${BASE_URL}/api/userindivual/${UserId}/`)
-        if (response.status === 200){
-            setData(response.data)
-        }else{
-            console.log(response);
-        }
-    }
+    // const GetUserData = async() => {
+    //     const  response =  await axiosInstance.get(`${BASE_URL}/api/userindivual/${UserId}/`)
+    //     if (response.status === 200){
+    //         setData(response.data)
+    //     }else{
+    //         console.log(response);
+    //     }
+    // }
 
     const handleSelect = async (value) => {
       
@@ -49,9 +52,60 @@ function EditProfileUser({close , UserId}) {
         }
       };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
+        const validateError = {}
+
+        if(!data.first_name.trim()){
+            validateError.first_name = "First Name is Not Empty"
+        }
+        if(!data.last_name.trim()){
+        validateError.last_name = "Last Name is Not Empty"
+        }
+        if(!data.email.trim()){
+        validateError.email = "Email is Not Empty"
+        } else if(!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(data.email)){
+        validateError.email = "Email Should be Correct"
+        }
+
+        if(!data.phone_number.trim()){
+        validateError.phone_number = "Phone not Empty"
+        }else if (data.phone_number.length != 10){
+        validateError.phone_number = "Phone Number Should Contain 10 Digits"
+        }
+
+        if(data.location === null){
+        validateError.location = "Locaion Cannot be Empty"
+        }
         console.log(data);
+        setErrors(validateError)
+
+        if(Object.keys(validateError).length === 0){
+            const response = await axiosInstance.put(`/api/userindivual/${UserId}/`,data)
+            if(response.status === 200){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Successfully Edited"
+                  });
+    
+                  close()
+            }
+        }else{
+            toast.error('All Condition Should be statisfied.')
+            return false
+        }
+       
     }
   return (
     <div className="container max-w-screen-md mx-auto mt-10 mb-10 bg-white  rounded-2xl shadow-2xl  overflow-hidden">
@@ -82,19 +136,24 @@ function EditProfileUser({close , UserId}) {
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-bold mb-2">First Name</label>
-                    <input  value={data.first_name} onChange={(e) => setData(e.target.value)} type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your username"  />
+                    <input  value={data.first_name} onChange={(e) => setData({...data , first_name :e.target.value})} type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your username"  />
+                    {errors.first_name && <span className=' text-red-700 font-bold ' > {errors.first_name} </span>}
+                    
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-bold mb-2">Last Name</label>
-                    <input  value={data.last_name} onChange={(e) => setData(e.target.value)}   type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your username"  />
+                    <input  value={data.last_name} onChange={(e) => setData({...data, last_name :e.target.value})}   type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your username"  />
+                    {errors.last_name && <span className=' text-red-700 font-bold ' > {errors.last_name} </span>}  
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-bold mb-2">Email</label>
-                    <input  value={data.email} onChange={(e) => setData(e.target.value)}   type="email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your Email" />
+                    <input  value={data.email} onChange={(e) => setData({...data, email: e.target.value})}   type="email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your Email" />
+                    {errors.email && <span className=' text-red-700 font-bold ' > {errors.email} </span>}   
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-bold mb-2">Phone Number</label>
-                    <input value={data.phone_number} onChange={(e) => setData(e.target.value)}    type="number" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your Email" />
+                    <input value={data.phone_number} onChange={(e) => setData({...data , phone_number :e.target.value})}    type="number" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Your Email" />
+                    {errors.phone_number && <span className=' text-red-700 font-bold ' > {errors.phone_number} </span>}
                 </div>
                
         
@@ -108,6 +167,7 @@ function EditProfileUser({close , UserId}) {
                     }}
                     apiKey='AIzaSyAsc69G6yC0OKUVzNm5o90_EvDHHNL7wxE'
                     />  
+                    {errors.location && <span className=' text-red-700 font-bold ' > {errors.location} </span>}
                 </div>
 
                 <button
@@ -117,7 +177,10 @@ function EditProfileUser({close , UserId}) {
                 >
                   Submit
                 </button>
-               
+                <Toaster
+                    position="top-center"
+                    reverseOrder={false}
+                    />
             </div>
         </div>
     </div>

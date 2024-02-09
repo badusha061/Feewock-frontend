@@ -5,6 +5,7 @@ import useAxios from '../../../AxiosConfig/Axios'
 import Spinner from '../../../utils/Spinner'
 import { data } from 'autoprefixer'
 import Swal from 'sweetalert2'; 
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
 function EmployeeBooking() {
@@ -32,6 +33,7 @@ function EmployeeBooking() {
         if(response.status === 200){
             setAppoitment(response.data)
             setIsloading(false)
+
         }
     }
   
@@ -41,6 +43,7 @@ function EmployeeBooking() {
         if(response.status === 200){
             setActions(response.data)
             console.log(response.data);
+
         }
     }
 
@@ -59,43 +62,17 @@ function EmployeeBooking() {
         setReject(true)
         setFinal(id)
     }
+    const client = new W3CWebSocket(`ws://localhost:8000/ws/notificationuser/test/`) 
+    const isWebsocketConnect = () => {
+        return client.readyState === WebSocket.OPEN;
+      }
+
     const FinalAccept = async () => {
-        if(final){
-            const response = await axiosInstance.post('/booking/action', {
-                appointment:final,
-                action:'accepted'
-            })
-            if(response.status === 201){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    }
-                  });
-                  Toast.fire({
-                    icon: "success",
-                    title: "Successfully Accepted Service"
-                  });
-                handleClose()
-                return true
-            }
-        }
-
-    }
-
-    const FinalReject = async () => {
-        console.log(reason);
-        if(reason){
+        if(isWebsocketConnect){
             if(final){
                 const response = await axiosInstance.post('/booking/action', {
                     appointment:final,
-                    action:'rejected',
-                    comment:reason
+                    action:'accepted'
                 })
                 if(response.status === 201){
                     const Toast = Swal.mixin({
@@ -111,32 +88,72 @@ function EmployeeBooking() {
                       });
                       Toast.fire({
                         icon: "success",
-                        title: "Successfully Rejected Service"
+                        title: "Successfully Accepted Service"
                       });
                     handleClose()
                     return true
                 }
             }
+    
         }else{
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.onmouseenter = Swal.stopTimer;
-                  toast.onmouseleave = Swal.resumeTimer;
-                },
-                
-              });
-              
-              Toast.fire({
-                icon: 'error',
-                title: 'Please Enter Your Reason',
-              });
-              return false
+            console.log('websocket is not connected');
         }
+        
+    }
+
+    const FinalReject = async () => {
+        if(isWebsocketConnect){
+            if(reason){
+                if(final){
+                    const response = await axiosInstance.post('/booking/action', {
+                        appointment:final,
+                        action:'rejected',
+                        comment:reason
+                    })
+                    if(response.status === 201){
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                              toast.onmouseenter = Swal.stopTimer;
+                              toast.onmouseleave = Swal.resumeTimer;
+                            }
+                          });
+                          Toast.fire({
+                            icon: "success",
+                            title: "Successfully Rejected Service"
+                          });
+                        handleClose()
+                        return true
+                    }
+                }
+            }else{
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    },
+                    
+                  });
+                  
+                  Toast.fire({
+                    icon: 'error',
+                    title: 'Please Enter Your Reason',
+                  });
+                  return false
+            }
+        }else{
+            console.log('web socket is not connected');
+        }
+       
        
     }
 
@@ -151,7 +168,7 @@ function EmployeeBooking() {
     {appoitment ? (
          <div className=' pt-4'>
 
-         <div className=' flex justify-around '>
+         <div className=' pl-12 pt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 '>
   
           {appoitment.map((data , index) => (
   

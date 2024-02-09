@@ -8,12 +8,15 @@ import location from './Images/location.png'
 import mobile from './Images/mobile.png'
 import Swal from 'sweetalert2';
 import EditProfileUser from './EditProfileUser.jsx'                          
-
+import { useLocation, useNavigate } from 'react-router-dom'
+import Spinner from '../../utils/Spinner.jsx'
 
 
 
 function UserProfile() {
+    const navigate = useNavigate()
     const [data , setData] = useState([])
+    const [isLoading , setIsLaoding] = useState(true)
     const params = useParams()
     const UserId = params.id
     const axiosInstance = useAxios()
@@ -28,6 +31,7 @@ function UserProfile() {
         const  response =  await axiosInstance.get(`${BASE_URL}/api/userindivual/${UserId}/`)
         if (response.status === 200){
             setData(response.data)
+            setIsLaoding(false)
         }else{
             console.log(response);
         }
@@ -77,6 +81,13 @@ function UserProfile() {
     }
     const handleClose = () => {
         setModal(false)
+        forceUpdate()
+    }
+    const handleNavigate = () => {
+        navigate('/bookinglist',{state:UserId})
+    }
+    if(isLoading){
+        return <Spinner />
     }
   return (
     <Layouts>
@@ -100,12 +111,21 @@ function UserProfile() {
                             Change
                         </button>
                         <h1 className="text-xl font-bold">{data.first_name} {data.last_name}</h1>
-                      
-                        <button onClick={handleModal} className="flex p-2.5 bg-custom-blue rounded-lg hover:rounded-3xl hover:bg-black transition-all duration-300 text-white">
+                      <div className=' flex'>
+                      <button onClick={handleModal} className="flex p-2.5 bg-custom-blue rounded-lg hover:rounded-3xl hover:bg-black transition-all duration-300 text-white mr-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                         </button>
+                        <button
+                        onClick={handleNavigate}
+                            className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-custom-blue hover:bg-white hover:text-[#7747FF] focus:text-[#7747FF] focus:bg-gray-200 text-gray-50 font-bold leading-loose transition duration-200"
+                            >
+                           Booking
+                        </button>
+
+                      </div>
+                    
                             
             
                     </div>                 

@@ -122,36 +122,39 @@ function OneOneChat() {
 
     const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${sender}_${receiver}/`) 
 
-   
+   useEffect(() => {
+        GetMessage()
+   },[sender , receiver])
+
+   const GetMessage = async () => {
+
+        await axiosInstance.get(`${BASE_URL}/chat/message/${sender}/${receiver}/`)
+        .then((response) => {
+            setMessages(response.data)
+            console.log('message is the ',response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
 
     useEffect(() => {
-        const GetMessage = async () => {
 
-     
-            await axiosInstance.get(`${BASE_URL}/chat/message/${sender}/${receiver}/`)
-            .then((response) => {
-                setMessages(response.data)
-                console.log('message is the ',response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    
-            client.onmessage = (event) => {
-                console.log('before come the message',event.data);
-                try{
-                    const dataFromServer = JSON.parse(event.data);
-                    if (dataFromServer) {
-                      if(dataFromServer.sender === userId){
-                        setMessages((prevMessages) => [
-                            ...prevMessages,
-                            {
-                              id :dataFromServer.id,
-                              message: dataFromServer.text,
-                              sender: {id:userId},
-                              receiver:{id:employeeId}
-                            },
-                          ]);
+        client.onmessage = (event) => {
+            console.log('before come the message',event.data);
+            try{
+                const dataFromServer = JSON.parse(event.data);
+                if (dataFromServer) {
+                  if(dataFromServer.sender === userId){
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        {
+                          id :dataFromServer.id,
+                          message: dataFromServer.text,
+                          sender: {id:userId},
+                          receiver:{id:employeeId}
+                        },
+                      ]);
     
                       }else if(dataFromServer.sender ===  employeeId){
                         setMessages((prevMessages) => [
@@ -170,7 +173,7 @@ function OneOneChat() {
                     console.log('the error is the',error);
                 }
             };
-    
+
             client.onopen = () => {
                 console.log('websocket client connected');
             }
@@ -184,16 +187,14 @@ function OneOneChat() {
             };
             return  () => {
                 client.close()
-            }
         }
-    GetMessage()
-        return () => {
-            client.close()
-        }
+        
     
     },[sender , receiver])
 
-
+    useEffect(() => {
+       
+    },[sender , receiver])
 
 
   return (
@@ -279,22 +280,6 @@ function OneOneChat() {
                            
 
                             
-                            {/* <span className="ml-1">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    className="h-4 w-4 text-blue-500 inline"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M5 13l4 4L19 7"
-                                    />
-                                </svg>
-                            </span> */}
 
                             </div>
                            

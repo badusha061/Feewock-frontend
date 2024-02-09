@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import icon from './image/icon.png'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css'
 import { useSelector , useDispatch} from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUser}   from "@fortawesome/free-solid-svg-icons"
 import { cleartoken } from '../../actions/TokenAction';
 import Swal from 'sweetalert2';
-
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
 function Navbar() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [accept , setAccept] = useState(false)
+  const [reject , setReject] = useState(false)
+  const [notifications , setNotification] = useState([])
   const t = useSelector(state => state.token.token)
   const userDetails = JSON.parse(localStorage.getItem('userDetails'));
   const [token , setToken] = useState('')
@@ -48,6 +52,59 @@ function Navbar() {
   if(userDetails && userDetails.id){
     userId = userDetails.id
   }
+  const client = new W3CWebSocket(`ws://localhost:8000/ws/notificationuser/test/`) 
+
+  
+  useEffect(() => {
+    const handleMessage = (event) => {
+      console.log(event);
+
+
+      const data = JSON.parse(event.data);
+      console.log(data);
+      console.log(data.message);
+      setNotification(data.message)
+    };
+
+    const handleOpen = () => {
+      console.log('web socket is connected');
+
+    };
+
+    client.addEventListener('open', handleOpen);
+    client.addEventListener('message', handleMessage);
+
+
+    return () => {
+      client.removeEventListener('open', handleOpen);
+      client.removeEventListener('message', handleMessage);
+      client.close();
+    };
+  }, []);
+
+  
+  if(notifications){
+    console.log('the notification is the ',notifications);
+  }
+
+  const handleModal = () => {
+    console.log(notifications);
+    if( notifications === 'Your service is Accepted.'){
+      setAccept(true)
+    }else{
+      setReject(true)
+    }
+  }
+
+  const handleCancel = () => {
+    setAccept(false)
+    setReject(false)
+  }
+
+  const handleNavigate = () => {
+    navigate('/bookinglist',{state:userId})
+  }
+
   return (
     <>
 
@@ -111,9 +168,13 @@ function Navbar() {
                 
             <li>
 
-            <button className="button">
-              <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
-            </button>
+             
+              {notifications && notifications.length > 0 ? (
+                 <button onClick={handleModal}  className="button">
+
+                 <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
+               </button> 
+              ):null}
 
             </li>
 
@@ -150,11 +211,62 @@ function Navbar() {
           </>
         )}
 
+    {accept ? (
+      <div className="modal-overlay">
+      <div className="notifications-modal">
+        <div className="notifications-container">
+        <div className="success">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              
+              <svg className="succes-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div className="success-prompt-wrap">
+              <p className="success-prompt-heading">Your service is Accepted.
+              </p>
+                <div className="success-button-container">
+                  <button onClick={handleNavigate} type="button" className="success-button-main">View status</button>
+                  <button onClick={handleCancel} type="button" className="success-button-secondary">CANCEL</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      ):null}
+
+      {reject ? (
+        <div className="modal-overlay">
+        <div className="notifications-modal">
+        <div className="notifications-container">
+        <div className="error-alert">
+          <div className="flex">
+            <div onClick={handleCancel} className="flex-shrink-0">
+              
+              <svg aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" className="error-svg">
+                <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" fill-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div className="error-prompt-container">
+              <p className="error-prompt-heading">Your service is Rejected.
+              </p>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      ):null}
 
     </ul>
   </nav>
 
 
+  
 
 </body>
 

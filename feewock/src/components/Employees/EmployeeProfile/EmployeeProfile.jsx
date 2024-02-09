@@ -15,16 +15,15 @@ import location from './Images/location.png'
 import Swal from 'sweetalert2';
 import EditProfile from './EditProfile'
 import useAxios from '../../../AxiosConfig/Axios'
-import Spinner from '../../../utils/Spinner.jsx'
+import Spinner from '../../../utils/Spinner'
 
 
 function EmployeeProfile() {
 
     const [data , setData] = useState([])
-    const[isLoading , setIsloading] = useState(true)
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     const axiosInstance = useAxios()
-
+    const [isLoading , setIsLaoding] = useState(true)
     const employeeDetailsJson = localStorage.getItem('userDetails')
     const Employee =JSON.parse(employeeDetailsJson)
     const EmployeeId = Employee.id
@@ -39,8 +38,8 @@ function EmployeeProfile() {
         const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${EmployeeId}/`)
         if (response.status === 200){
             setData(response.data)
-            // setIsloading(false)
-            console.log(response.data.images);
+            setIsLaoding(false)
+
         }else{
             const Toast = Swal.mixin({
                 toast: true,
@@ -62,6 +61,10 @@ function EmployeeProfile() {
               return false
         }
     }
+
+    // if(isLoading){
+    //     return <Spinner />
+    // }
     
     const handleButton = () => {
         document.getElementById('ImageInput').click();
@@ -102,9 +105,7 @@ function EmployeeProfile() {
         }
     }
 
-    // if(isLoading){
-    //     return <Spinner />
-    // }
+  
 
     const [modal , setModal] = useState(false)
 
@@ -121,7 +122,7 @@ function EmployeeProfile() {
               <section className="py-10 bg-custom-blue rounded-3xl sm:py-16 lg:py-24">
           <div className="max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
               <div className="mx-auto text-left md:max-w-lg lg:max-w-2xl md:text-center">
-                  <h2 className="text-3xl   font-bold leading-tight text-white sm:text-4xl lg:text-5xl lg:leading-tight">
+                  <h2 className="text-3xl uppercase font-bold leading-tight text-white sm:text-4xl lg:text-5xl lg:leading-tight">
                       {data.username}
                   </h2>
               </div>

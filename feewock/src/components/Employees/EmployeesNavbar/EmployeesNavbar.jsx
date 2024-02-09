@@ -12,7 +12,8 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 function EmployeesNavbar() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [notitficationModal , setNotificationModal] = useState(false)
+    const [modal , setModal] = useState(false)
+    const [details , setDetails] = useState([])
     const [notifications , setNotification] = useState([])
     const naviagate = useNavigate()
 
@@ -43,7 +44,7 @@ function EmployeesNavbar() {
   }
 
     const handleTrue = () => {
-      setNotificationModal(true)
+        setModal(true)
     }
     let Links =[
         {name:"HOME",link:"/employee/employeedashboard"},
@@ -60,13 +61,9 @@ function EmployeesNavbar() {
 
       const client = new W3CWebSocket(`ws://localhost:8000/ws/notification/test/`) 
       useEffect(() => {
-        const handleMessage = (event) => {
-          console.log(event);
-   
-    
+        const handleMessage = (event) => {    
           const data = JSON.parse(event.data);
-          console.log(data);
-          console.log(data.message);
+          setDetails(data)
           setNotification(data.message)
         };
     
@@ -88,6 +85,15 @@ function EmployeesNavbar() {
     
       if(notifications){
         console.log('the notification is the ',notifications);
+        console.log('the details i sthe ', details);
+      }
+
+      const handleCancel = () => {
+        setModal(false)
+      }
+
+      const handleNavigate = () => {
+          navigate('/employee/booking')
       }
   return (
     <div className='shadow-md w-full  top-0 left-0'>
@@ -109,24 +115,60 @@ function EmployeesNavbar() {
              </li>))
             
          }
-          <div className=' ml-4'> 
-          <button onClick={handleTrue} className="button">
 
-            <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
-          </button> 
-          </div>
+         {notifications && notifications.length > 0 ? (
+            <div className='ml-4'> 
+            <button onClick={handleTrue} className="button">
+  
+              <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
+            </button> 
+            </div>
+         ):null}
+          
 
-          {notifications ? (
-              <h1>
-                {notifications}
-              </h1>
-          ):null}
+       
         
             
          
          <button onClick={handleLogout} className='btn bg-custom-blue text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>LOGOUT</button>
      </ul>
          
+          {modal ? (
+            <div className="modal-overlay">
+            <div className="notifications-modal">
+            <div className="notifications-container">
+            <div className="success">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  
+                  <svg className="succes-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div className="success-prompt-wrap">
+                  <p className="success-prompt-heading">New appointment created
+                  </p><div className="success-prompt-prompt">
+                    <p>Name:{details.appointment_details.name}.</p>
+                    <p>Phone Number:{details.appointment_details.phone_number}.</p>
+                    <p>Location:{details.appointment_details.location}.</p>
+                    <p>Service Amount:{details.appointment_details.service_amount}.</p>
+                    <p>Date:{details.appointment_details.date}.</p>
+                    <p>Time:{details.appointment_details.service_time}.</p>
+
+                  </div>
+                    <div className="success-button-container">
+                      <button onClick={handleNavigate} type="button" className="success-button-main">View status</button>
+                      <button onClick={handleCancel} type="button" className="success-button-secondary">Dismiss</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+          ):null}
+
+
     </div>
  </div>
   )

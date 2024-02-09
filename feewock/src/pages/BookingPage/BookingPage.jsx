@@ -122,6 +122,18 @@ function BookingPage() {
         console.log(isWebsocketConnect);
         if(isWebsocketConnect){
             try{
+                if(!send.service_amount.trim()){
+                    toast.error('Service Amount Cannot be Empty')
+                    return false
+                }
+                if(!send.date.trim()){
+                    toast.error('Take Your Service Date ')
+                    return false
+                }
+                if(!send.service_time.trim()){
+                    toast.error('Please take your time')
+                    return false
+                }
                 const response = await axiosInstance.post('booking/appointment',send)
                 if(response.status === 201){
                     const Toast = Swal.mixin({

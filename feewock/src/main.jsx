@@ -22,6 +22,7 @@ import EmployeeRegister from './components/Employees/EmployeeRegister/EmployeeRe
 import EmployeeOtp from './components/Employees/EmployeeRegister/EmployeeOtp.jsx'
 import RedirectIfAuthenticated from './utils/RedirectIfAuthenticated.jsx'
 import BookingPage from './pages/BookingPage/BookingPage.jsx'
+import UserBookingList from './components/UserProfile/UserBookingList.jsx'
 
 
 const router = createBrowserRouter(
@@ -48,7 +49,7 @@ const router = createBrowserRouter(
 
       {/* user booking*/}
       <Route path='booking/' element={<ProtectedRoute allowedRoles={[3]}><BookingPage /> </ProtectedRoute>} />
-
+      <Route path='bookinglist' element={<ProtectedRoute allowedRoles={[3]}><UserBookingList /> </ProtectedRoute>} />
 
       {/* user and employee and admin login */}
       <Route path='login' element={<RedirectIfAuthenticated > <Login /> </RedirectIfAuthenticated>  } />
