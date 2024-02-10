@@ -111,6 +111,16 @@ function OneOneChat() {
             return false
         }
         const messageValue = messageRef.current.value
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+        console.log('the message value is the', messageValue);
+
         if (client.readyState === W3CWebSocket.OPEN) {  
             client.send(JSON.stringify({ text: messageValue , sender: sender }));
             messageRef.current.value = "";
@@ -141,9 +151,9 @@ function OneOneChat() {
     useEffect(() => {
 
         client.onmessage = (event) => {
-            console.log('before come the message',event.data);
             try{
                 const dataFromServer = JSON.parse(event.data);
+                console.log('the on message  data is the ', dataFromServer);
                 if (dataFromServer) {
                   if(dataFromServer.sender === userId){
                     setMessages((prevMessages) => [
@@ -303,7 +313,6 @@ function OneOneChat() {
                         <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div className="font-bold text-xs text-gray-500 mb-1"> {moment.utc(message.date).local().startOf('seconds').fromNow()} </div>
 
-                          {message.is_read === true ? (
                              <div>
                              {typeof message.message === 'object' ? (
                                  <>
@@ -328,25 +337,6 @@ function OneOneChat() {
                            
  
                              </div>
-                          ):(
-                            <div>
-                             {typeof message.message === 'object' ? (
-                                 <>
-                                 
-                                 <div>{message.message.message}</div>
-                                 </>
-                             ) : (
-                                 <>
-                                 <div>{message.message}</div>
-                                 </>
-                             )}
-                           
- 
-                             </div>
-                          )}  
-                       
-                            
-
                         </div>
                         </div>
                     </div>

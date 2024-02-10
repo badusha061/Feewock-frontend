@@ -16,6 +16,9 @@ function EmployeesNavbar() {
     const [details , setDetails] = useState([])
     const [notifications , setNotification] = useState([])
     const naviagate = useNavigate()
+    const employeeDetailsJson = localStorage.getItem('userDetails')
+    const Employee =JSON.parse(employeeDetailsJson)
+    const EmployeeId = Employee.id
 
    const [token , setToken] = useState('')
 
@@ -59,7 +62,7 @@ function EmployeesNavbar() {
       let [open, setOpen] = useState(false);
 
 
-      const client = new W3CWebSocket(`ws://localhost:8000/ws/notification/test/`) 
+      const client = new W3CWebSocket(`ws://localhost:8000/ws/notification/${EmployeeId}/`) 
       useEffect(() => {
         const handleMessage = (event) => {    
           const data = JSON.parse(event.data);
@@ -133,7 +136,7 @@ function EmployeesNavbar() {
          <button onClick={handleLogout} className='btn bg-custom-blue text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>LOGOUT</button>
      </ul>
          
-          {modal ? (
+          {modal  ? (
             <div className="modal-overlay">
             <div className="notifications-modal">
             <div className="notifications-container">

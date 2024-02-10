@@ -240,7 +240,7 @@ const handlClick = (e) => {
     <Layouts>
    <div className="relative py-3 sm:max-w-xl sm:mx-auto no-scrollbar">
   <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-lg rounded-3xl sm:p-10">
-  <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl dark:text-black">Employee Registration</h1>
+  <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl dark:text-black">Experts Registration</h1>
     <div className="max-w-md mx-auto">
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
