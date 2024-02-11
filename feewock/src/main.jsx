@@ -23,7 +23,9 @@ import EmployeeOtp from './components/Employees/EmployeeRegister/EmployeeOtp.jsx
 import RedirectIfAuthenticated from './utils/RedirectIfAuthenticated.jsx'
 import BookingPage from './pages/BookingPage/BookingPage.jsx'
 import UserBookingList from './components/UserProfile/UserBookingList.jsx'
-
+import ServicePayment from './components/payment/ServicePayment.jsx'
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +52,8 @@ const router = createBrowserRouter(
       {/* user booking*/}
       <Route path='booking/' element={<ProtectedRoute allowedRoles={[3]}><BookingPage /> </ProtectedRoute>} />
       <Route path='bookinglist' element={<ProtectedRoute allowedRoles={[3]}><UserBookingList /> </ProtectedRoute>} />
+      <Route path='payment' element={<ProtectedRoute allowedRoles={[3]}><ServicePayment /> </ProtectedRoute>} />
+
 
       {/* user and employee and admin login */}
       <Route path='login' element={<RedirectIfAuthenticated > <Login /> </RedirectIfAuthenticated>  } />
@@ -66,16 +70,18 @@ const router = createBrowserRouter(
     
 )
 
+const stripePromise = loadStripe('pk_test_51Oi81ySJ338jWYPQbr6xviCxeXBEYyaj3cG7T2Pt2LIXVBIv0AH8vtjojdKkrPriiKrUY41HXA8DAzKqxKm5vQ1o00w0rurnCt');
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-
+  <Elements  stripe={stripePromise}>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor} >
         <RouterProvider router={router} />
       </PersistGate>
     </Provider>
+  </Elements>
    
  
   // </React.StrictMode>,

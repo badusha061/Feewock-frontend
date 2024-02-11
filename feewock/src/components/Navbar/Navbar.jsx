@@ -57,17 +57,13 @@ function Navbar() {
   
   useEffect(() => {
     const handleMessage = (event) => {
-      console.log(event);
 
 
       const data = JSON.parse(event.data);
-      console.log(data);
-      console.log(data.message);
       setNotification(data.message)
     };
 
     const handleOpen = () => {
-      console.log('web socket is connected');
 
     };
 
@@ -83,12 +79,8 @@ function Navbar() {
   }, []);
 
   
-  if(notifications){
-    console.log('the notification is the ',notifications);
-  }
 
   const handleModal = () => {
-    console.log(notifications);
     if( notifications === 'Your service is Accepted.'){
       setAccept(true)
     }else{
