@@ -57,7 +57,6 @@ function Service() {
           })
       setModalOpen(false)
      }  
-     console.log(data.latitude , data.longitude);
    
   return (
     <Layouts>
