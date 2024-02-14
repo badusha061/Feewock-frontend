@@ -7,6 +7,7 @@ import SubService from "../components/Admin/AdminService/SubService";
 import EditMainService from "../components/Admin/AdminService/EditMainService";
 import EmployeeIndivual from "../components/Admin/EmployeeIndivual/EmployeeIndivual";
 import UserBanner from "../components/Admin/UserBanner/UserBanner";
+import ServicePayment from "../components/Admin/ServicePayment/ServicePayment";
 
 export default function AdminRoutes() {
     return (
@@ -20,6 +21,8 @@ export default function AdminRoutes() {
             <Route path="/mainservice/:id/edit" element={<EditMainService />} />
             <Route path="/subservice" element={<SubService />} />
             <Route path="/banner" element={<UserBanner />} />
+            <Route path="/payment" element={<ServicePayment />} />
+
         </Routes>
     )
 }

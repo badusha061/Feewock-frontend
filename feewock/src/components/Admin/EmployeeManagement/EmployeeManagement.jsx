@@ -67,7 +67,7 @@ function EmployeeManagement() {
       },
   
     },
-{
+    {
       name:"PhoneNumber",
       selector : row => row.phone_number
   

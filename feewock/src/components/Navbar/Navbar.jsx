@@ -100,7 +100,7 @@ function Navbar() {
   return (
     <>
 
-      
+<div className=' container mx-auto '>
 <body className="bg-cyan-400">
   <nav className=" bg-white shadow md:flex md:items-center md:justify-between">
     <div className="flex justify-between items-center ">
@@ -115,35 +115,35 @@ function Navbar() {
       </span>
     </div>
 
-    <ul className=" flex gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500">
+    <ul className=" flex text-xs gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500">
     <NavLink to="/" classNameName={({ isActive }) => isActive ? "active" : ""}>
       <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="text-xl   font-semibold  hover:text-custom-blue duration-500">HOME</a>
+        <a href="#" className=" font-semibold  hover:text-custom-blue duration-500">HOME</a>
       </li>
     </NavLink>
     
     <NavLink to="/postlist">
     <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">EXPLORE</a>
+        <a href="#" className=" font-semibold  hover:text-custom-blue duration-500">EXPLORE</a>
       </li>
       </NavLink>
     
       <NavLink to="/service">
       <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">SERVICE</a>
+        <a href="#" className="font-semibold  hover:text-custom-blue duration-500">SERVICE</a>
       </li>
       </NavLink>
 
       <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">ABOUT</a>
+        <a href="#" className="font-semibold text-xs  hover:text-custom-blue duration-500">ABOUT</a>
       </li>
       <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">CONTACT</a>
+        <a href="#" className="font-semibold  hover:text-custom-blue duration-500">CONTACT</a>
       </li>
 
       <NavLink to='/employee/employeeregister' >
       <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="text-xl font-semibold  hover:text-custom-blue duration-500">EXPERT</a>
+        <a href="#" className="font-semibold  hover:text-custom-blue duration-500">EXPERT</a>
       </li>
       </NavLink>
 
@@ -186,16 +186,27 @@ function Navbar() {
           <>
           <li>
         <NavLink to="/login">
-        <button className="w-[150px] bg-custom-blue h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#000000] before:to-[#000000] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
-          Login
-        </button>
+
+        <button
+              type="button"
+              className="inline-block rounded bg-custom-blue px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              data-te-ripple-init
+              data-te-ripple-color="light">
+              Login
+            </button>
+
+
         </NavLink>
         </li>
 
           <li>
           <NavLink to="/register">
-            <button className="w-[150px]  bg-custom-blue h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#000000] before:to-[#000000] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
-              Registration
+          <button
+              type="button"
+              className="inline-block rounded bg-custom-blue px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              data-te-ripple-init
+              data-te-ripple-color="light">
+              Register
             </button>
             </NavLink>
           </li>
@@ -256,11 +267,10 @@ function Navbar() {
 
     </ul>
   </nav>
-
-
-  
-
 </body>
+</div>
+
+
 
     </>
   )

@@ -47,7 +47,7 @@ function EmployeeRegister() {
     const fetchData = async () => {
         try{
             const instance  =  axios.create({
-                baseURL:`${BASE_URL}/service/subservice`
+                baseURL:`${BASE_URL}/service/subserviceemployee`
                })
                instance.get('')
                .then((response) => {

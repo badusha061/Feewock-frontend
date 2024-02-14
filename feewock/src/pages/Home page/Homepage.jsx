@@ -5,12 +5,15 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { useSelector } from "react-redux";
-
+import QueryString from 'query-string';
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import useAxios from '../../AxiosConfig/Axios'
+import { useNavigate } from 'react-router-dom';
 
 function Homepage() {
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
-
+    const navigate = useNavigate()
     const settings = {
         
       infinite: true,
@@ -41,12 +44,46 @@ function Homepage() {
     useEffect(() => {
       GetBanner()
     },[])    
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    let  UserId 
+    if(userDetails && userDetails.id){
+      UserId = userDetails.id
+    }
     const GetBanner = async () => {
       const response = await axios.get(`${BASE_URL}/banner/listuser`)
       if(response.status === 200){
         setBanner(response.data)
       }
     }
+
+
+    useEffect(() => {
+
+      const values = QueryString.parse(location.search);
+      if (values.success) {
+          toast.success('Your payment is Success')
+
+          const appointmenId = values.appointment_id
+
+          if(appointmenId){
+            axios.post(`${BASE_URL}/booking/stripsuccess/${appointmenId}/`)
+            .then((response) => {
+              if(response.status === 200){
+                  navigate('/bookinglist',{state:UserId})
+              }
+            })
+            .catch((error) => {
+              console.log('error is the', error);
+            })
+          }
+      }
+      if (values.canceled) {
+        toast.error('Your Payment is canceled..')   
+      }
+    }, []);
+
+
+
 
   return (
     <>
@@ -78,7 +115,10 @@ function Homepage() {
     </div>
 </section>
 
-
+  <Toaster
+          position="top-center"
+          reverseOrder={false}
+          />
       </Layouts>
     </>
   )

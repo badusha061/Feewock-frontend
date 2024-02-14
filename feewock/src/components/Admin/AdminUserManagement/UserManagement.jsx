@@ -3,14 +3,14 @@ import AdminLayouts from '../../../layouts/AdminLayouts'
 import DataTable from 'react-data-table-component'
 import Swal from 'sweetalert2';
 import useAxios from '../../../AxiosConfig/Axios.js'
-
+import Spinner from '../../../utils/Spinner.jsx';
 
 function UserManagement() { 
   const [search , setSearch] = useState('')
 
   const useAxiosInstance = useAxios();
   
-
+  const [isLoading , setIsLaoding] = useState(true)
 
   const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
   let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -128,20 +128,26 @@ const coloumn = [
     
   ]  
 
-  
+ 
   const [records , setRecords ] = useState([])
-  useEffect(() => {
-    getUser()
-  },[reducer , BASE_URL])
+    useEffect(() => {
+      getUser()
+    },[reducer , BASE_URL])
 
+
+  
+   
   let getUser = async () => {
     
       let response = await useAxiosInstance.get('/dashboard/userlist')
       if(response.status === 200){
         setRecords(response.data)
+        setIsLaoding(false)
       }
    
   }
+
+   
 
   const searchdata = useMemo(() => {
     return records.filter(item => 
@@ -178,6 +184,8 @@ const coloumn = [
                     </div>
                 </div>
             </div>
+
+     
 
 
       <DataTable

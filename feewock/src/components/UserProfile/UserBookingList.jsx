@@ -4,9 +4,11 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useAxios from '../../AxiosConfig/Axios'
 import Spinner from '../../utils/Spinner'
 
+
 function UserBookingList() {
     const navigate = useNavigate()
     const [appointmentId , setAppointmentId] = useState('')
+    const [actionId , setActionId] = useState('')
     const axiosInstance = useAxios()
     const [isLoading , setIsLaoding] = useState(true)
     const [appointment , setAppointment] = useState([])
@@ -32,6 +34,7 @@ function UserBookingList() {
     const handleModal = (e , action_id , appointment_id) => {
         setModal(true)   
         setAppointmentId(appointment_id)
+        setActionId(action_id)
     }
 
     const handleCancel = () => {
@@ -39,7 +42,7 @@ function UserBookingList() {
     }
 
     const handleCashondelivery =  () => {
-        console.log('cash on delivery');
+        navigate('/payment',{state:{appointment:appointmentId , action:actionId}})
     }
 
     const handlePayment = async () => {
@@ -48,6 +51,10 @@ function UserBookingList() {
             window.location.href = response.data.message.url
         }
     }
+
+    {appointment.map((data ) => {
+        console.log(data.appointment.payment_status);
+    })}
   
   return (
     <Layouts>
@@ -79,13 +86,56 @@ function UserBookingList() {
                         <p className="mt-4 text-base text-black">Service Amount:{data.appointment.service_amount} </p>
                         <p className="mt-4 text-base text-black">Service Date:{data.appointment.date} </p>
                         <p className="mt-4 text-base text-black">Service Time: {data.appointment.service_time} </p>
-                        <p className="mt-4  uppercase text-bold font-bold text-black">Service Status: {data.action} </p>
+                        {data.appointment.payment_status === 'PY' || data.appointment.payment_method === 'CO'  ? (
+                            <>
+                                {data.appointment.payment_method === 'ST' ? (
+                                    
+                                    <>
+                                        <p className="mt-4  uppercase font-bold  text-black">Payment Method: Stripe</p>
+                                        <p className="mt-4  uppercase font-bold  text-black">Payment Time: {data.appointment.paid_at} </p>
+
+                                    </>
+                                ):(
+                                    <>
+                                        <p className="mt-4  uppercase font-bold  text-black">Payment Method: Cash on Delivery</p>
+                                        <p className="mt-4  uppercase font-bold  text-black">Payment Time: Not paid</p>
+                                    </>
+                                )}
+                            </>
+                            ):(
+                                <p className="mt-4  uppercase  font-bold text-black">Service Status: {data.action} </p>
+                            )}
 
 
                     </div>
                 </div>
 
-            {data.action === 'accepted' ? (
+            {data.appointment.payment_status=== 'PY' || data.appointment.payment_method === 'CO' ? (
+                <>
+                {data.appointment.payment_status=== 'PY' ? (
+                    <div className="relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md py-5 pl-6 pr-8 sm:pr-6">
+                    <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
+                        <div className="text-green-500">
+                            <svg className="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div className="text-sm  font-bold ml-3">Success Payment.</div>
+                    </div>
+                </div>
+                ):(
+                    <div className="relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md py-5 pl-6 pr-8 sm:pr-6">
+                    <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
+                        <div className="text-green-500">
+                            <svg className="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div className="text-sm  font-bold ml-3">Success Conformed.</div>
+                    </div>
+                </div>
+
+                )}
+                </>
+            ):(
+                <>
+                    {data.action === 'accepted' ? (
                  <div className="border-t border-gray-200">
                  <div className="flex">
                      <div className="flex items-center flex-1 px-6 py-5">
@@ -109,7 +159,9 @@ function UserBookingList() {
                 </div>
             </div>
             )}
-               
+                </>
+            )}
+
             </div>
 
         ))} 

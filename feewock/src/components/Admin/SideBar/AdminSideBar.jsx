@@ -5,9 +5,8 @@ import home from './Image/home.png'
 import employee from './Image/Employee.png'
 import mainservice from './Image/mainservice.png'
 import subservice from './Image/subservice.png'
-import position from './Image/position.png'
 import banner from './Image/banner.png'
-
+import payment from './Image/payment.png'
 
 import { NavLink } from 'react-router-dom'
 
@@ -93,6 +92,16 @@ function AdminSideBar() {
             <img src={banner} alt='logo' />
             <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
                 User Banner
+            </span>
+          </li>
+          </NavLink>
+
+          <br />
+          <NavLink to="/admin/payment">
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
+            <img src={payment} alt='logo' />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+                Service Order
             </span>
           </li>
           </NavLink>

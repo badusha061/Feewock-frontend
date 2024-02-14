@@ -22,18 +22,7 @@ function EditProfileUser({close , UserId}) {
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
-    // useEffect(() => {
-    //    GetUserData()
-    // },[BASE_URL, reducer])
 
-    // const GetUserData = async() => {
-    //     const  response =  await axiosInstance.get(`${BASE_URL}/api/userindivual/${UserId}/`)
-    //     if (response.status === 200){
-    //         setData(response.data)
-    //     }else{
-    //         console.log(response);
-    //     }
-    // }
 
     const handleSelect = async (value) => {
       

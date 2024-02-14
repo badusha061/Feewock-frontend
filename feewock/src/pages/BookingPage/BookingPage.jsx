@@ -94,7 +94,7 @@ function BookingPage() {
         const currentDate = new Date()
         const givenDate = new Date(dateStr)
         if(givenDate < currentDate){
-            toast.error('Cannot Be Past')
+            toast.error('Cannot Be Past')   
             return false
         }
         const isDateInData = data.some((d) => d.date === dateStr && !d.is_available)

@@ -56,7 +56,7 @@ function EmployeesNavbar() {
         {name:"POST",link:"/employee/post"},
         {name:"AVAILABLILITY",link:"/employee/availibile"},
         {name:"BOOKING",link:"/employee/booking"},
-        {name:"SERVICE",link:""},
+        {name:"SERVICE",link:"/employee/service"},
       ];
 
       let [open, setOpen] = useState(false);
