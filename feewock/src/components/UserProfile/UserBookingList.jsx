@@ -3,15 +3,17 @@ import Layouts from '../../layouts/Layouts'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useAxios from '../../AxiosConfig/Axios'
 import Spinner from '../../utils/Spinner'
-
+import UserReviews from '../Reviews/UserReviews'
 
 function UserBookingList() {
     const navigate = useNavigate()
+    const [reviewmodal , setReviewModal] = useState(false)
     const [appointmentId , setAppointmentId] = useState('')
     const [actionId , setActionId] = useState('')
     const axiosInstance = useAxios()
     const [isLoading , setIsLaoding] = useState(true)
     const [appointment , setAppointment] = useState([])
+    const[employee , setEmployee] = useState('')
     const location = useLocation()
     const userId = location.state
     const [modal , setModal] = useState(false)
@@ -23,6 +25,7 @@ function UserBookingList() {
         const response = await axiosInstance.get(`/booking/userlist/${userId}/`)
         if(response.status === 200){
             setAppointment(response.data)
+            console.log(response.data);
                 setIsLaoding(false)
         }
     }
@@ -39,6 +42,7 @@ function UserBookingList() {
 
     const handleCancel = () => {
         setModal(false)
+        setReviewModal(false)
     }
 
     const handleCashondelivery =  () => {
@@ -51,11 +55,12 @@ function UserBookingList() {
             window.location.href = response.data.message.url
         }
     }
-
-    {appointment.map((data ) => {
-        console.log(data.appointment.payment_status);
-    })}
   
+    const handleReviewsModal = (e , id) => {
+        setReviewModal(true)
+        setEmployee(id)
+    }
+
   return (
     <Layouts>
 
@@ -113,25 +118,69 @@ function UserBookingList() {
             {data.appointment.payment_status=== 'PY' || data.appointment.payment_method === 'CO' ? (
                 <>
                 {data.appointment.payment_status=== 'PY' ? (
+                    <>
+                
                     <div className="relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md py-5 pl-6 pr-8 sm:pr-6">
-                    <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
-                        <div className="text-green-500">
-                            <svg className="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
+                            <div className="text-green-500">
+                                <svg className="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div className="text-sm  font-bold ml-3">Success Payment.</div>
                         </div>
-                        <div className="text-sm  font-bold ml-3">Success Payment.</div>
                     </div>
-                </div>
-                ):(
-                    <div className="relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md py-5 pl-6 pr-8 sm:pr-6">
-                    <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
-                        <div className="text-green-500">
-                            <svg className="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <div className="text-sm  font-bold ml-3">Success Conformed.</div>
-                    </div>
-                </div>
 
-                )}
+
+                    <button onClick={(e) =>handleReviewsModal(e , data.appointment.employee.id)} className="flex items-center bg-black gap-1 px-4 py-2 cursor-pointer text-white font-semibold tracking-widest rounded-md hover:bg-custom-blue duration-300 hover:gap-2 hover:translate-x-3">
+                            Add Reviews
+                            <svg className="w-5 h-5"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                                stroke-linejoin="round"
+                                stroke-linecap="round">  
+                                </path>
+                            </svg>
+                    </button>
+
+                </>
+                ):(
+
+                    <>
+                    <div className="relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md py-5 pl-6 pr-8 sm:pr-6">
+                        <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
+                        <div className="text-green-500">
+                            <svg className="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div className="text-sm  font-bold ml-3">Success Conformation.</div>
+                        </div>
+                    </div>
+
+              
+                    <button onClick={(e) =>handleReviewsModal(e , data.appointment.employee.id)} className="flex items-center bg-black gap-1 px-4 py-2 cursor-pointer text-white font-semibold tracking-widest rounded-md hover:bg-custom-blue duration-300 hover:gap-2 hover:translate-x-3">
+                            Add Reviews
+                            <svg className="w-5 h-5"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                                stroke-linejoin="round"
+                                stroke-linecap="round">  
+                                </path>
+                            </svg>
+                    </button>
+               
+           
+
+          </>
+
+            )}
                 </>
             ):(
                 <>
@@ -217,6 +266,14 @@ function UserBookingList() {
           </div>
 
     ):null}
+
+    
+        {reviewmodal ? (
+            <UserReviews cancel={handleCancel} user={userId} employee={employee} />
+        ):null}
+
+
+
     </Layouts>
 
   )
