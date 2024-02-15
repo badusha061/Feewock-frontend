@@ -3,9 +3,12 @@ import { json, useLocation, useNavigate } from 'react-router-dom'
 import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
+import { Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+
+
 
 
 
@@ -75,21 +78,10 @@ function OneOneChat() {
     },[])
 
 
-
-    
-
-
-   
-
-
-
-
-
     const GetUser = async () => {
         const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${employeeId}/`)
         if (response.status === 200){
             setEmployee(response.data)
-            console.log(response.data);
         }
     }
 
@@ -97,8 +89,6 @@ function OneOneChat() {
         const response = await axiosInstance.get(`${BASE_URL}/api/userindivual/${userId}/`)
         if(response.status === 200){
             setUser(response.data)
-            console.log(response.data);
-
         }
     }
 
@@ -107,20 +97,10 @@ function OneOneChat() {
     const handleMessage = (e) => {
         e.preventDefault();
         if(!messageRef.current.value.trim()){
-            toast("Cannot be empty")
+            toast.error('Cannot be empty')
             return false
         }
         const messageValue = messageRef.current.value
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-        console.log('the message value is the', messageValue);
-
         if (client.readyState === W3CWebSocket.OPEN) {  
             client.send(JSON.stringify({ text: messageValue , sender: sender }));
             messageRef.current.value = "";
@@ -149,41 +129,6 @@ function OneOneChat() {
     }
 
     useEffect(() => {
-
-        client.onmessage = (event) => {
-            try{
-                const dataFromServer = JSON.parse(event.data);
-                console.log('the on message  data is the ', dataFromServer);
-                if (dataFromServer) {
-                  if(dataFromServer.sender === userId){
-                    setMessages((prevMessages) => [
-                        ...prevMessages,
-                        {
-                          id :dataFromServer.id,
-                          message: dataFromServer.text,
-                          sender: {id:userId},
-                          receiver:{id:employeeId}
-                        },
-                      ]);
-    
-                      }else if(dataFromServer.sender ===  employeeId){
-                        setMessages((prevMessages) => [
-                            ...prevMessages,
-                            {
-                                id :dataFromServer.id,
-                                message: dataFromServer.text,
-                                sender: {id:employeeId},
-                                receiver:{id:userId}
-                              },
-                          ]);
-    
-                      }
-                    }
-                }catch(error){
-                    console.log('the error is the',error);
-                }
-            };
-
             client.onopen = () => {
                 console.log('websocket client connected');
             }
@@ -202,9 +147,33 @@ function OneOneChat() {
     
     },[sender , receiver])
 
+
     useEffect(() => {
-       
+        client.onmessage = (event) => {
+            console.log({
+                event
+            });
+            try{
+                const dataFromServer = JSON.parse(event.data);
+                if (dataFromServer) {
+                    const newMessage = {
+                        id: dataFromServer.messages.id,
+                        message:dataFromServer.message,
+                        sender:{id:dataFromServer.messages.sender.id},
+                        receiver:{id:dataFromServer.messages.receiver.id},
+                        date:dataFromServer.messages.date,
+                        is_read:dataFromServer.messages.is_read
+                    };
+
+                setMessages((prevMessages) => [...prevMessages, newMessage]);
+                         
+                }
+                }catch(error){
+                    console.log('the error is the',error);
+                }
+            };
     },[sender , receiver])
+
 
 
   return (
@@ -403,7 +372,10 @@ function OneOneChat() {
         </div>
         </div>
     </div>
-    <ToastContainer />
+    <Toaster
+                position="top-center"
+                reverseOrder={false}
+                />
 </>
 
 

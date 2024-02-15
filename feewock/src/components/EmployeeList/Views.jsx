@@ -39,7 +39,7 @@ function Views() {
             setIsLaodingEmployee(false)
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error)
           })
     },[BASE_URL , reducer])
 
@@ -126,16 +126,13 @@ function Views() {
         e.preventDefault()
         if(user){
             let userId = user.id 
-            console.log(userId);   
             navigate('/booking',{state:{employeeId:employeeId,userId:userId}})
         }else{
             toast.error('please login')
             return false
         }
     }
-    {reviews.map((data , index) => {
-        console.log(data.user.images);
-    })}
+
   return (
 <Layouts >
 
@@ -402,9 +399,13 @@ function Views() {
               <div key={index} className="overflow-hidden bg-white rounded-md shadow">
                   <div className="px-8 py-12">
                       <div className="relative w-24 h-24 mx-auto">
-                      {data.user.images ? (
-                        <img src={data.user.images} className="relative object-cover w-24 h-24 mx-auto rounded-full" alt="alt" />
-                        ) : null}
+                      {data.user.images !== undefined && data.user.images !== "" ? (
+                        <img src={`${BASE_URL}${data.user.images}`}  className="relative object-cover w-24 h-24 mx-auto rounded-full" alt="alt" />
+                        ) : (
+                            <h>
+                                 else work
+                            </h>
+                        )}
 
                           <div className="absolute top-0 right-0 flex items-center justify-center bg-blue-600 rounded-full w-7 h-7">
                               <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

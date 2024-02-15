@@ -89,6 +89,7 @@ function UserProfile() {
     if(isLoading){
         return <Spinner />
     }
+  
   return (
     <Layouts>
 
