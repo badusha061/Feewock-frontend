@@ -26,6 +26,7 @@ import UserBookingList from './components/UserProfile/UserBookingList.jsx'
 import ServicePayment from './components/payment/ServicePayment.jsx'
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import Usernotification from './notification/usernotification.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
       <Route path='booking/' element={<ProtectedRoute allowedRoles={[3]}><BookingPage /> </ProtectedRoute>} />
       <Route path='bookinglist' element={<ProtectedRoute allowedRoles={[3]}><UserBookingList /> </ProtectedRoute>} />
       <Route path='payment' element={<ProtectedRoute allowedRoles={[3]}><ServicePayment /> </ProtectedRoute>} />
+      <Route path='usernotification' element={<ProtectedRoute allowedRoles={[3]}><Usernotification /> </ProtectedRoute>} />
 
 
       {/* user and employee and admin login */}

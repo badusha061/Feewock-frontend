@@ -7,6 +7,7 @@ import Post from "../components/Employees/EmployeesPost/Post";
 import EmployeesAvailibility from "../components/Employees/EmployeesAvailibility/EmployeesAvailibility";
 import EmployeeBooking from "../components/Employees/EmployeeBooking/EmployeeBooking";
 import EmployeeService from "../components/Employees/EmployeeService/EmployeeService";
+import EmployeeNotification from "../components/Employees/EmployeeNotification/EmployeeNotification";
 
 
 export default function EmployeeRoutes () {
@@ -20,6 +21,7 @@ export default function EmployeeRoutes () {
         <Route path="/listuser" element={<EmployeeUserLIst />} />
         <Route path="/booking" element={<EmployeeBooking />} />
         <Route path="/service" element={<EmployeeService />} />
+        <Route path="/notification" element={<EmployeeNotification />} />
     </Routes>
     )
   

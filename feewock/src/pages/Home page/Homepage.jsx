@@ -10,8 +10,11 @@ import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import useAxios from '../../AxiosConfig/Axios'
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../utils/Spinner'
+
 
 function Homepage() {
+    const [isloading , setIsLoading] = useState(true)
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const navigate = useNavigate()
     const settings = {
@@ -53,6 +56,7 @@ function Homepage() {
       const response = await axios.get(`${BASE_URL}/banner/listuser`)
       if(response.status === 200){
         setBanner(response.data)
+        setIsLoading(false)
       }
     }
 
@@ -82,7 +86,9 @@ function Homepage() {
       }
     }, []);
 
-
+    if(isloading){
+      return <Spinner />
+    }
 
 
   return (

@@ -12,7 +12,6 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 function EmployeesNavbar() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [modal , setModal] = useState(false)
     const [details , setDetails] = useState([])
     const [notifications , setNotification] = useState([])
     const naviagate = useNavigate()
@@ -46,9 +45,7 @@ function EmployeesNavbar() {
     naviagate('/login')
   }
 
-    const handleTrue = () => {
-        setModal(true)
-    }
+
     let Links =[
         {name:"HOME",link:"/employee/employeedashboard"},
         {name:"PROFILE",link:"/employee/employeeprofile"},
@@ -86,17 +83,18 @@ function EmployeesNavbar() {
         };
       }, []);
     
-      if(notifications){
-        console.log('the notification is the ',notifications);
-        console.log('the details i sthe ', details);
-      }
+
 
       const handleCancel = () => {
-        setModal(false)
+        setNotification(false)
       }
 
       const handleNavigate = () => {
           navigate('/employee/booking')
+      }
+
+      const handleNotification = () => {
+        naviagate('/employee/notification')
       }
   return (
     <div className='shadow-md w-full  top-0 left-0'>
@@ -119,24 +117,16 @@ function EmployeesNavbar() {
             
          }
 
-         {notifications && notifications.length > 0 ? (
             <div className='ml-4'> 
-            <button onClick={handleTrue} className="button">
-  
+            <button onClick={handleNotification} className="button">
               <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
             </button> 
-            </div>
-         ):null}
-          
+            </div>  
 
-       
-        
-            
-         
          <button onClick={handleLogout} className='btn bg-custom-blue text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>LOGOUT</button>
      </ul>
          
-          {modal  ? (
+          {notifications && notifications.length > 0 ? (
             <div className="modal-overlay">
             <div className="notifications-modal">
             <div className="notifications-container">
