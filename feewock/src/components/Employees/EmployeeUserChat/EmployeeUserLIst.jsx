@@ -70,12 +70,12 @@ function EmployeeUserLIst() {
                          {data.images ? (
 
                          <div key={index}  className="flex ml-2"> <img src={`${BASE_URL}${data.images}`} width="40" alt='image' height="40" className="rounded-full" />
-                             <div   className="flex flex-col ml-2"> <span className="font-medium text-black" key={index} > {data.first_name} {data.last_name} </span> 
+                             <div   className="flex flex-col ml-2"> <span className="font-medium capitalize text-black" key={index} > {data.first_name} {data.last_name} </span> 
                              </div>
                          </div>
                          ):(
                             <div key={index} className="flex ml-2"> <img src="https://i.imgur.com/aq39RMA.jpg" width="40" height="40" className="rounded-full" />
-                            <div className="flex flex-col ml-2"> <span className="font-medium text-black"> {data.first_name} {data.last_name} </span> 
+                            <div className="flex flex-col ml-2"> <span className="font-medium capitalize text-black"> {data.first_name} {data.last_name} </span> 
                             </div>
                             </div>
                          )}

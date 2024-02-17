@@ -288,7 +288,7 @@ function Login() {
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
         </div>
     
-        <div className="flex justify-center items-center">
+        {/* <div className="flex justify-center items-center">
           <div>
             <button
               className="flex items-center justify-center py-2 px-20 bg-white hover:bg-gray-200 focus:ring-blue-500 focus:ring-offset-blue-200 text-gray-700 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
@@ -363,7 +363,7 @@ function Login() {
             </button>
 
           </div>
-        </div>
+        </div> */}
    
         <div className="flex items-center justify-between mt-4">
           <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>

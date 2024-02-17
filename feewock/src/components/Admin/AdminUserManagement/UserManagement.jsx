@@ -198,7 +198,7 @@ const coloumn = [
         headCells : {
           style: {
             paddingLeft: '8px',
-            paddingRight : '8ox',
+            paddingRight : '8px',
             backgroundColor :'#551B8C',
             fontWeight : 'bold',
             color: '#ffffff', 

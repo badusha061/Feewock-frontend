@@ -105,7 +105,7 @@ function AdminNavbar() {
                                 {/* <a href="javascript:void(0)">Home</a> */}
                             </li>
                             <li className="text-white hover:text-blue-600">
-                                <h6>Muhammad Vahab</h6>
+                                <h6 className=' font-normal text-sm uppercase' >Muhammad Vahab</h6>
                             </li>
                             <li className="text-white hover:text-blue-600">
                                 <img className=' w-6' src={admin} alt="admin" />

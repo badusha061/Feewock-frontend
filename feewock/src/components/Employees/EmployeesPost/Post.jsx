@@ -113,7 +113,7 @@ const GetEmployeeData = async() => {
           <div className="flex flex-col bg-white  shadow hover:shadow-2xl rounded-md py-4 px-6 border">
           <img className="w-full  h-72 object-cover rounded-t-lg" alt="Card Image" src={data.image} />
           <div className="p-4 flex justify-center ">
-            <h2 className="text-xl font-semibold h-16 overflow-hidden overflow-ellipsis"> {data.captions} </h2>
+            <h2 className="text-xl capitalize font-semibold h-16 overflow-hidden overflow-ellipsis"> {data.captions} </h2>
           </div>
 
              {editModal ? (

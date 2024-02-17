@@ -111,7 +111,7 @@ function UserProfile() {
                         <button  onClick={handleButton}  className=" hover:bg-black bg-custom-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                             Change
                         </button>
-                        <h1 className="text-xl font-bold">{data.first_name} {data.last_name}</h1>
+                        <h1 className=" text-lg uppercase font-bold">{data.first_name} {data.last_name}</h1>
                       <div className=' flex'>
                       <button onClick={handleModal} className="flex p-2.5 bg-custom-blue rounded-lg hover:rounded-3xl hover:bg-black transition-all duration-300 text-white mr-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -141,28 +141,28 @@ function UserProfile() {
                     <EditProfileUser close={handleClose}  UserId={UserId} />
                     </div>
                 )}
-        <h2 className="  text-xl font-bold mb-4">About Me</h2>                                  
+        <h2 className="text-xl uppercase font-bold mb-4">About Me</h2>                                  
                 <table>
                     <tbody>
                         <tr>
                             <td><img src={user} className='w-5' alt="" /></td>
-                            <td className='font-semibold text-lg'>  {data.first_name} </td>
+                            <td className='font-semibold uppercase text-lg'>  {data.first_name} </td>
                         </tr>
                         <tr>
                             <td><img src={user} className='w-5' alt="" /></td>
-                            <td className='font-semibold text-lg'>{data.last_name}</td>
+                            <td className='font-semibold uppercase text-lg'>{data.last_name}</td>
                         </tr>
                         <tr>
                             <td><img src={email} className='w-5' alt="" /></td>
-                            <td className='font-semibold text-lg'>{data.email}</td>
+                            <td className='font-semibold uppercase text-lg'>{data.email}</td>
                         </tr>
                         <tr>
                             <td><img src={mobile} className='w-5' alt="" /></td>
-                            <td className=' font-semibold  text-lg'>{data.phone_number}</td>
+                            <td className=' font-semibold  uppercase text-lg'>{data.phone_number}</td>
                         </tr>
                         <tr>
                             <td><img src={location} className='w-5' alt="" /></td>
-                            <td className='font-semibold text-lg'>{data.location}</td>
+                            <td className='font-semibold uppercase text-lg'>{data.location}</td>
                         </tr>
                     </tbody>
                 </table>

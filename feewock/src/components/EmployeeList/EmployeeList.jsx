@@ -3,6 +3,8 @@ import Layouts from '../../layouts/Layouts'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import test from './Images/test.jpeg'
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 
 function EmployeeList() {
@@ -39,7 +41,7 @@ function EmployeeList() {
 
     useEffect(() => {
         const instance = axios.create({
-            baseURL:`${BASE_URL}/service/updatesubervice/${service_id}/`
+            baseURL:`${BASE_URL}/service/updatesuberviceuser/${service_id}/`
           })
           instance.get('')
           .then((response) => {
@@ -56,18 +58,48 @@ function EmployeeList() {
 
   return (
     <Layouts>
+
+<div className=' container mx-auto ' >
+  <div className=' flex  space-x-2 ' >
+
+    <div className="w-1/4 cursor-pointer bg-gray-100 h-full shadow-lg">
+      <div className='flex  mt-4 justify-center' >
+          <img  className=' rounded-full h-32 w-32' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcW-ju0-8jdBur-fu_dz7O2_iRL50-YIpI3w&usqp=CAU" alt="Sunset in the mountains"/>
+      </div>
+      <div className="px-6 py-4">
+        <div className='flex items-center space-x-1.5 ' >
+            <HiOutlineLocationMarker className="text-custom-blue"  size={25} />
+            <div className="font-bold truncate overflow-hidden text-xl mb-2">Kondotty, Kerala, India</div>
+        </div>
+        <div className=' flex items-center justify-center space-x-1.5 ' >
+        <p className=" text-gray-700 text-base">
+            SHABIL
+        </p>
+          <MdOutlineArrowForwardIos />
+        </div>
+      </div>
+      
+    </div>
+
+
+    </div>
+  </div>
+
+
+
+
    <div className='container mx-auto px-5'>
-    <h1 className="mb-4 text-center text-4xl font-extrabold leading-none tracking-tight text-black md:text-5xl lg:text-3xl dark:text-black"> {servicedetails.name} </h1>
+    <h1 className="mb-4 text-center text-4xl uppercase font-extrabold leading-none tracking-tight text-black md:text-5xl lg:text-3xl dark:text-black"> {servicedetails.name} </h1>
 
     <div className='grid grid-cols-4 gap-4'>
         {employees.map((data , index) => (
             <div className='flex' key={index}>
                 <div className="flex w-72 h-full flex-col justify-center items-center shadow-2xl bg-white rounded-3xl">
                     <div className="px-6 py-8 sm:p-10 sm:pb-6 text-center">
-                        <h2 className="text-md font-medium tracking-tighter text-black lg:text-3xl mb-2">
+                        <h2 className="text-md uppercase font-medium tracking-tighter text-black lg:text-3xl mb-2">
                             {data.username}
                         </h2>
-                        <p className="text-sm  truncate overflow-hidden text-black">{data.location}</p>
+                        <p className="text-sm capitalize  truncate overflow-hidden text-black">{data.location}</p>
                     </div>
                     <div className="mt-2">
                         {data.images ? (

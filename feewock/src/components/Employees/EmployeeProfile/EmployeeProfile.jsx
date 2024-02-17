@@ -165,22 +165,22 @@ function EmployeeProfile() {
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </span>
-                        <h1 className="tracking-wide   text-3xl font-bold"> About Me </h1>
+                        <h1 className="tracking-wide uppercase text-3xl font-bold"> About Me </h1>
                     </div>
                     <div className="text-gray-700">
                         <div className="grid md:grid-cols-2 text-sm gap-4">
                             <div className="grid grid-cols-2  ">
                               <img className='h-6 px-4 ' src={username} alt="" />
-                              <div className="px-4 "> {data.username} </div>
+                              <div className="px-4  capitalize "> {data.username} </div>
                             </div>
                             <div className="grid grid-cols-2">
                               <img className='h-6 px-4 ' src={eamil} alt="" />
-                                <div className="px-4 "> {data.email} </div>
+                                <div className="px-4 capitalize "> {data.email} </div>
                             </div>
                             <div className="grid grid-cols-2">
                             <img className='h-6 px-4 ' src={gender} alt="" />
                             {data.gender === 'M' ? (
-                            <div className="px-4 ">Male</div>
+                            <div className="px-4 capitalize ">Male</div>
                             ) : data.gender === 'F' ? (
                             <div className="px-4 ">Female</div>
                             ) : data.gender === 'N' ? (
@@ -200,18 +200,18 @@ function EmployeeProfile() {
 
                             <div className="grid grid-cols-2">
                                <img className='h-6 px-4 ' src={city} alt="" />
-                                <div className="px-4 "> {data.city} </div>
+                                <div className="px-4 capitalize "> {data.city} </div>
                             </div>
                            
                             <div className="grid grid-cols-2">
                                <img className='h-6 px-4 ' src={state} alt="" />
-                                <div className="px-4 "> {data.state} </div>
+                                <div className="px-4 capitalize "> {data.state} </div>
                             </div>
                            
 
                             <div className="grid grid-cols-2">
                                <img className='h-6 px-4 ' src={address} alt="" />
-                                <div className="px-4 "> {data.address} </div>
+                                <div className="px-4 capitalize "> {data.address} </div>
                             </div>
                             <div className="grid grid-cols-2">
                                <img className='h-6 px-4 ' src={adhar} alt="" />

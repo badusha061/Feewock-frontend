@@ -3,6 +3,8 @@ import Layouts from '../../layouts/Layouts'
 import axios from 'axios'
 import { useNavigate  } from 'react-router-dom'
 import LocationModal from './LocationModal'
+import test from './Image/repair.png'
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 
 function Service() {
@@ -61,16 +63,80 @@ function Service() {
   return (
     <Layouts>
         
-<div className="flex items-center justify-between text-center mx-auto max-w-lg h-20">
-   <input type="text" className="font-inherit font-normal text-base text-gray-700 bg-gray-200 border-none rounded-full px-4 py-2 transition-all duration-500 ease-in-out mr-[-2rem]" placeholder="Type your text" />
-   <button className="border-none bg-gray-200 mt-[0.1em]">
-       {/* <svg className="h-4 w-4 text-gray-700" aria-hidden="true" viewBox="0 0 24 24">
-           <g>
-               <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-           </g>
-       </svg> */}
-   </button>
+
+  <div className=' container mx-auto' >
+
+    <div className=' flex space-x-1.5' >
+
+    <div className=' rounded-lg flex items-center  cursor-pointer  hover:shadow-xl  justify-around bg-slate-200 h-[100px] w-1/4 ' >
+    <div className=' flex justify-center  items-center  w-20 h-20 bg-custom-blue rounded-full ' >
+        <img src={test} className='w-10' alt="" />
+    </div>
+        <div className=' ml-4' >
+            <h3 className=' font-bold' > Electrification </h3>
+            <p className=' text-custom-blue' >
+              <span className='border-b border-custom-blue'>
+               See employees 
+              </span>
+            </p>
+        </div>
+        <div className=' ml-4' >
+          <MdOutlineArrowForwardIos />
+        </div>
+    </div>
+
+    <div className=' flex items-center  cursor-pointer  hover:shadow-xl  justify-around bg-slate-200 h-[100px] w-1/4 ' >
+    <div className=' flex justify-center  items-center  w-20 h-20 bg-custom-blue rounded-full ' >
+        <img src={test} className='w-10' alt="" />
+    </div>
+        <div className=' ml-4' >
+            <h3 className=' font-bold' > Electrification </h3>
+            <p className=' text-custom-blue' >
+              <span className='border-b border-custom-blue'>
+               See employees 
+              </span>
+            </p>
+        </div>
+        <div className=' ml-4' >
+          <MdOutlineArrowForwardIos />
+        </div>
+    </div>
+    <div className=' flex items-center  cursor-pointer  hover:shadow-xl  justify-around bg-slate-200 h-[100px] w-1/4 ' >
+    <div className=' flex justify-center  items-center  w-20 h-20 bg-custom-blue rounded-full ' >
+        <img src={test} className='w-10' alt="" />
+    </div>
+        <div className=' ml-4' >
+            <h3 className=' font-bold' > Electrification </h3>
+            <p className=' text-custom-blue' >
+              <span className='border-b border-custom-blue'>
+               See employees 
+              </span>
+            </p>
+        </div>
+        <div className=' ml-4' >
+          <MdOutlineArrowForwardIos />
+        </div>
+    </div>
+    <div className=' flex items-center  cursor-pointer  hover:shadow-xl  justify-around bg-slate-200 h-[100px] w-1/4 ' >
+    <div className=' flex justify-center  items-center  w-20 h-20 bg-custom-blue rounded-full ' >
+        <img src={test} className='w-10' alt="" />
+    </div>
+        <div className=' ml-4' >
+            <h3 className=' font-bold' > Electrification </h3>
+            <p className=' text-custom-blue' >
+              <span className='border-b border-custom-blue'>
+               See employees 
+              </span>
+            </p>
+        </div>
+        <div className=' ml-4' >
+          <MdOutlineArrowForwardIos />
+        </div>
+    </div>
+
 </div>
+</div>
+
 
 {modalOpen && <LocationModal close={handleCancel} handleConform={handleConform} setOpenModal={setModalOpen} />}  
 

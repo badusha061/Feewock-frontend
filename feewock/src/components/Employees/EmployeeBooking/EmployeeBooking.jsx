@@ -174,14 +174,14 @@ function EmployeeBooking() {
   
           <div className="relative w-60  h-auto bg-gray-50 rounded-2xl p-4  shadow shadow-sky-800 flex flex-col justify-around items-stretch">
               <img className='  w-28 ' src={icon} alt="" />
-          <span className="text-black font-semibold text-xl">Appoitment</span>
+          <span className="text-black uppercase font-semibold text-xl">Appoitment</span>
           <div class="flex gap-2 text-sm text-gray-500 border-b pb-2">
               <p class="">Name:</p>
-              <p> {data.name} </p>
+              <p className=' capitalize'> {data.name} </p>
           </div>
-          <div class="flex gap-2 text-sm text-gray-500 border-b pb-2">
+          <div class="flex gap-2 capitalize text-sm text-gray-500 border-b pb-2">
               <p class="">Service Amount:</p>
-              <p> {data.service_amount} </p>
+              <p className=' capitalize'> {data.service_amount} </p>
           </div>
           <div class="flex gap-2 text-sm text-gray-500 border-b pb-2">
               <p class="">Phone Number:</p>
@@ -189,7 +189,7 @@ function EmployeeBooking() {
           </div>
           <div class="flex gap-2 text-sm text-gray-500 border-b pb-2">
               <p class="">Locations:</p>
-              <p> {data.location} </p>
+              <p className=' capitalize' > {data.location} </p>
           </div>
           <div class="flex gap-2 text-sm text-gray-500 border-b pb-2">
               <p class="">Date:</p>

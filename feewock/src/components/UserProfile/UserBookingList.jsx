@@ -67,7 +67,7 @@ function UserBookingList() {
     <section className="relative py-10 bg-custom-blue sm:py-16 lg:py-24">
     <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">BOOKING LISTING</h2>
+            <h2 className="text-3xl font-bold uppercase leading-tight text-white sm:text-4xl lg:text-5xl">BOOKING LISTING</h2>
         </div>
 
         <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-8 lg:mt-16 lg:grid-cols-3 lg:max-w-full lg:gap-14">
@@ -83,14 +83,14 @@ function UserBookingList() {
 
                     <div className="flex-1 mt-6">
                         <p className="text-2xl font-semibold">
-                            <a href="#" title="" className="text-black"> Every need, one solution. </a>
+                            <a href="#" title="" className=" uppercase text-lg text-black"> Every need, one solution. </a>
                         </p>
-                        <p className="mt-4 text-base text-black">Employee Name:{data.appointment.employee.username}  </p>
-                        <p className="mt-4 text-base text-black"> Your Name: {data.appointment.name} </p>
-                        <p className="mt-4 text-base text-black">Location:{data.appointment.location} </p>
-                        <p className="mt-4 text-base text-black">Service Amount:{data.appointment.service_amount} </p>
-                        <p className="mt-4 text-base text-black">Service Date:{data.appointment.date} </p>
-                        <p className="mt-4 text-base text-black">Service Time: {data.appointment.service_time} </p>
+                        <p className="mt-4 capitalize text-base text-black">Employee Name:{data.appointment.employee.username}  </p>
+                        <p className="mt-4 capitalize text-base text-black"> Your Name: {data.appointment.name} </p>
+                        <p className="mt-4  capitalize text-base text-black">Location:{data.appointment.location} </p>
+                        <p className="mt-4 capitalize  text-base text-black">Service Amount:{data.appointment.service_amount} </p>
+                        <p className="mt-4  capitalize text-base text-black">Service Date:{data.appointment.date} </p>
+                        <p className="mt-4 capitalize text-base text-black">Service Time: {data.appointment.service_time} </p>
                         {data.appointment.payment_status === 'PY' || data.appointment.payment_method === 'CO'  ? (
                             <>
                                 {data.appointment.payment_method === 'ST' ? (

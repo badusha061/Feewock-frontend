@@ -44,7 +44,7 @@ function AdminSideBar() {
         <NavLink to="/admin/dashboard" >
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={home} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+            <span className={`${!open && "hidden"} origin-left  capitalize duration-200   text-sm font-normal `}>
                 Dashboard
             </span>
           </li>
@@ -53,7 +53,7 @@ function AdminSideBar() {
         <NavLink to='/admin/usermanagement' >
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={user} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg`}>
+            <span className={`${!open && "hidden"} origin-left capitalize text-sm font-normal duration-200  `}>
                 User Management
             </span>
           </li>
@@ -62,7 +62,7 @@ function AdminSideBar() {
         <NavLink to='/admin/employeemanagement'>
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={employee} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+            <span className={`${!open && "hidden"} origin-left capitalize duration-200 font-normal text-sm `}>
                 Employees Management
             </span>
           </li>
@@ -71,7 +71,7 @@ function AdminSideBar() {
           <NavLink to="/admin/mainservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={mainservice} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  capitalize `}>
                 Main Services
             </span>
           </li>
@@ -80,7 +80,7 @@ function AdminSideBar() {
           <NavLink to="/admin/subservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={subservice} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  capitalize `}>
                 Sub Service
             </span>
           </li>
@@ -90,7 +90,7 @@ function AdminSideBar() {
           <NavLink to="/admin/banner">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={banner} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+            <span className={`${!open && "hidden"} origin-left duration-200  font-normal text-sm capitalize `}>
                 User Banner
             </span>
           </li>
@@ -100,7 +100,7 @@ function AdminSideBar() {
           <NavLink to="/admin/payment">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
             <img src={payment} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-bold text-lg `}>
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm capitalize  `}>
                 Service Order
             </span>
           </li>

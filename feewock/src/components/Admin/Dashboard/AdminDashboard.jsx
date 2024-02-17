@@ -5,7 +5,7 @@ function AdminDashboard() {
   return (
     <>
     <AdminLayouts>
-      <h1> AdminDashboard </h1>
+    
     </AdminLayouts>
     </>
   )

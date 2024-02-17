@@ -172,7 +172,7 @@ function Views() {
 
            
 
-                <span className="font-bold"> {data.username} </span>
+                <span className=" uppercase font-bold"> {data.username} </span>
                 <div class=" flex  flex-row gap-4 ">
             <button
             onClick={handleSubmit}
@@ -258,7 +258,7 @@ function Views() {
                         
                         >
                             <h2
-                            className="text-sm font-semibold leading-none"
+                            className="text-sm capitalize font-semibold leading-none"
 
                             >
                             {data.employee.username}
@@ -360,7 +360,7 @@ function Views() {
                         className="space-y-3"
                     
                         >
-                        <p className="  font-bold text-sm">
+                        <p className=" uppercase font-bold text-sm">
                             <span className="text-base font-semibold">
                             {data.captions}
                             </span>
@@ -416,11 +416,11 @@ function Views() {
                           </div>
                       </div>
                       <blockquote className="mt-7">
-                          <p className="text-lg text-black">“{data.content}”</p>
+                          <p className="text-lg uppercase font-bold text-black">“{data.content}”</p>
                       </blockquote>
-                      <p className="text-base font-semibold tex-tblack mt-9"> {data.user.first_name} {data.user.last_name} </p>
-                      <p className="mt-1 text-base text-gray-600"> {data.user.location} </p>
-                      <p className="mt-1 text-base text-gray-600"> {moment.utc(data.created_at).local().startOf('seconds').fromNow()} </p>
+                      <p className="text-base capitalize font-semibold tex-tblack mt-9"> {data.user.first_name} {data.user.last_name} </p>
+                      <p className="mt-1 text-base capitalize text-gray-600"> {data.user.location} </p>
+                      <p className="mt-1 text-base  text-gray-600"> {moment.utc(data.created_at).local().startOf('seconds').fromNow()} </p>
                   </div>
               </div>
               ))}

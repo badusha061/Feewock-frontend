@@ -107,7 +107,7 @@ function PostListUser() {
                     
                     >
                         <h2
-                        className="text-sm font-semibold leading-none"
+                        className="text-sm capitalize font-semibold leading-none"
 
                         >
                         {data.employee.username}
