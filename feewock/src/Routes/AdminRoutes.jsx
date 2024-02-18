@@ -8,6 +8,7 @@ import EditMainService from "../components/Admin/AdminService/EditMainService";
 import EmployeeIndivual from "../components/Admin/EmployeeIndivual/EmployeeIndivual";
 import UserBanner from "../components/Admin/UserBanner/UserBanner";
 import ServicePayment from "../components/Admin/ServicePayment/ServicePayment";
+import ContacForm from "../components/Admin/ContactForm/ContacForm";
 
 export default function AdminRoutes() {
     return (
@@ -22,6 +23,7 @@ export default function AdminRoutes() {
             <Route path="/subservice" element={<SubService />} />
             <Route path="/banner" element={<UserBanner />} />
             <Route path="/payment" element={<ServicePayment />} />
+            <Route path="/contact" element={<ContacForm />} />
 
         </Routes>
     )

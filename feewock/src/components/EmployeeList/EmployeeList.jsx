@@ -59,79 +59,36 @@ function EmployeeList() {
   return (
     <Layouts>
 
-<div className=' container mx-auto ' >
-  <div className=' flex  space-x-2 ' >
-
-    <div className="w-1/4 cursor-pointer bg-gray-100 h-full shadow-lg">
-      <div className='flex  mt-4 justify-center' >
-          <img  className=' rounded-full h-32 w-32' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcW-ju0-8jdBur-fu_dz7O2_iRL50-YIpI3w&usqp=CAU" alt="Sunset in the mountains"/>
-      </div>
-      <div className="px-6 py-4">
-        <div className='flex items-center space-x-1.5 ' >
-            <HiOutlineLocationMarker className="text-custom-blue"  size={25} />
-            <div className="font-bold truncate overflow-hidden text-xl mb-2">Kondotty, Kerala, India</div>
-        </div>
-        <div className=' flex items-center justify-center space-x-1.5 ' >
-        <p className=" text-gray-700 text-base">
-            SHABIL
-        </p>
-          <MdOutlineArrowForwardIos />
-        </div>
-      </div>
-      
-    </div>
-
-
-    </div>
-  </div>
-
-
-
-
    <div className='container mx-auto px-5'>
-    <h1 className="mb-4 text-center text-4xl uppercase font-extrabold leading-none tracking-tight text-black md:text-5xl lg:text-3xl dark:text-black"> {servicedetails.name} </h1>
+    <h1 className="mb-4 text-center text-4xl uppercase  leading-none tracking-tight text-black md:text-5xl lg:text-3xl dark:text-black"> {servicedetails.name} </h1>
 
-    <div className='grid grid-cols-4 gap-4'>
+    <div className=' m-4 gap-4 grid sm:grid-cols-4 '>
         {employees.map((data , index) => (
-            <div className='flex' key={index}>
-                <div className="flex w-72 h-full flex-col justify-center items-center shadow-2xl bg-white rounded-3xl">
-                    <div className="px-6 py-8 sm:p-10 sm:pb-6 text-center">
-                        <h2 className="text-md uppercase font-medium tracking-tighter text-black lg:text-3xl mb-2">
-                            {data.username}
-                        </h2>
-                        <p className="text-sm capitalize  truncate overflow-hidden text-black">{data.location}</p>
-                    </div>
-                    <div className="mt-2">
-                        {data.images ? (
-                            <img className="w-32 h-32 rounded-lg" src={data.images} alt="" />
-                        ) : (
-                            <img className="w-32 h-32 rounded-lg" src={test} alt="" />
-                        )}
-                    </div>
-                    <div className="flex pt-3 px-6 pb-8 sm:px-8 mt-auto">
-                    <button
-                    onClick={() => handleViews(data.id)}
-                      className="overflow-hidden   w-32 p-2 h-12 bg-custom-blue text-white border-none rounded-md text-xl font-bold cursor-pointer relative z-10 group"
-                          >
-                            VIEWS
-                            <span
-                              className="absolute w-36 h-32 -top-8 -left-2 bg-sky-200 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-right"
-                            ></span>
-                            <span
-                              className="absolute w-36 h-32 -top-8 -left-2 bg-sky-400 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-700 duration-700 origin-right"
-                            ></span>
-                            <span
-                              className="absolute w-36 h-32 -top-8 -left-2 bg-sky-600 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-1000 duration-500 origin-right"
-                            ></span>
-                            <span
-                              className="group-hover:opacity-100 group-hover:duration-1000 duration-100 opacity-0 absolute top-2.5 left-6 z-10"
-                              >Explore!</span
-                            >
-                    </button>
+            <>
+                <div  onClick={() => handleViews(data.id)} className=" rounded-[30px] cursor-pointer bg-white h-full shadow-lg">
+                <div className='flex  mt-4 justify-center' >
+                  {data.images ? (
 
-                    </div>
+                    <img  className=' object-cover rounded-full h-32 w-32' src={data.images} alt="Sunset in the mountains"/>
+                  ):(
+                    <img  className=' object-cover rounded-full h-32 w-32' src="https://iau.edu.lc/wp-content/uploads/2016/09/dummy-image.jpg" alt="Sunset in the mountains"/>
+                  )}
                 </div>
-            </div>
+                <div className="px-6 py-4">
+                  <div className='flex items-center space-x-1.5 ' >
+                      <HiOutlineLocationMarker className="text-custom-blue"  size={25} />
+                      <div className="font-bold truncate text-xl mb-2">{data.location}</div>
+                  </div>
+                  <div className=' flex items-center justify-center space-x-1.5 ' >
+                  <p className=" text-gray-700 text-base">
+                      {data.username}
+                  </p>
+                    <MdOutlineArrowForwardIos />
+                  </div>
+                </div>
+                
+              </div>
+            </>
         ))}
     </div>
 </div>

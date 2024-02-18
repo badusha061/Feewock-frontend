@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import icon from './image/icon.png'
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css'
@@ -18,13 +18,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoNotificationsCircle } from "react-icons/io5";
 import useAxios from '../../AxiosConfig/Axios';
 import Spinner from '../../utils/Spinner';
-
+import { IoIosLogOut } from "react-icons/io";
 
 function Navbar() {
   
   const axiosInstance = useAxios()
   const [user , setUser] = useState([])
   const [modal , setModal] = useState(false)
+  const [logout , setLogout] = useState(false)
   const [isLoading , setIsLaoding] = useState(true)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -36,6 +37,7 @@ function Navbar() {
     const access_token = localStorage.getItem('access_token')
     setToken(access_token)
   },[token])
+  const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
 
 
 
@@ -61,7 +63,8 @@ function Navbar() {
       icon: "success",
       title: "Successfully Logged Out"
     });
-
+    forceUpdate()
+    handleCancel()
   }
   let  userId 
   if(userDetails && userDetails.id){
@@ -72,7 +75,7 @@ function Navbar() {
   useEffect(() => {
     GetUserData()
 
-  },[userId])
+  },[userId,reducer])
   
   useEffect(() => {
     const handleMessage = (event) => {
@@ -109,12 +112,15 @@ function Navbar() {
     }
 }
 
-  if(isLoading){
-    return <Spinner />
+  if(userId){
+    if(isLoading){
+      return <Spinner />
+    }
   }
 
   const handleCancel = () => {
     setNotification(false)
+    setLogout(false)
   }
 
   const handleNavigate = () => {
@@ -129,6 +135,10 @@ function Navbar() {
     setModal(!modal)
   }
 
+
+  const handleModal = () => {
+    setLogout(true)
+  }
 
   return (
     <>
@@ -184,16 +194,14 @@ function Navbar() {
       </li>
       </NavLink>
 
-      {/* <li className="mx-4 my-6 md:my-0">
-        <a href="#" className="font-semibold text-xs  hover:text-custom-blue duration-500">ABOUT</a>
-      </li> */}
-
+    <NavLink to="/contact">
       <li className="mx-4 my-6 md:my-0">
       <div className=' flex items-center space-x-1.5 '>
         <IoMdContact   className="fill-current text-custom-blue"  size={25}  />
         <a href="#" className="font-semibold  hover:text-custom-blue duration-500">CONTACT</a>
       </div>
       </li>
+    </NavLink>
 
 
       
@@ -202,18 +210,15 @@ function Navbar() {
 
 
       {token ? (
-          <>
+        <>
+        <div className="border-l-2 h-16 bg-custom-blue"></div>
             <li>
-                 {/* <button onClick={handleNotification}  className="button">
-                 <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
-               </button>  */}
                <div  onClick={handleNotification} className='flex cursor-pointer  '>
                   <IoNotificationsCircle className="fill-current text-custom-blue"  size={30} />
                </div>
 
             </li>
 
-            <div className="border-l-2 h-16 bg-custom-blue"></div>
 
             <li>
               <NavLink to={`/userprofile/${userId}`}>
@@ -224,11 +229,8 @@ function Navbar() {
             </li>
                 
             <li>
-                {/* <button className="Btn" onClick={handleLogout}>
-                <div className="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
-                <div className="text">Logout</div>
-              </button> */}
-            <div className=' flex items-center space-x-2 ' >
+       
+            <div onClick={handleModal} className=' flex items-center space-x-2 ' >
               <p className="font-semibold  cursor-pointer hover:text-custom-blue duration-500 " >{user.first_name} </p>
               <div className=' flex cursor-pointer' >
                 <IoIosArrowDown />
@@ -274,6 +276,26 @@ function Navbar() {
         
           </>
         )}
+
+
+    { logout && (
+
+      <div className="absolute right-0 z-10 mt-2 w-50 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+      <div className="py-1" role="none">
+        <NavLink to={`/userprofile/${userId}`} >
+        <div  className=' flex  items-center' >
+        <a href="#" className="text-black block uppercase px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+        <FaRegUserCircle className="fill-current text-custom-blue"  size={27} />
+        </div>
+        </NavLink>
+          <div onClick={handleLogout}  className=' flex  items-center' >
+          <button type="submit" className="text-black uppercase block w-full px-4 py-2 text-left text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+          <IoIosLogOut className="fill-current text-custom-blue"  size={30} />
+          </div>
+      </div>
+    </div>
+
+    )}
 
     { notifications === "Your service is Accepted."  ? (
       <div className="modal-overlay">

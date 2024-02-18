@@ -1,14 +1,14 @@
 import React,{useState} from 'react'
 import control from './Image/control.png'
-import user from './Image/User.png'
-import home from './Image/home.png'
-import employee from './Image/Employee.png'
-import mainservice from './Image/mainservice.png'
-import subservice from './Image/subservice.png'
-import banner from './Image/banner.png'
-import payment from './Image/payment.png'
-
+import { IoIosHome } from "react-icons/io";
+import { FaUsers } from "react-icons/fa";
+import { FaUsersCog } from "react-icons/fa";
+import { MdOutlineMiscellaneousServices } from "react-icons/md";
+import { GrServices } from "react-icons/gr";
+import { GiVerticalBanner } from "react-icons/gi";
+import { FaBorderAll } from "react-icons/fa";
 import { NavLink } from 'react-router-dom'
+import { MdContactMail } from "react-icons/md";
 
 function AdminSideBar() {
     const [open, setOpen] = useState(true);
@@ -42,66 +42,74 @@ function AdminSideBar() {
       </div>
       <ul className="pt-6">
         <NavLink to="/admin/dashboard" >
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={home} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left  capitalize duration-200   text-sm font-normal `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2' >
+            <IoIosHome size={30} />
+            <span className={`${!open && "hidden"} origin-left  uppercase  duration-200   text-sm font-normal `}>
                 Dashboard
             </span>
           </li>
         </NavLink>
-          <br />
+
         <NavLink to='/admin/usermanagement' >
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={user} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left capitalize text-sm font-normal duration-200  `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2' >
+            <FaUsers size={30} />
+            <span className={`${!open && "hidden"} origin-left uppercase  text-sm font-normal duration-200  `}>
                 User Management
             </span>
           </li>
         </NavLink>
-          <br />
+
         <NavLink to='/admin/employeemanagement'>
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={employee} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left capitalize duration-200 font-normal text-sm `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
+            <FaUsersCog  size={30} />
+            <span className={`${!open && "hidden"} origin-left uppercase  duration-200 font-normal text-sm `}>
                 Employees Management
             </span>
           </li>
           </NavLink>
-          <br />
+
           <NavLink to="/admin/mainservice">
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={mainservice} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  capitalize `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
+            <MdOutlineMiscellaneousServices size={30} />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  uppercase  `}>
                 Main Services
             </span>
           </li>
           </NavLink>
-          <br />
+
+
           <NavLink to="/admin/subservice">
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={subservice} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  capitalize `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
+            <GrServices size={30} />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  uppercase  `}>
                 Sub Service
             </span>
           </li>
           </NavLink>
-          <br />
         
           <NavLink to="/admin/banner">
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={banner} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200  font-normal text-sm capitalize `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
+            <GiVerticalBanner  size={30} />
+            <span className={`${!open && "hidden"} origin-left duration-200  font-normal text-sm uppercase  `}>
                 User Banner
             </span>
           </li>
           </NavLink>
 
-          <br />
           <NavLink to="/admin/payment">
-          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4' >
-            <img src={payment} alt='logo' />
-            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm capitalize  `}>
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
+            <FaBorderAll size={30} />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm uppercase   `}>
                 Service Order
+            </span>
+          </li>
+          </NavLink>
+
+          <NavLink to="/admin/contact">
+          <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
+          <MdContactMail size={30} />
+            <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm uppercase   `}>
+                Contact
             </span>
           </li>
           </NavLink>

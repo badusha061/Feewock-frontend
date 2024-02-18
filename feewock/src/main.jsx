@@ -27,6 +27,7 @@ import ServicePayment from './components/payment/ServicePayment.jsx'
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Usernotification from './notification/usernotification.jsx'
+import ContactForm from './components/Contact/ContactForm.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,7 +40,7 @@ const router = createBrowserRouter(
       <Route path='service/:id' element={<EmployeeList />} />
       <Route path='views/:id' element={<Views />} />
       <Route path='postlist' element={<PostListUser />} />
-
+      <Route path='contact' element={<ContactForm />} />
 
       {/* employee and admin urls */}
       <Route path='/admin/*' element={<ProtectedRoute allowedRoles={[1]}><AdminRoutes /> </ProtectedRoute> } />
