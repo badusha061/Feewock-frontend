@@ -8,6 +8,7 @@ import Spinner from '../../../utils/Spinner.jsx'
 import { PieChart } from '@mui/x-charts/PieChart';
 
 function AdminDashboard() {
+  let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const useAxiosInstance = useAxios();
   const [isLoading , setIsLoading] = useState(true)
   const [data , setData] = useState({
@@ -18,7 +19,8 @@ function AdminDashboard() {
     total_earnings:'',
     total_strip:'',
     count_strip:'',
-    count_cashondelivery:''
+    count_cashondelivery:'',
+    recend_service:[],
   })
   useEffect(() => {
     GetData()
@@ -36,7 +38,8 @@ function AdminDashboard() {
           total_strip:response.data.total_strip,
           total_earnings:response.data.total_earnings,
           count_strip:response.data.count_strip,
-          count_cashondelivery:response.data.count_cashondelivery
+          count_cashondelivery:response.data.count_cashondelivery,
+          recend_service:response.data.recend_history
         }))
         setIsLoading(false)
     }
@@ -157,30 +160,62 @@ function AdminDashboard() {
 
     </div>
 
+      
+<section className="antialiased bg-white shadow-2xl text-gray-600 h-screen px-4">
+    <div className="flex flex-col justify-center h-full">
+        <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+            <header className="px-5 py-4 border-b border-white">
+                <h2 className="font-semibold text-gray-800"> Recend Service Oder </h2>
+            </header>
+            <div className="p-3">
+                <div className="overflow-x-auto">
+                    <table className="table-auto w-full">
+                        <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                            <tr>
+                                <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-left">Name</div>
+                                </th>
+                                <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-left">Email</div>
+                                </th>
+                                <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-left">Spent</div>
+                                </th>
+                                <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-center">Country</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-sm divide-y divide-gray-100">
+                          {data.recend_service.map((data , index) => (
 
-    {/* <div
-  className="group flex flex-col justify-start items-start gap-2 w-96 h-56 duration-500 relative rounded-lg p-4 bg-purple-500 hover:-translate-y-2 hover:shadow-xl shadow-purple-400"
->
-  <div
-    className="absolute duration-700 shadow-md group-hover:-translate-y-4 group-hover:-translate-x-4 -bottom-10 -right-10 w-1/2 h-1/2 rounded-lg bg-purple-400"
-    alt="image here"
-  ></div>
+                            <tr>
+                                <td className="p-2 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                        <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3"><img className="rounded-full" src={`${BASE_URL}${data.user.images}`} width="40" height="40" alt="Alex Shatov"/></div>
+                                        <div className="font-medium text-gray-800">{data.user.first_name} {data.user.last_name}</div>
+                                    </div>
+                                </td>
+                                <td className="p-2 whitespace-nowrap">
+                                    <div className="text-left">{data.user.email} </div>
+                                </td>
+                                <td className="p-2 whitespace-nowrap">
+                                    <div className="text-left font-medium text-green-500">₹ {data.service_amount} </div>
+                                </td>
+                                <td className="p-2 whitespace-nowrap">
+                                    <div className="text-lg truncate text-center">{data.user.location} </div>
+                                </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-  <div className="">
-    <h2 className="text-2xl font-bold mb-2 text-white">Elegant Card</h2>
-    <p className="text-gray-200 line-clamp-3">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis
-      magna quis lectus fermentum, quis scelerisque orci pellentesque. Duis id
-      porta justo. Sed ac enim id justo tincidunt hendrerit id ac lectus.
-      Pellentesque maximus posuere tortor vitae consequat.
-    </p>
-  </div>
-  <button
-    className="hover:bg-purple-400 bg-purple-600 text-white mt-6 rounded p-2 px-6"
-  >
-    Explore
-  </button>
-</div> */}
+
 
 
 

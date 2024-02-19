@@ -4,6 +4,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useAxios from '../../AxiosConfig/Axios'
 import Spinner from '../../utils/Spinner'
 import UserReviews from '../Reviews/UserReviews'
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 function UserBookingList() {
     const navigate = useNavigate()
@@ -64,6 +66,8 @@ function UserBookingList() {
   return (
     <Layouts>
 
+        
+
     <section className="relative py-10 bg-custom-blue sm:py-16 lg:py-24">
     <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         <div className="max-w-2xl mx-auto text-center">
@@ -98,12 +102,27 @@ function UserBookingList() {
                                     <>
                                         <p className="mt-4  uppercase font-bold  text-black">Payment Method: Stripe</p>
                                         <p className="mt-4  uppercase font-bold  text-black">Payment Time: {data.appointment.paid_at} </p>
+                                        {data.appointment.employee_status === 'coming' ? (
+                                            <p className="mt-4  uppercase font-bold  text-black">service status: COMING  </p>
+                                        ): data.appointment.employee_status === 'on_the_way' ? (
+                                            <p className="mt-4  uppercase font-bold  text-black">service status: ON THE WAY </p>
+                                        ):(
+                                            <p className="mt-4  uppercase font-bold  text-black">service status: NEAREST </p>
+                                        )}
+
 
                                     </>
                                 ):(
                                     <>
                                         <p className="mt-4  uppercase font-bold  text-black">Payment Method: Cash on Delivery</p>
                                         <p className="mt-4  uppercase font-bold  text-black">Payment Time: Not paid</p>
+                                        {data.appointment.employee_status === 'coming' ? (
+                                            <p className="mt-4  uppercase font-bold  text-black">service status: COMING  </p>
+                                        ): data.appointment.employee_status === 'on_the_way' ? (
+                                            <p className="mt-4  uppercase font-bold  text-black">service status: ON THE WAY </p>
+                                        ):(
+                                            <p className="mt-4  uppercase font-bold  text-black">service status: NEAREST </p>
+                                        )}
                                     </>
                                 )}
                             </>
@@ -119,6 +138,7 @@ function UserBookingList() {
                 <>
                 {data.appointment.payment_status=== 'PY' ? (
                     <>
+
                 
                     <div className="relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md py-5 pl-6 pr-8 sm:pr-6">
                         <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
@@ -272,7 +292,10 @@ function UserBookingList() {
             <UserReviews cancel={handleCancel} user={userId} employee={employee} />
         ):null}
 
-
+<Toaster
+          position="top-center"
+          reverseOrder={false}
+          />
 
     </Layouts>
 

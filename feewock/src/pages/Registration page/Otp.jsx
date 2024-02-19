@@ -3,9 +3,8 @@ import './Otp.css';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { CLEAR_REGISTRATION_DATA } from '../../actions/RegisterAction';
+import { clearRegistrationData } from '../../actions/RegisterAction';
 import Swal from 'sweetalert2';
-
 
 
 function Otp() {
@@ -104,7 +103,7 @@ function Otp() {
         title: "Successfully Verified Your Account"
       });
 
-      dispatch(CLEAR_REGISTRATION_DATA())
+      dispatch(clearRegistrationData())
       console.log(respose.data);
 
 
@@ -115,6 +114,7 @@ function Otp() {
     })
 
     }
+
 
    
         return (
@@ -155,7 +155,7 @@ function Otp() {
            >Resend Code</button></p>
       </form>
       </div> 
-
+  
          
         </>
         

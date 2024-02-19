@@ -8,11 +8,13 @@ import Swal from 'sweetalert2';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import Layouts from '../../../layouts/Layouts';
+import { setEmployeeRegistrationData } from '../../../actions/EmployeeRegistrationAction';
 
 const animatedComponents = makeAnimated();
 
   
 function EmployeeRegister() {
+
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
@@ -94,6 +96,7 @@ const handleSelect = async (value) => {
     console.error('Error fetching geolocation:', error);
   }
 };
+
 
 
 
@@ -191,6 +194,10 @@ const handlClick = (e) => {
         icon: "success",
         title: "Successfully Created Account"
       });
+      console.log(response.data.id);
+      const employeeId = {id:response.data.id}
+      console.log('employee', employeeId);
+      dispatch(setEmployeeRegistrationData(employeeId))
       navigate('/employee/employeeregister/otp')
     })
     .catch((error) => {

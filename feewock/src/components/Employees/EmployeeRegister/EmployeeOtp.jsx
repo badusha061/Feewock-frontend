@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 
 function EmployeeOtp() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [otp  , setOpt] = useState({                                                                  
     otp1:'',
     otp2:'',
@@ -17,7 +16,7 @@ function EmployeeOtp() {
   })
 
   const employeedetails = useSelector(state => state.employeeregistration)
-  console.log(employeedetails);
+  console.log(employeedetails,'reducer');
   const handleChange = (e) => {
     setOpt({...otp,[e.target.id] : e.target.value})
   }
