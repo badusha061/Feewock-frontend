@@ -90,26 +90,18 @@ const coloumn = [
       sortable : true
     },
     {
-      name:"First Name",
-      selector : row => row.first_name ,
+      name:"Full Name",
+      selector : row => `${row.first_name} ${row.last_name}`,
       sortable:true
 
     },
-    {
-      name:"Last Name",
-      selector : row => row.last_name
 
-    },
     {
       name:"Email",
       selector : row => row.email
 
     },
-    {
-      name:"PhoneNumber",
-      selector : row => row.phone_number
 
-    },
     {
       name:"Locations",
       selector : row => row.location  

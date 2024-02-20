@@ -32,7 +32,7 @@ function Navbar() {
   const [notifications , setNotification] = useState([])
   const userDetails = JSON.parse(localStorage.getItem('userDetails'));
   const [token , setToken] = useState('')
-
+  const [count , setCount] = useState('')
   useEffect(() => {
     const access_token = localStorage.getItem('access_token')
     setToken(access_token)
@@ -74,16 +74,21 @@ function Navbar() {
 
   useEffect(() => {
     GetUserData()
-
+    GetNotitficationCount()
   },[userId,reducer])
   
   useEffect(() => {
     const handleMessage = (event) => {
 
 
+
       const data = JSON.parse(event.data);
-      setNotification(data.message)
+
+
+      setNotification(data.message.message)
+      setCount(data.count_number)
     };
+
 
     const handleOpen = () => {
 
@@ -92,25 +97,34 @@ function Navbar() {
     client.addEventListener('open', handleOpen);
     client.addEventListener('message', handleMessage);
 
-
     return () => {
       client.removeEventListener('open', handleOpen);
       client.removeEventListener('message', handleMessage);
+
       client.close();
     };
   }, []);
 
   
   const GetUserData = async() => {
-    const  response =  await axiosInstance.get(`/api/userindivual/${userId}/`)
-    console.log(response);
-    if (response.status === 200){
-        setUser(response.data)
-        setIsLaoding(false)
-    }else{
-        console.log(response);
+    if (userId){
+      const  response =  await axiosInstance.get(`/api/userindivual/${userId}/`)
+      if (response.status === 200){
+          setUser(response.data)
+          setIsLaoding(false)
+      }
     }
 }
+
+  const GetNotitficationCount = async() => {
+    if(userId){
+      const response = await axiosInstance.get(`/api/notification/${userId}/`)
+      console.log(response);
+      if (response.status === 200){
+          setCount(response.data)
+      }
+    }
+  }
 
   if(userId){
     if(isLoading){
@@ -211,12 +225,16 @@ function Navbar() {
 
       {token ? (
         <>
-        <div className="border-l-2 h-16 bg-custom-blue"></div>
-            <li>
-               <div  onClick={handleNotification} className='flex cursor-pointer  '>
-                  <IoNotificationsCircle className="fill-current text-custom-blue"  size={30} />
-               </div>
-
+        <div  className="border-l-2 h-16 bg-custom-blue"></div>
+            <li  >
+                <button onClick={handleNotification} className="py-4 px-1 relative border-2 border-transparent text-gray-800 rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out" aria-label="Cart">
+                    <IoNotificationsCircle className="fill-current text-custom-blue"  size={30} />
+                  <span className="absolute inset-0 object-right-top -mr-6">
+                    <div className="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
+                      {count}
+                    </div>
+                  </span>
+                </button>
             </li>
 
 

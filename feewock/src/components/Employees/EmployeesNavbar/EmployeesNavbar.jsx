@@ -5,11 +5,14 @@ import Swal from 'sweetalert2';
 import { useSelector , useDispatch} from 'react-redux';
 import { cleartoken } from '../../../actions/TokenAction';
 import './Notification.css'
-import  Notification from './Notification.jsx'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import Spinner from '../../../utils/Spinner'
+import useAxios from '../../../AxiosConfig/Axios'
+
 
 
 function EmployeesNavbar() {
+    const axiosInstance = useAxios()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [details , setDetails] = useState([])
@@ -18,8 +21,8 @@ function EmployeesNavbar() {
     const employeeDetailsJson = localStorage.getItem('userDetails')
     const Employee =JSON.parse(employeeDetailsJson)
     const EmployeeId = Employee.id
-
-   const [token , setToken] = useState('')
+    const [count , setCount] = useState('')
+    const [token , setToken] = useState('')
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
@@ -63,8 +66,10 @@ function EmployeesNavbar() {
       useEffect(() => {
         const handleMessage = (event) => {    
           const data = JSON.parse(event.data);
-          setDetails(data)
-          setNotification(data.message)
+          console.log(data);
+          setDetails(data.message)
+          setNotification(data.message.message)
+          setCount(data.count_number)
         };
     
         const handleOpen = () => {
@@ -96,6 +101,21 @@ function EmployeesNavbar() {
       const handleNotification = () => {
         naviagate('/employee/notification')
       }
+
+      useEffect(() => {
+          GetEmployeeData()
+      },[EmployeeId])
+
+      const GetEmployeeData = async() => {
+        if(EmployeeId){
+        const response = await axiosInstance.get(`/employees/notification/${EmployeeId}/`)
+        if (response.status === 200){
+            setCount(response.data)
+        }
+      }
+    }
+
+
   return (
     <div className='shadow-md w-full  top-0 left-0'>
     <div className='md:flex items-center justify-between bg-white py-4 md:px-10 px-7'>
@@ -120,6 +140,11 @@ function EmployeesNavbar() {
             <div className='ml-4'> 
             <button onClick={handleNotification} className="button">
               <svg viewBox="0 0 448 512" className="bell"><path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"></path></svg>
+              <span className="absolute inset-0 object-right-top -mr-6">
+                    <div className="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
+                      {count}
+                    </div>
+                  </span>
             </button> 
             </div>  
 

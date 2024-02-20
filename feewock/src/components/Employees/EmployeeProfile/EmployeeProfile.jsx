@@ -15,7 +15,7 @@ import location from './Images/location.png'
 import Swal from 'sweetalert2';
 import EditProfile from './EditProfile'
 import useAxios from '../../../AxiosConfig/Axios'
-import Spinner from '../../../utils/Spinner'
+import Spinner from '../../../utils/Spinner'    
 
 
 function EmployeeProfile() {
