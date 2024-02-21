@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useReducer } from 'react'
+import React, { useEffect, useState , useReducer, useRef } from 'react'
 import Layouts from '../../layouts/Layouts'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -10,16 +10,20 @@ import { Toaster } from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Spinner from '../../utils/Spinner';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Loading from './Loading';
+import Reached from './Reached';
 
 function PostListUser() {
     const axiosInstance = useAxios()
     const navigate = useNavigate()
     const [post , setPost] = useState([])
+    const [page , setPage] = useState(1)
     const [likedata , setLikedata] = useState([])
     const [isLoading , setIsloading] = useState(true)
     const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+    const [hasMore, setHasMore] = useState(true);
     useEffect(() => {
         GetPost()
         GetLike()
@@ -28,15 +32,15 @@ function PostListUser() {
         const response = await axiosInstance.get('post/like/')
         if(response.status === 200){
             setLikedata(response.data)
-            console.log(response.data);
         }
     }
     const GetPost = async (e) => {
-        const response = await axios.get(`${BASE_URL}/post/list`)
+        const response = await axios.get(`${BASE_URL}/post/list/?page=${page}`)
         if(response.status === 200){
-            setPost(response.data)
+            setPost(prvsData => [...prvsData, ...response.data.results])
             setIsloading(false)
-            console.log(response.data);
+            setHasMore(response.data.next !== null);
+            setPage(prvspage => prvspage + 1)
         }
     }
     if(isLoading){
@@ -84,8 +88,18 @@ function PostListUser() {
             forceUpdate()
         }
     }
+    
+
   return (
     <Layouts>
+
+    <InfiniteScroll
+        dataLength={post.length}
+        next={GetPost}
+        hasMore={hasMore} 
+        loader={<Loading />}
+        endMessage={<Reached />}
+        >
 
     {post.map((data , index ) => (
             <div key={index} className="container  mx-auto px-20">
@@ -224,6 +238,8 @@ function PostListUser() {
             </div>
         </div>
     ))}
+
+</InfiniteScroll>
     
 
 
