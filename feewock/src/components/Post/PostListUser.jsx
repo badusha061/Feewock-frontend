@@ -126,6 +126,7 @@ function PostListUser() {
                         >
                         {data.employee.username}
                         </h2>
+                        <p> Ac service  , Plumber </p>
                     </div>
                     </div>
                     <button

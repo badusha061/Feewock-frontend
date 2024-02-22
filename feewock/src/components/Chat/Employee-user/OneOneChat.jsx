@@ -150,9 +150,7 @@ function OneOneChat() {
 
     useEffect(() => {
         client.onmessage = (event) => {
-            console.log({
-                event
-            });
+            
             try{
                 const dataFromServer = JSON.parse(event.data);
                 if (dataFromServer) {

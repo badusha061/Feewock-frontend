@@ -28,6 +28,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Usernotification from './notification/usernotification.jsx'
 import ContactForm from './components/Contact/ContactForm.jsx'
+import ErrorPage from './pages/404page/ErrorPage.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -41,6 +42,8 @@ const router = createBrowserRouter(
       <Route path='views/:id' element={<Views />} />
       <Route path='postlist' element={<PostListUser />} />
       <Route path='contact' element={<ContactForm />} />
+
+      <Route path='*' element={<ErrorPage />} />
 
       {/* employee and admin urls */}
       <Route path='/admin/*' element={<ProtectedRoute allowedRoles={[1]}><AdminRoutes /> </ProtectedRoute> } />

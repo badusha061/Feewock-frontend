@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import useAxios from '../../AxiosConfig/Axios';
-
+import { MdAddIcCall } from "react-icons/md";
 
 
 function Views() {
@@ -173,7 +173,7 @@ function Views() {
            
 
                 <span className=" uppercase font-bold"> {data.username} </span>
-                <div class=" flex  flex-row gap-4 ">
+                <div class=" flex  items-center hover:cursor-pointer flex-row gap-4 ">
             <button
             onClick={handleSubmit}
             >
@@ -200,15 +200,10 @@ function Views() {
             <span
                 className="absolute -top-14 left-[50%] -translate-x-[50%] z-20 origin-left scale-0 px-3 rounded-lg border border-gray-300 bg-white py-2 text-sm font-bold shadow-md transition-all duration-300 ease-in-out group-hover:scale-100"
                 >Message <span> </span></span>
-                <   img className=' w-7 h-9 hover:cursor-pointer' src={call} alt="" />
+                <MdAddIcCall size={31} />
                 </div>
                 
-                <button onClick={handleAppoinment} className="relative group cursor-pointer text-sky-50  overflow-hidden h-16 w-64 rounded-md bg-sky-800 p-2 flex justify-center items-center font-extrabold">
-
-                <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-40 h-40 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-900"></div>
-                <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
-                <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
-                <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
+                <button onClick={handleAppoinment} className="relative group cursor-pointer text-sky-50  overflow-hidden h-16 w-64 rounded-md bg-custom-blue p-2 flex justify-center items-center font-extrabold">
                 <p className="z-10">Appointment Booking</p>
                 </button>
         </main>
