@@ -70,7 +70,7 @@ function Navbar() {
   if(userDetails && userDetails.id){
     userId = userDetails.id
   }
-  const client = new W3CWebSocket(`ws://localhost:8000/ws/notificationuser/${userId}/`) 
+  const client = new W3CWebSocket(`ws://localhost:8001/ws/notificationuser/${userId}/`) 
 
   useEffect(() => {
     GetUserData()

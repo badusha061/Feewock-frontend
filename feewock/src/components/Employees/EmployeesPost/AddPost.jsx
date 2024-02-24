@@ -1,12 +1,13 @@
 import React, { useState  , useEffect , useReducer } from 'react'
 import useAxios from '../../../AxiosConfig/Axios'
 import Swal from 'sweetalert2';
+import  EmojiPicker  from 'emoji-picker-react';
 
 
 function AddPost({close,forceUpdate}) {
   const [data , setData] = useState([])
   const axiosInstance = useAxios()
-
+  const [emoji , setEmoji] = useState(false)
 
   const employeeDetailsJson = localStorage.getItem('userDetails')
   const Employee =JSON.parse(employeeDetailsJson)
@@ -15,7 +16,7 @@ function AddPost({close,forceUpdate}) {
       let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
       useEffect(() => {
         GetEmployeeData()
-    },[BASE_URL ])
+    },[])
 
     const GetEmployeeData = async() => {
         const response = await axiosInstance.get(`${BASE_URL}/dashboard/employeeindivualPermsion/${EmployeeId}/`)
@@ -126,7 +127,21 @@ function AddPost({close,forceUpdate}) {
         }
       }
 
-  
+
+      const handleEmoji = () => {
+          setEmoji(true)
+
+      }
+
+    const handleInputEmoji = (emoji) => {
+      const emojiChar = emoji.emoji
+      setPost((prevPost) => ({ ...prevPost, captions: prevPost.captions +  emojiChar }));
+      handleCancel()
+    }
+
+    const handleCancel = () => {
+      setEmoji(false)
+    }
 
   return (
 
@@ -137,9 +152,18 @@ function AddPost({close,forceUpdate}) {
           <div className="relative w-auto my-6 mx-auto max-w-3xl">
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
               <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                <h3 className="text-3xl font-semibold">
+                <h3 className="text-3xl uppercase font-semibold">
                   {data.username} Add Post
                 </h3>
+                
+            {emoji && (
+                    <div
+                    className="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]"> 
+                    <button className=' bg-black' >
+                      <EmojiPicker  onEmojiClick={handleInputEmoji} />
+                    </button>
+                </div>
+            )}
                 <button
                   className="p-1 ml-auto bg-black border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                   onClick={close}
@@ -152,7 +176,6 @@ function AddPost({close,forceUpdate}) {
 
               <div className="relative p-6 flex-auto">
 
-              <form>
                 <div className="flex items-center space-x-6">
                   <div className="shrink-0">
                     {image.image ? (
@@ -195,36 +218,35 @@ function AddPost({close,forceUpdate}) {
                     className="mt-1 p-4 border-2 border-custom-blue rounded-md focus:outline-none focus:border-custom-blue  w-full transition duration-300 ease-in-out placeholder-gray-500 bg-gray-100"
                     placeholder="Type in ..."
                   />
-                  <div
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-                  >
-                    <svg
-                      className="h-6 w-6 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
+                                <button
+                    onClick={handleEmoji}
+                    className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2 19l-2 2m0 0l2-2m-2 2h16a2 2 0 002-2V5a2 2 0 00-2-2H2a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      ></path>
+                    <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
                     </svg>
+                    </button>
+
+                  <div
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 "
+                  >
+                 
                   </div>
                 </div>
               </div>
-
-              </form>
-
               </div>
+
 
 
               <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">

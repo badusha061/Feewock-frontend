@@ -7,17 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
 import { Toaster } from 'react-hot-toast';
 import { toast } from 'react-hot-toast';
-
-
+import  EmojiPicker  from 'emoji-picker-react';
 
 
 
 function OneOneChat() {
     const navigate = useNavigate()
+    const [choosenemoji , setChooseneemoji] = useState(null)
+    const [emoji , setEmoji] = useState(false)
     const [data , setData] = useState([])
     const [messages , setMessages] = useState([])
     const [users , setUser] = useState([])
     const [employee , setEmployee] = useState([])
+    const [message , setMessage] = useState('')
     const location = useLocation()
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
     const axiosInstance = useAxios()
@@ -96,21 +98,22 @@ function OneOneChat() {
 
     const handleMessage = (e) => {
         e.preventDefault();
-        if(!messageRef.current.value.trim()){
+        if(!message.trim()){
             toast.error('Cannot be empty')
             return false
         }
-        const messageValue = messageRef.current.value
+        const messageValue = message
         if (client.readyState === W3CWebSocket.OPEN) {  
             client.send(JSON.stringify({ text: messageValue , sender: sender }));
-            messageRef.current.value = "";
+            setMessage('')
+            setEmoji(false)
         } else {
             console.error('WebSocket not open yet. Message not sent.');
         }
     }
 
 
-    const client = new W3CWebSocket(`ws://localhost:8000/ws/chat/${sender}_${receiver}/`) 
+    const client = new W3CWebSocket(`ws://localhost:8001/ws/chat/${sender}_${receiver}/`) 
 
    useEffect(() => {
         GetMessage()
@@ -172,7 +175,18 @@ function OneOneChat() {
             };
     },[sender , receiver])
 
+    const handleEmoji = () => {
+        setEmoji(true)
+    }
 
+    const handleInputEmoji = (emoji) => {
+        const emojiChar = emoji.emoji
+        setMessage((prvs) => prvs + emojiChar)
+    }
+
+    const handleCancel = () => {
+        setEmoji(false)
+    }
 
   return (
    
@@ -313,15 +327,23 @@ function OneOneChat() {
             ))}
             </div>
 
+            {emoji && (
+                <div className='flex justify-center' >    
+                    <EmojiPicker  onEmojiClick={handleInputEmoji} />
+                </div>
+            )}
+
             <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
                 <div className="flex-grow ml-4">
                 <div className="relative w-full">
                     <input
-                    ref={messageRef}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     type="text"
                     className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                     />
                     <button
+                    onClick={handleEmoji}
                     className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
                     >
                     <svg

@@ -60,7 +60,6 @@ function Usernotification() {
     <Layouts>
 
 
-    <div className="h-screen grid place-items-center my-8">
   <div className="lg:w-2/5 sm:w-3/5 w-11/12 bg-gray-100 dark:bg-gray-800 rounded-xl mx-auto border p-10 shadow-sm">
     <div className="inline-flex items-center justify-between w-full">
       <h3 className="font-bold text-xl sm:text-2xl text-gray-800 dark:text-white">Notifications</h3>
@@ -132,7 +131,6 @@ function Usernotification() {
     Clear all notifications
   </button>
   </div>
-</div>
 
 {modal ? (
      <div

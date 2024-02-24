@@ -62,7 +62,7 @@ function EmployeesNavbar() {
       let [open, setOpen] = useState(false);
 
 
-      const client = new W3CWebSocket(`ws://localhost:8000/ws/notification/${EmployeeId}/`) 
+      const client = new W3CWebSocket(`ws://localhost:8001/ws/notification/${EmployeeId}/`) 
       useEffect(() => {
         const handleMessage = (event) => {    
           const data = JSON.parse(event.data);
