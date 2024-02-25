@@ -28,6 +28,7 @@
     "@stripe/react-stripe-js": "^2.4.0",
     "@stripe/stripe-js": "^2.4.0",
     "@ubilabs/react-geosuggest": "^2.16.1",
+    "@zegocloud/zego-uikit-prebuilt": "^1.11.0",
     "axios": "^1.6.4",
     "canvas-confetti": "^1.9.2",
     "date-fns": "^3.3.1",
@@ -75,7 +76,8 @@
     "sweetalert-react": "^0.4.11",
     "sweetalert2": "^11.10.3",
     "tw-elements-react": "^1.0.0-alpha2",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "zego-express-engine-webrtc": "^3.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

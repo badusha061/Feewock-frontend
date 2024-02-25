@@ -29,6 +29,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import Usernotification from './notification/usernotification.jsx'
 import ContactForm from './components/Contact/ContactForm.jsx'
 import ErrorPage from './pages/404page/ErrorPage.jsx'
+import Call from './components/call/call.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -49,10 +50,12 @@ const router = createBrowserRouter(
       <Route path='/admin/*' element={<ProtectedRoute allowedRoles={[1]}><AdminRoutes /> </ProtectedRoute> } />
       <Route path='/employee/*' element={<ProtectedRoute allowedRoles={[2]}><EmployeeRoutes /> </ProtectedRoute> }  />
       
-      {/* user profile and chat  */}
+      {/* user profile and chat  and call */}
       <Route path='chat' element={<OneOneChat />} />
       <Route path='userprofile/:id' element={<ProtectedRoute allowedRoles={[3]}><UserProfile /> </ProtectedRoute> } />
+      <Route path='call' element={<ProtectedRoute allowedRoles={[3]}> <Call /> </ProtectedRoute> } />
       
+
 
       {/* user booking*/}
       <Route path='booking/' element={<ProtectedRoute allowedRoles={[3]}><BookingPage /> </ProtectedRoute>} />

@@ -119,7 +119,6 @@ function Navbar() {
   const GetNotitficationCount = async() => {
     if(userId){
       const response = await axiosInstance.get(`/api/notification/${userId}/`)
-      console.log(response);
       if (response.status === 200){
           setCount(response.data)
       }
@@ -162,7 +161,9 @@ function Navbar() {
   <nav className=" bg-white shadow md:flex md:items-center md:justify-between">
     <div className="flex justify-between items-center ">
       
-    <NavLink to="/"  >
+    <NavLink
+
+    to="/"  >
       <span className="text-2xl font-[Poppins] cursor-pointer">
           <img className="h-20 inline"
             src={icon}/>   
@@ -180,7 +181,11 @@ function Navbar() {
 
     <ul className=" flex text-xs gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500">
     
-    <NavLink to="/" activeClassName="active-link" >
+    <NavLink
+            style={({ isActive }) => {
+              return isActive ? { color: '#3E84A8'} : {};
+            }}
+    to="/" activeClassName="active-link" >
       <li className="mx-4 my-6 md:my-0">
         <div className=' flex items-center space-x-1.5'>
         <FaHome className="fill-current text-custom-blue"  size={25} />
@@ -190,7 +195,12 @@ function Navbar() {
     </NavLink>
 
     
-    <NavLink to="/postlist" activeClassName="active-link" >
+    <NavLink 
+    style={({ isActive }) => {
+      return isActive ? { color: '#3E84A8'} : {};
+    }}
+    
+    to="/postlist" activeClassName="active-link" >
     <li className="mx-4 my-6 md:my-0">
       <div className=' flex items-center space-x-1.5'>
         <MdOutlineTravelExplore className="fill-current text-custom-blue" size={25}  />
@@ -199,7 +209,11 @@ function Navbar() {
       </li>
       </NavLink>
     
-      <NavLink to="/service">
+      <NavLink 
+      style={({ isActive }) => {
+        return isActive ? { color: '#3E84A8'} : {};
+      }}
+      to="/service">
       <li className="mx-4 my-6 md:my-0">
         <div className=' flex  items-center space-x-1.5'>
         <MdMiscellaneousServices className="fill-current text-custom-blue"  size={25} />
@@ -208,7 +222,11 @@ function Navbar() {
       </li>
       </NavLink>
 
-    <NavLink to="/contact">
+    <NavLink 
+    style={({ isActive }) => {
+      return isActive ? { color: '#3E84A8'} : {};
+    }}
+    to="/contact">
       <li className="mx-4 my-6 md:my-0">
       <div className=' flex items-center space-x-1.5 '>
         <IoMdContact   className="fill-current text-custom-blue"  size={25}  />

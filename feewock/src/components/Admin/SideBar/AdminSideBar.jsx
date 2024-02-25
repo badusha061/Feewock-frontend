@@ -41,7 +41,13 @@ function AdminSideBar() {
         </h1>
       </div>
       <ul className="pt-6">
-        <NavLink to="/admin/dashboard" >
+        <NavLink 
+
+          end
+        style={({ isActive }) => {
+          return isActive ? { color: 'black'} : {};
+        }}
+        to="/admin/dashboard" >
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2' >
             <IoIosHome size={30} />
             <span className={`${!open && "hidden"} origin-left  uppercase  duration-200   text-sm font-normal `}>
@@ -50,7 +56,11 @@ function AdminSideBar() {
           </li>
         </NavLink>
 
-        <NavLink to='/admin/usermanagement' >
+        <NavLink 
+        style={({ isActive }) => {
+          return isActive ? { color: '#3E84A8'} : {};
+        }}
+        to='/admin/usermanagement' >
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2' >
             <FaUsers size={30} />
             <span className={`${!open && "hidden"} origin-left uppercase  text-sm font-normal duration-200  `}>
@@ -59,7 +69,11 @@ function AdminSideBar() {
           </li>
         </NavLink>
 
-        <NavLink to='/admin/employeemanagement'>
+        <NavLink 
+        style={({ isActive }) => {
+          return isActive ? { color: '#3E84A8'} : {};
+        }}
+        to='/admin/employeemanagement'>
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
             <FaUsersCog  size={30} />
             <span className={`${!open && "hidden"} origin-left uppercase  duration-200 font-normal text-sm `}>
@@ -68,7 +82,11 @@ function AdminSideBar() {
           </li>
           </NavLink>
 
-          <NavLink to="/admin/mainservice">
+          <NavLink 
+          style={({ isActive }) => {
+            return isActive ? { color: '#3E84A8'} : {};
+          }}
+          to="/admin/mainservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
             <MdOutlineMiscellaneousServices size={30} />
             <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  uppercase  `}>
@@ -78,7 +96,11 @@ function AdminSideBar() {
           </NavLink>
 
 
-          <NavLink to="/admin/subservice">
+          <NavLink
+          style={({ isActive }) => {
+            return isActive ? { color: '#3E84A8'} : {};
+          }}
+          to="/admin/subservice">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
             <GrServices size={30} />
             <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm  uppercase  `}>
@@ -87,7 +109,11 @@ function AdminSideBar() {
           </li>
           </NavLink>
         
-          <NavLink to="/admin/banner">
+          <NavLink 
+            style={({ isActive }) => {
+              return isActive ? { color: '#3E84A8'} : {};
+            }}
+          to="/admin/banner">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
             <GiVerticalBanner  size={30} />
             <span className={`${!open && "hidden"} origin-left duration-200  font-normal text-sm uppercase  `}>
@@ -96,7 +122,11 @@ function AdminSideBar() {
           </li>
           </NavLink>
 
-          <NavLink to="/admin/payment">
+          <NavLink 
+          style={({ isActive }) => {
+            return isActive ? { color: '#3E84A8'} : {};
+          }}
+          to="/admin/payment">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
             <FaBorderAll size={30} />
             <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm uppercase   `}>
@@ -105,7 +135,11 @@ function AdminSideBar() {
           </li>
           </NavLink>
 
-          <NavLink to="/admin/contact">
+          <NavLink 
+          style={({ isActive }) => {
+            return isActive ? { color: '#3E84A8'} : {};
+          }}
+          to="/admin/contact">
           <li className= 'flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 mt-2 ' >
           <MdContactMail size={30} />
             <span className={`${!open && "hidden"} origin-left duration-200 font-normal text-sm uppercase   `}>

@@ -2,7 +2,6 @@ import React,{useState , useReducer, useEffect} from 'react'
 import Layouts from '../../layouts/Layouts'
 import { Navigate, useNavigate, useParams  } from 'react-router-dom'
 import background from './Images/background.jpg'
-import call from './Images/call.png'
 import axios from 'axios'
 import Spinner from '../../utils/Spinner'
 import moment from 'moment';
@@ -12,6 +11,9 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import useAxios from '../../AxiosConfig/Axios';
 import { MdAddIcCall } from "react-icons/md";
+import { FaRegStar } from "react-icons/fa";
+import { AiOutlineMessage } from "react-icons/ai";
+
 
 
 function Views() {
@@ -133,8 +135,62 @@ function Views() {
         }
     }
 
+    const handleCall = () => {
+        if(user){
+            let userId = user.id 
+            navigate('/call',{state:{employeeId:employeeId,userId:userId}})
+        }else{
+            toast.error('please login')
+            return false
+        }
+    }
+
   return (
-<Layouts >
+    <>
+    <Layouts>
+        <div className=' container ' >
+
+        <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
+            <div className="col-span-4 sm:col-span-3">
+            <div className="bg-white  shadow-lg rounded-lg p-6">
+            <div className="flex flex-col items-center">
+                <img src={data.images} className=" w-48 h-48 object-cover bg-gray-300 rounded-full mb-4 shrink-0">
+                </img>
+            </div>
+                <h1 className=' uppercase' > {data.username} </h1>
+            <div  className=' flex' >
+                <FaRegStar />
+                <FaRegStar />
+                <FaRegStar />
+                <FaRegStar />
+                <FaRegStar />
+
+            </div>
+            <div className=' flex gap-4 mt-4 hover:shadow-2xl ' >
+                <div className=' flex items-center cursor-pointer  justify-center  w-24 h-12 rounded-md bg-custom-blue' >
+                        <MdAddIcCall className="fill-current text-white"   size={30} />
+                </div>
+                <div className=' flex items-center  cursor-pointer justify-center w-24 h-12 rounded-md bg-custom-blue' >
+                        <AiOutlineMessage className="fill-current text-white"  size={30} />
+                </div>
+            </div>
+            <div className=' mt-4 ' >
+
+                <button
+                    className="hover:shadow-form w-full  pb-5 rounded-md bg-custom-blue py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                    Book Now
+                </button>
+            </div>
+            </div>
+
+            </div>
+        </div>
+        </div>
+
+    </Layouts>
+
+
+    {/* <Layouts >
 
     
 
@@ -200,7 +256,9 @@ function Views() {
             <span
                 className="absolute -top-14 left-[50%] -translate-x-[50%] z-20 origin-left scale-0 px-3 rounded-lg border border-gray-300 bg-white py-2 text-sm font-bold shadow-md transition-all duration-300 ease-in-out group-hover:scale-100"
                 >Message <span> </span></span>
-                <MdAddIcCall size={31} />
+               <div onClick={handleCall} className=' cursor-pointer' >
+                    <MdAddIcCall  size={31} />
+               </div>
                 </div>
                 
                 <button onClick={handleAppoinment} className="relative group cursor-pointer text-sky-50  overflow-hidden h-16 w-64 rounded-md bg-custom-blue p-2 flex justify-center items-center font-extrabold">
@@ -291,9 +349,6 @@ function Views() {
                     
                         >
                         <div className="con-like">
-                            <input 
-
-                            className="like" type="checkbox" title="like"/>
                             <div 
                             
                             className="checkmark">
@@ -438,7 +493,10 @@ function Views() {
 
 
 
-</Layouts>
+</Layouts> */}
+    </>
+
+
   )
 }
 
