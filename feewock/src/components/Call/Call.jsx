@@ -3,8 +3,8 @@ import Layouts from '../../layouts/Layouts'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { ZegoExpressEngine } from 'zego-express-engine-webrtc';
-import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import useAxios from '../../AxiosConfig/Axios'
+import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 
 
 
@@ -44,21 +44,17 @@ function Call() {
 
       const myMeeting = async (element) => {
         const roomId = `${userId}${employeeId}`
-        const appId = '1866354141'
-        const serverSecret  = '6c0cfad2591d940a63fccea53d278c5a'
+        const appId = 514898253;
+        const serverSecret  = 'dd98666c2174b650527f7ee5bd5348e0'
         const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
           appId,
           serverSecret ,
           roomId,
-          '26',
-          'ibrahim'
+          `${data.id}`,
+          `${data.first_name}${data.last_name}` 
         )
-      console.log(roomId);
-      console.log(appId);
-      console.log(serverSecret);
-      console.log(kitToken);
+
       const zc =   ZegoUIKitPrebuilt.create(kitToken)
-      console.log(zc);
       try{
          zc.joinRoom({
           container:element,
@@ -66,6 +62,12 @@ function Call() {
             mode:ZegoUIKitPrebuilt.OneONoneCall
           },
   
+        })
+
+        zc.on('roomUserUpdate', (roomId , userUpdateType , userList) => {
+          if(userUpdateType === 'ADD'){
+            console.log('icoming call from :',userList[0]);
+          }
         })
       }catch(error){
         console.log('the error is the',error);

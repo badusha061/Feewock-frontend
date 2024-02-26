@@ -145,7 +145,7 @@ function Navbar() {
   }
 
   const handleToggile = () => {
-    setModal(!modal)
+    setModal(true)
   }
 
 
@@ -171,16 +171,17 @@ function Navbar() {
     </NavLink>
  
 
-      <span className="text-3xl cursor-pointer mx-2 md:hidden block">
-        <ion-icon name="menu" onclick={handleToggile}></ion-icon>
+      <span className="text-3xl cursor-pointer mx-2 md:hidden block" >
+        <ion-icon name="menu" ></ion-icon>
       </span>
       
     </div>
 
 
 
-    <ul className=" flex text-xs gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500">
+    {/* <ul className=" flex text-xs gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500"> */}
     
+    <ul className={`flex text-xs gap-4 md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 ${modal ? 'opacity-100 top-0' : 'opacity-0 top-[-400px]'}`} transition-all ease-in duration-500>
     <NavLink
             style={({ isActive }) => {
               return isActive ? { color: '#3E84A8'} : {};
@@ -243,10 +244,10 @@ function Navbar() {
 
       {token ? (
         <>
-        <div  className="border-l-2 h-16 bg-custom-blue"></div>
+        <div  className="border-l-2 h-16 rounded-full  bg-custom-blue"></div>
             <li  >
-                <button onClick={handleNotification} className="py-4 px-1 relative border-2 border-transparent text-gray-800 rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out" aria-label="Cart">
-                    <IoNotificationsCircle className="fill-current text-custom-blue"  size={30} />
+                <button onClick={handleNotification} className="py-4 px-1 relative border-2   border-transparent text-gray-800 rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out" aria-label="Cart">
+                    <IoNotificationsCircle className="fill-current  text-custom-blue"  size={30} />
                   <span className="absolute inset-0 object-right-top -mr-6">
                     <div className="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
                       {count}

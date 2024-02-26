@@ -1,38 +1,38 @@
-import React, { useEffect , useReducer ,useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import Layouts from '../../layouts/Layouts'
 import { useParams } from 'react-router-dom'
 import useAxios from '../../AxiosConfig/Axios'
-import user from './Images/user.png'
-import email from './Images/email.png'
-import location from './Images/location.png'
-import mobile from './Images/mobile.png'
 import Swal from 'sweetalert2';
-import EditProfileUser from './EditProfileUser.jsx'                          
+import EditProfileUser from './EditProfileUser.jsx'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Spinner from '../../utils/Spinner.jsx'
+import { FaRegUserCircle } from "react-icons/fa";
+import { FaAddressBook } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
 
 
 
 function UserProfile() {
     const navigate = useNavigate()
-    const [data , setData] = useState([])
-    const [isLoading , setIsLaoding] = useState(true)
+    const [activeTab, setActiveTab] = useState('userprofile')
+    const [data, setData] = useState([])
+    const [isLoading, setIsLaoding] = useState(true)
     const params = useParams()
     const UserId = params.id
     const axiosInstance = useAxios()
-    const [reducer , forceUpdate] = useReducer( x => x + 1 , 0)
+    const [reducer, forceUpdate] = useReducer(x => x + 1, 0)
     let BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
     useEffect(() => {
-       GetUserData()
-    },[BASE_URL, reducer])
+        GetUserData()
+    }, [BASE_URL, reducer])
 
-    const GetUserData = async() => {
-        const  response =  await axiosInstance.get(`${BASE_URL}/api/userindivual/${UserId}/`)
-        if (response.status === 200){
+    const GetUserData = async () => {
+        const response = await axiosInstance.get(`${BASE_URL}/api/userindivual/${UserId}/`)
+        if (response.status === 200) {
             setData(response.data)
             setIsLaoding(false)
-        }else{
+        } else {
             console.log(response);
         }
     }
@@ -43,14 +43,14 @@ function UserProfile() {
     const handleImage = async (e) => {
         e.preventDefault()
         const file = e.target.files[0]
-        console.log('firls is the',file);
-        if(file){
-            const config = {headers:{'Content-Type':'multipart/form-data'}}
+        console.log('firls is the', file);
+        if (file) {
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } }
             const formData = new FormData();
-            
-            formData.append('images',file)
-            const response = await axiosInstance.put(`${BASE_URL}/api/userimages/${UserId}/`, formData,config);
-            if(response.status === 200){
+
+            formData.append('images', file)
+            const response = await axiosInstance.put(`${BASE_URL}/api/userimages/${UserId}/`, formData, config);
+            if (response.status === 200) {
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -58,24 +58,24 @@ function UserProfile() {
                     timer: 3000,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
                     }
-                  });
-                  Toast.fire({
+                });
+                Toast.fire({
                     icon: "success",
                     title: "Successfully Updated Image"
-                  });
+                });
                 forceUpdate()
-            }else{
+            } else {
                 console.log('something error ');
             }
-        }else{
+        } else {
             console.log('not');
         }
     }
 
-    const [modal , setModal] = useState(false)
+    const [modal, setModal] = useState(false)
     const handleModal = () => {
         setModal(true)
     }
@@ -83,99 +83,133 @@ function UserProfile() {
         setModal(false)
         forceUpdate()
     }
-    const handleNavigate = () => {
-        navigate('/bookinglist',{state:UserId})
-    }
-    if(isLoading){
+    if (isLoading) {
         return <Spinner />
     }
-  
-  return (
-    <Layouts>
 
-    <div className="bg-gray-100">
-    <div className="container mx-auto py-8">
-        <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
-            <div className="col-span-4 sm:col-span-3">
-                <div className="bg-white  shadow rounded-lg p-6">
-                    <div className="flex flex-col items-center">
-                        {data.images ? (
-                              <img src={data.images} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
-                              </img>
-                        ):(
-                            <img src="https://randomuser.me/api/portraits/men/94.jpg" className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
-                            </img>
-                        )}
-                       
-                        <input type="file"  accept='image/*' onChange={handleImage} style={{ display: 'none' }} id='ImageInput' />
-                        <button  onClick={handleButton}  className=" hover:bg-black bg-custom-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                            Change
-                        </button>
-                        <h1 className=" text-lg uppercase font-bold">{data.first_name} {data.last_name}</h1>
-                      <div className=' flex'>
-                      <button onClick={handleModal} className="flex p-2.5 bg-custom-blue rounded-lg hover:rounded-3xl hover:bg-black transition-all duration-300 text-white mr-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                        </button>
-                        <button
-                        onClick={handleNavigate}
-                            className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-custom-blue hover:bg-white hover:text-[#7747FF] focus:text-[#7747FF] focus:bg-gray-200 text-gray-50 font-bold leading-loose transition duration-200"
-                            >
-                           Booking
-                        </button>
+    const handleTab = (tab) => {
+        if (tab === 'booking') {
+            setActiveTab(tab)
+            navigate('/bookinglist', { state: UserId })
+        } else {
+            setActiveTab(tab)
+        }
+    }
 
-                      </div>
-                    
-                            
-            
-                    </div>                 
-                </div>
-               
-            </div>
-            <div className="col-span-4 sm:col-span-9">
-            <div className="bg-white shadow rounded-lg p-6">
-
-                {modal && (
-                    <div className="fixed inset-0 z-50 overflow-auto">
-                    <EditProfileUser close={handleClose}  UserId={UserId} />
+    return (
+        <Layouts>
+            <div className=' container max-auto  ' >
+                <div className="col-span-8 sm:col-span-8">
+                    <div className=' h-10 bg-white shadow-lg  w-[65%] flex mx-auto' >
+                        <div onClick={() => handleTab('userprofile')} className={` flex  rounded-xl items-center gap-2 cursor-pointer justify-center w-1/2 uppercase ${activeTab === 'userprofile' ? 'bg-custom-blue text-white ' : ' text-black '} `} >
+                            <FaRegUserCircle />
+                            My Profile
+                        </div>
+                        <div onClick={() => handleTab('booking')} className={` cursor-pointer flex rounded-xl  gap-2 items-center justify-center w-1/2 uppercase ${activeTab === 'booking' ? 'bg-custom-blue text-white' : 'text-black'} `}  >
+                            <FaAddressBook />
+                            my booking
+                        </div>
                     </div>
-                )}
-        <h2 className="text-xl uppercase font-bold mb-4">About Me</h2>                                  
-                <table>
-                    <tbody>
-                        <tr>
-                            <td><img src={user} className='w-5' alt="" /></td>
-                            <td className='font-semibold uppercase text-lg'>  {data.first_name} </td>
-                        </tr>
-                        <tr>
-                            <td><img src={user} className='w-5' alt="" /></td>
-                            <td className='font-semibold uppercase text-lg'>{data.last_name}</td>
-                        </tr>
-                        <tr>
-                            <td><img src={email} className='w-5' alt="" /></td>
-                            <td className='font-semibold uppercase text-lg'>{data.email}</td>
-                        </tr>
-                        <tr>
-                            <td><img src={mobile} className='w-5' alt="" /></td>
-                            <td className=' font-semibold  uppercase text-lg'>{data.phone_number}</td>
-                        </tr>
-                        <tr>
-                            <td><img src={location} className='w-5' alt="" /></td>
-                            <td className='font-semibold uppercase text-lg'>{data.location}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                </div>
             </div>
 
-        </div>
+            {activeTab === 'userprofile' ? (
+                <>
+                    <div className=' justify-center items-center' >
+                        <div className=' mt-4 flex justify-center' >
+                            <h1 className=' font-bold uppercase text-2xl' > profile </h1>
+                        </div>
+                        <div className="flex flex-col mt-4 items-center">
+                            {data.images ? (
+                                <img src={data.images} className=" w-48 h-48 object-cover bg-gray-300 rounded-full mb-4 shrink-0">
+                                </img>
+                            ) : (
+                                <img src="https://iau.edu.lc/wp-content/uploads/2016/09/dummy-image.jpg" className=" w-48 h-48 object-cover bg-gray-300 rounded-full mb-4 shrink-0">
+                                </img>
+                            )}
+                            <input type="file" accept='image/*' onChange={handleImage} style={{ display: 'none' }} id='ImageInput' />
+                            <span onClick={handleButton} className=' text-custom-blue uppercase  underline cursor-pointer' > change icon </span>
+                        </div>
 
-    </div>
-</div>
-</div>
-    </Layouts>
-  
-  )
+                    </div>
+
+                    {modal && (
+                        <div className="fixed inset-0 z-50 overflow-auto">
+                            <EditProfileUser close={handleClose} UserId={UserId} />
+                        </div>
+                    )}
+
+                    <div className=' mt-6 flex justify-center items-center ' >
+                        <div className=' mx-auto w-[40%]   ' >
+                        <section className="mb-2 border p-4  rounded-lg  bg-neutral-100">
+                            <div className="mx-auto">
+                                <div className="card md:flex max-w-lg">
+                                    <div className="flex-grow text-center md:text-left">
+                                        <p className="font-bold">First Name</p>
+                                        <p className="mt-2 mb-3"> {data.first_name} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section className="mb-2 border p-4 rounded-lg  bg-neutral-100">
+                            <div className="mx-auto">
+                                <div className="card md:flex max-w-lg">
+                                    <div className="flex-grow text-center md:text-left">
+                                        <p className="font-bold">Last Name</p>
+                                        <p className="mt-2 mb-3"> {data.last_name} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section className="mb-2 border p-4 rounded-lg  bg-neutral-100">
+                            <div className="mx-auto">
+                                <div className="card md:flex max-w-lg">
+                                    <div className="flex-grow text-center md:text-left">
+                                        <p className="font-bold">Email</p>
+                                        <p className="mt-2 mb-3">{data.email}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section className="mb-2 border p-4 rounded-lg  bg-neutral-100">
+                            <div className="mx-auto">
+                                <div className="card md:flex max-w-lg">
+                                    <div className="flex-grow text-center md:text-left">
+                                        <p className="font-bold">Phone Number</p>
+                                        <p className="mt-2 mb-3"> {data.phone_number} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="mb-2 border  p-4 rounded-lg  bg-neutral-100">
+                            <div className="mx-auto">
+                                <div className="card md:flex max-w-lg">
+                                    <div className="flex-grow text-center md:text-left">
+                                        <p className="font-bold">Location</p>
+                                        <p className="mt-2 mb-3"> {data.location} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div className=' flex justify-center items-center mt-4 ' >
+                            <button
+                                onClick={handleModal}
+                                className="hover:shadow-form flex  uppercase gap-3 items-center justify-center  pb-5 rounded-md bg-custom-blue py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                                <FaUserEdit size={25} />
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+
+
+                </>
+
+            ) : null}
+        </Layouts>
+
+    )
 }
 
 export default UserProfile
