@@ -132,6 +132,7 @@ const coloumn = [
   let getUser = async () => {
     
       let response = await useAxiosInstance.get('/dashboard/userlist')
+      console.log(response.data);
       if(response.status === 200){
         setRecords(response.data)
         setIsLaoding(false)

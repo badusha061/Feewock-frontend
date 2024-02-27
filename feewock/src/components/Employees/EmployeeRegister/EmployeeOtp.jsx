@@ -16,7 +16,8 @@ function EmployeeOtp() {
   })
 
   const employeedetails = useSelector(state => state.employeeregistration)
-  console.log(employeedetails,'reducer');
+
+
   const handleChange = (e) => {
     setOpt({...otp,[e.target.id] : e.target.value})
   }

@@ -3,7 +3,6 @@ import Layouts from '../../layouts/Layouts'
 import axios from 'axios'
 import { useNavigate  } from 'react-router-dom'
 import LocationModal from './LocationModal'
-import test from './Image/repair.png'
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 
@@ -75,7 +74,7 @@ function Service() {
 
 <div className=' container mx-auto ml-40 flex flex-col mb-8' key={index}>
 
-<h1 className=' sm:font-bold' > {data.name} </h1>
+<h1 className=' uppercase sm:font-bold' > {data.name} </h1>
 
 <div className=' m-4 gap-4 grid sm:grid-cols-4' >
 {data.subservice.map((sub , index) => (
@@ -85,9 +84,9 @@ function Service() {
     <img src={sub.Image} className='w-10 object-cover  ' alt="" />
 </div>
     <div className=' ml-4' >
-        <h3 className=' font-extrabold' >  {sub.name}</h3>
+        <h3 className=' capitalize font-extrabold' >  {sub.name}</h3>
         <p className=' text-custom-blue text-base ' >
-          <span className='border-b  border-custom-blue'>
+          <span className='border-b text-base  border-custom-blue'>
            See employees 
           </span>
         </p>

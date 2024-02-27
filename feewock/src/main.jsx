@@ -29,7 +29,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import Usernotification from './notification/usernotification.jsx'
 import ContactForm from './components/Contact/ContactForm.jsx'
 import ErrorPage from './pages/404page/ErrorPage.jsx'
-import Call from './components/call/call.jsx'
+import Call from './components/Call/Call.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

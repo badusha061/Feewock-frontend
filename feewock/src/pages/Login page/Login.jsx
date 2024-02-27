@@ -45,7 +45,6 @@ function Login() {
     if(Object.keys(validateError).length === 0){
       e.preventDefault();
       const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-      console.log(BASE_URL);
       const instance = axios.create({
         baseURL:`${BASE_URL}/api/token`,
       })  

@@ -197,6 +197,10 @@ const handlClick = (e) => {
       console.log(response.data.id);
       const employeeId = {id:response.data.id}
       console.log('employee', employeeId);
+      console.log('employee', employeeId);
+      console.log('employee', employeeId);
+      console.log('employee', employeeId);
+
       dispatch(setEmployeeRegistrationData(employeeId))
       navigate('/employee/employeeregister/otp')
     })

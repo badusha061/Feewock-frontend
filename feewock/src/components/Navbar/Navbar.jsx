@@ -70,7 +70,8 @@ function Navbar() {
   if(userDetails && userDetails.id){
     userId = userDetails.id
   }
-  const client = new W3CWebSocket(`ws://localhost:8001/ws/notificationuser/${userId}/`) 
+  
+
 
   useEffect(() => {
     GetUserData()
@@ -78,31 +79,33 @@ function Navbar() {
   },[userId,reducer])
   
   useEffect(() => {
+
     const handleMessage = (event) => {
-
-
-
       const data = JSON.parse(event.data);
-
-
       setNotification(data.message.message)
       setCount(data.count_number)
     };
 
 
+
     const handleOpen = () => {
-
     };
 
-    client.addEventListener('open', handleOpen);
-    client.addEventListener('message', handleMessage);
+    if(userId){
+      const client = new W3CWebSocket(`ws://localhost:8001/ws/notificationuser/${userId}/`) 
+      client.addEventListener('open', handleOpen);
+      client.addEventListener('message', handleMessage);
+  
+      return () => {
+        client.removeEventListener('open', handleOpen);
+        client.removeEventListener('message', handleMessage);
+  
+        client.close();
+      };
+    }
 
-    return () => {
-      client.removeEventListener('open', handleOpen);
-      client.removeEventListener('message', handleMessage);
 
-      client.close();
-    };
+
   }, []);
 
   

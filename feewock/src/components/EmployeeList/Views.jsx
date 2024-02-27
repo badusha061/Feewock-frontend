@@ -12,6 +12,7 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { FaAddressBook } from "react-icons/fa";
 import { BsFileEarmarkPostFill } from "react-icons/bs";
 import { MdPreview } from "react-icons/md";
+import { FcLike } from "react-icons/fc";
 
 
 
@@ -188,16 +189,18 @@ function Views() {
                                             
                                             <custom-card3 >
                                                 
-                                                <div>
+                                                <div className='relative hover:cursor-pointer' >
 
                                                     <img
                                                         alt=""
-                                                        className="object-cover hover:cursor-pointer object-center w-full h-72 bg-coolGray-500"
+                                                        className="object-cover object-center w-full h-72"
                                                         src={data.image}
                                                         
                                                         />
-
-                                                    <h1 className=' opacity-0 hover:opacity-100  font-bold hover:cursor-pointer uppercase ' > {data.likes_count} likes </h1>
+                                                    <div className='absolute  hover:flex hover:items-center hover:gap-4  opacity-0 hover:opacity-100 hover:top-28 left-32    hover:font-bold hover:cursor-pointer'  >
+                                                        <FcLike  style={30} />
+                                                        <h1 className='uppercase  text-white ' > {data.likes_count} likes </h1>
+                                                    </div>
                                                 </div>
                                             </custom-card3>
                                         ))}
